@@ -113,6 +113,28 @@ function Controller(canvas, previewCanvas, listCharacter) {
     }, true);
 
 
+    /* ====================
+       === DEGRADATIONS ===
+       ==================== */
+    
+    document.getElementById('ShadowBindingDegradationExec').addEventListener('click', function(){
+	var all_border = document.getElementsByName("ShadowBindingDegradationBorderValue");
+	var border;
+	for (var i = 0; i < all_border.length; i++) {
+	    if (all_border[i].checked) {
+		border = all_border[i].value;
+	    }
+	}
+	
+        session.shadowBindingDegradation(
+	    border,
+	    document.getElementById('ShadowBindingDegradationWidthValue').value,
+	    document.getElementById('ShadowBindingDegradationIntensityValue').value,
+	    document.getElementById('ShadowBindingDegradationAngleValue').value,
+	    controller);
+    }, true);
+
+    
     document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
         session.grayScaleCharsDegradation(document.getElementById('GrayScaleCharacterDegradationValue').value, controller);
     }, true);

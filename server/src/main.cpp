@@ -11,6 +11,7 @@
 #include "../headers/Session.hpp"
 #include "../headers/json.hpp"
 #include "../headers/GrayscaleCharsDegradationModel.hpp"
+#include "../headers/ShadowBinding.hpp"
 
 
 using json = nlohmann::json;
@@ -30,10 +31,10 @@ LocalRepository *myUploadRepo = NULL;
 std::vector<Session*> activeSessions;
 
 /*
-* \brief Function use when the service is closed and killed the active session
-*
-* \param dummy : the dummy as integer 
-*/
+ * \brief Function use when the service is closed and killed the active session
+ *
+ * \param dummy : the dummy as integer 
+ */
 
 void exitFunction( int dummy )
 {
@@ -45,12 +46,12 @@ void exitFunction( int dummy )
 }
 
 /*
-* \brief Verify if the format's image uploaded is supported 
-*
-* \param &filenane : the filename as string 
-*
-* \return a bool
-*/
+ * \brief Verify if the format's image uploaded is supported 
+ *
+ * \param &filenane : the filename as string 
+ *
+ * \return a bool
+ */
 static inline
 bool isFormatSupported( const std::string &fileName)
 {
@@ -101,13 +102,13 @@ makeSpaceCharacterData(int width, int height)
 }
 
 /*
-* \brief Extract all informations about the font  
-*
-* \param sessionindex : the index as integer
-* \param fontname : the fontname as string 
-*
-* \return a string
-*/
+ * \brief Extract all informations about the font  
+ *
+ * \param sessionindex : the index as integer
+ * \param fontname : the fontname as string 
+ *
+ * \return a string
+ */
 static
 std::string extractFontInOf(int sessionIndex, const std::string &fontName)
 {
@@ -192,18 +193,18 @@ std::string extractFontInOf(int sessionIndex, const std::string &fontName)
 } 
 
 /*
-* \brief Generate a random name for image uploaded 
-*
-* \param extension : the extension as string
-*
-* \return a string
-*/
+ * \brief Generate a random name for image uploaded 
+ *
+ * \param extension : the extension as string
+ *
+ * \return a string
+ */
 static
 std::string gen_random(std::string extension) {
   static const char letter[] =
-  "0123456789"
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  "abcdefghijklmnopqrstuvwxyz";
+      "0123456789"
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      "abcdefghijklmnopqrstuvwxyz";
   srand(time(NULL));    
   std::string random;
   for (int i = 0; i < rng; ++i) {
@@ -214,13 +215,13 @@ std::string gen_random(std::string extension) {
 }
 
 /*
-* \brief Creater User session when image was uploading
-*
-* \param filenane : the filename as string 
-* \param *request : the request as HttpRequest
-*
-* \return a string JSON
-*/
+ * \brief Creater User session when image was uploading
+ *
+ * \param filenane : the filename as string 
+ * \param *request : the request as HttpRequest
+ *
+ * \return a string JSON
+ */
 static
 std::string InitiateSession(std::string fileName, HttpRequest *request)
 {
@@ -237,12 +238,12 @@ std::string InitiateSession(std::string fileName, HttpRequest *request)
 }
 
 /*
-* \brief Verify if token is valid
-*
-* \param token : the token as integer
-*
-* \return a integer
-*/
+ * \brief Verify if token is valid
+ *
+ * \param token : the token as integer
+ *
+ * \return a integer
+ */
 static
 int getActiveSessionFromToken(int token)
 {
@@ -313,13 +314,13 @@ class MyDynamicRepository : public DynamicRepository
   class getBoundingBox: public MyDynamicPage
   {
     /*
-    * \brief Extract all bounding box and baseline
-    *
-    * \param *response : the response as HttpReponse 
-    * \param *request : the request as HttpRequest
-    *
-    * \return a string in response and a bool
-    */
+     * \brief Extract all bounding box and baseline
+     *
+     * \param *response : the response as HttpReponse 
+     * \param *request : the request as HttpRequest
+     *
+     * \return a string in response and a bool
+     */
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
       std::string token;
@@ -341,13 +342,13 @@ class MyDynamicRepository : public DynamicRepository
   class getInfoOnCC: public MyDynamicPage
   { 
     /*
-    * \brief Get informations about a bounding box
-    *
-    * \param *response : the response as HttpReponse 
-    * \param *request : the request as HttpRequest
-    *
-    * \return a string in response and a bool
-    */
+     * \brief Get informations about a bounding box
+     *
+     * \param *response : the response as HttpReponse 
+     * \param *request : the request as HttpRequest
+     *
+     * \return a string in response and a bool
+     */
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
       std::string token;
@@ -400,13 +401,13 @@ class MyDynamicRepository : public DynamicRepository
   class updateInfoOnCC: public MyDynamicPage
   { 
     /*
-    * \brief Update informations about a bounding box
-    *
-    * \param *response : the response as HttpReponse 
-    * \param *request : the request as HttpRequest
-    *
-    * \return a string in response and a bool
-    */
+     * \brief Update informations about a bounding box
+     *
+     * \param *response : the response as HttpReponse 
+     * \param *request : the request as HttpRequest
+     *
+     * \return a string in response and a bool
+     */
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
       std::string listCCId;
@@ -484,13 +485,13 @@ class MyDynamicRepository : public DynamicRepository
   class merge: public MyDynamicPage
   { 
     /*
-    * \brief Merge the components
-    *
-    * \param *response : the response as HttpReponse 
-    * \param *request : the request as HttpRequest
-    *
-    * \return a string in response and a bool
-    */
+     * \brief Merge the components
+     *
+     * \param *response : the response as HttpReponse 
+     * \param *request : the request as HttpRequest
+     *
+     * \return a string in response and a bool
+     */
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
 
@@ -590,141 +591,201 @@ class MyDynamicRepository : public DynamicRepository
       request->getParameter("token", token);
       int sessionIndex = getActiveSessionFromToken(stoi(token));
       if(sessionIndex != -1)
-        { 
-          int sessionIndex = getActiveSessionFromToken(stoi(token));
-          std::string fontname;
-          request->getParameter("fontname", fontname);
-          return fromString(extractFontInOf(sessionIndex, fontname), response);
-        } else {
-          return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
-        }
-      }
-
-    } extractFont;
-
-
-    class updateBaseline: public MyDynamicPage
-    {
-      /*
-      * \brief Update informations about a baseline
-      *
-      * \param *response : the response as HttpReponse 
-      * \param *request : the request as HttpRequest
-      *
-      * \return a string in response and a bool
-      */
-      bool getPage(HttpRequest* request, HttpResponse *response)
-      {
-        std::string token;
-        request->getParameter("token", token);
+      { 
         int sessionIndex = getActiveSessionFromToken(stoi(token));
-        if(sessionIndex != -1)
-        {
-          int sessionIndex = getActiveSessionFromToken(stoi(token));
-          std::string idLine;
-          request->getParameter("idLine", idLine);
-          if(activeSessions.at(sessionIndex)->getImage()->isValidIdLine(stoi(idLine)) != - 1)
-          {
-            std::string value;
-            request->getParameter("value", value);
-            activeSessions.at(sessionIndex)->getImage()->setBaselineForLine(stoi(idLine), stoi(value));
-            return fromString("ok", response);
-          } else { 
-            return fromString("{\"error\" : You don't have a valid Line, retry please\"}", response);
-          }
-        } else {
-          return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
-        }
+        std::string fontname;
+        request->getParameter("fontname", fontname);
+        return fromString(extractFontInOf(sessionIndex, fontname), response);
+      } else {
+        return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
       }
-
-    } updateBaseline;  
-
-    class grayScaleCharsDegradation: public MyDynamicPage
-    {
-      bool getPage(HttpRequest* request, HttpResponse *response)
-      {
-        std::string tokenParam;
-        std::string levelParam;
-        request->getParameter("token", tokenParam);
-        request->getParameter("level", levelParam);
-        int token = stoi(tokenParam);
-        int level = stoi(levelParam);
-        int sessionIndex = getActiveSessionFromToken(token);
-        if(sessionIndex != -1)
-        {
-          GrayscaleCharsDegradationModel grayDegradation = GrayscaleCharsDegradationModel(activeSessions.at(sessionIndex)->getImage()->getMat());
-          activeSessions.at(sessionIndex)->getImage()->setMat(grayDegradation.degradateByLevel_cv(level));
-          activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-          myUploadRepo->reload();
-          return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
-        }
-        else
-        {
-          return fromString("Error : this session doesn't exist", response);
-        }
-
-      }
-    } grayScaleCharsDegradation;
-
-    class Controller: public MyDynamicPage
-    {
-      bool getPage(HttpRequest* request, HttpResponse *response)
-      {
-        response->forwardTo("index.php");
-        return true;
-      }
-
-    } controller;
-
-  public:
-    MyDynamicRepository() : DynamicRepository()
-    {
-      add("index.html",&controller);
-      add("uploader.txt",&uploader);
-      add("getBoundingBox.txt",&getBoundingBox);
-      add("getInfoOnCC.txt",&getInfoOnCC);
-      add("updateInfoOnCC.txt",&updateInfoOnCC);
-      add("stopSession.txt",&stopSession);
-      add("extractFont.txt",&extractFont);
-      add("updateBaseline.txt",&updateBaseline);
-      add("merge.txt",&merge);
-      add("grayScaleCharsDegradation.txt",&grayScaleCharsDegradation);
     }
-  };
+
+  } extractFont;
+
+
+  class updateBaseline: public MyDynamicPage
+  {
+    /*
+     * \brief Update informations about a baseline
+     *
+     * \param *response : the response as HttpReponse 
+     * \param *request : the request as HttpRequest
+     *
+     * \return a string in response and a bool
+     */
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string token;
+      request->getParameter("token", token);
+      int sessionIndex = getActiveSessionFromToken(stoi(token));
+      if(sessionIndex != -1)
+      {
+        int sessionIndex = getActiveSessionFromToken(stoi(token));
+        std::string idLine;
+        request->getParameter("idLine", idLine);
+        if(activeSessions.at(sessionIndex)->getImage()->isValidIdLine(stoi(idLine)) != - 1)
+        {
+          std::string value;
+          request->getParameter("value", value);
+          activeSessions.at(sessionIndex)->getImage()->setBaselineForLine(stoi(idLine), stoi(value));
+          return fromString("ok", response);
+        } else { 
+          return fromString("{\"error\" : You don't have a valid Line, retry please\"}", response);
+        }
+      } else {
+        return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
+      }
+    }
+
+  } updateBaseline;  
+
+  class grayScaleCharsDegradation: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string tokenParam;
+      std::string levelParam;
+      request->getParameter("token", tokenParam);
+      request->getParameter("level", levelParam);
+      int token = stoi(tokenParam);
+      int level = stoi(levelParam);
+      int sessionIndex = getActiveSessionFromToken(token);
+      if(sessionIndex != -1)
+      {
+        GrayscaleCharsDegradationModel grayDegradation = GrayscaleCharsDegradationModel(activeSessions.at(sessionIndex)->getImage()->getMat());
+        activeSessions.at(sessionIndex)->getImage()->setMat(grayDegradation.degradateByLevel_cv(level));
+        activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+        myUploadRepo->reload();
+        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+      }
+      else
+      {
+        return fromString("Error : this session doesn't exist", response);
+      }
+
+    }
+  } grayScaleCharsDegradation;
+
+
+  
+  class ShadowBindingDegradation: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string tokenParam;
+      std::string borderParam;
+      std::string widthParam;
+      std::string intensityParam;
+      std::string angleParam;
+      
+      request->getParameter("token", tokenParam);
+      request->getParameter("border", borderParam);
+      request->getParameter("width", widthParam);
+      request->getParameter("intensity", intensityParam);
+      request->getParameter("angle", angleParam);
+      
+      int token = stoi(tokenParam);
+      
+      ShadowBorder border;
+      if (borderParam.compare("left") == 0){
+        border = ShadowBorder::LEFT;
+      } else if (borderParam.compare("right") == 0){
+        border = ShadowBorder::RIGHT;
+      } else if (borderParam.compare("top") == 0){
+        border = ShadowBorder::TOP;
+      } else {
+        border = ShadowBorder::BOTTOM;
+      }
+      
+      int width = stoi(widthParam);
+      float intensity = stof(intensityParam);
+      float angle = stof(angleParam);
+      
+      int sessionIndex = getActiveSessionFromToken(token);
+      if(sessionIndex != -1)
+      {
+        cv::Mat matOut = activeSessions.at(sessionIndex)->getImage()->getMat();
+        shadowBinding(
+            matOut,
+            border,
+            width,
+            intensity,
+            angle);
+        activeSessions.at(sessionIndex)->getImage()->setMat(matOut);
+        activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+        myUploadRepo->reload();
+        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+      }
+      else
+      {
+        return fromString("Error : this session doesn't exist", response);
+      }
+
+    }
+  } shadowBindingDegradation;
+  
+
+  class Controller: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      response->forwardTo("index.php");
+      return true;
+    }
+
+  } controller;
+
+ public:
+  MyDynamicRepository() : DynamicRepository()
+  {
+    add("index.html",&controller);
+    add("uploader.txt",&uploader);
+    add("getBoundingBox.txt",&getBoundingBox);
+    add("getInfoOnCC.txt",&getInfoOnCC);
+    add("updateInfoOnCC.txt",&updateInfoOnCC);
+    add("stopSession.txt",&stopSession);
+    add("extractFont.txt",&extractFont);
+    add("updateBaseline.txt",&updateBaseline);
+    add("merge.txt",&merge);
+    add("grayScaleCharsDegradation.txt",&grayScaleCharsDegradation);
+    add("shadowBindingDegradation.txt",&shadowBindingDegradation);
+  }
+};
 
 /***********************************************************************/
 
 /*
-* \author Provided by Thierry DESCOMBES, Creator of Libnavajo Server
-*/
-  int main(int argc, char** argv )
-  {
-    signal( SIGTERM, exitFunction );
-    signal( SIGINT, exitFunction );
+ * \author Provided by Thierry DESCOMBES, Creator of Libnavajo Server
+ */
+int main(int argc, char** argv )
+{
+  signal( SIGTERM, exitFunction );
+  signal( SIGINT, exitFunction );
 
-    NVJ_LOG->addLogOutput(new LogStdOutput);
+  NVJ_LOG->addLogOutput(new LogStdOutput);
 
-    webServer = new WebServer;
+  webServer = new WebServer;
 
   //webServer->setUseSSL(true, "../mycert.pem");
-    LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
+  LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
   //myLocalRepo.addDirectory("", "../client/"); 
-    webServer->addRepository(myLocalRepo);
+  webServer->addRepository(myLocalRepo);
 
-    MyDynamicRepository myRepo;
-    webServer->addRepository(&myRepo);
+  MyDynamicRepository myRepo;
+  webServer->addRepository(&myRepo);
 
-    myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
-    webServer->addRepository(myUploadRepo);
+  myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
+  webServer->addRepository(myUploadRepo);
 
 
-    webServer->startService();
+  webServer->startService();
 
-    webServer->wait();
+  webServer->wait();
 
-    LogRecorder::freeInstance();
+  LogRecorder::freeInstance();
 
-    return 0;
-  }
+  return 0;
+}
 
 

@@ -255,4 +255,31 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
         }
     });
 }
-// TODO :: grayScaleCharsDegradation
+
+
+Session.prototype.shadowBindingDegradation = function(border, width, intensity, angle, callback)
+{    
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'shadowBindingDegradation.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&border=' + border + '&width=' + width + "&intensity=" + intensity + "&angle=" + angle,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            callback.replaceImage(data);
+
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+

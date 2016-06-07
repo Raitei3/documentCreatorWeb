@@ -55,6 +55,7 @@ MAIN_OBJS = \
 		  Session.o \
 		  Binarization.o \
 		  GrayscaleCharsDegradationModel.o \
+		  ShadowBinding.o \
 		  connectedcomponentextraction.o \
 		  main.o \
 
@@ -76,7 +77,7 @@ GRAYSCALECHARSDEGRADATIONMODEL= GrayscaleCharsDegradationModel
 
 CONNECTEDCOMPONENTEXTRACTION= connectedcomponentextraction
 
-
+SHADOWBINDIN= ShadowBinding
 
 
 
@@ -126,9 +127,14 @@ $(GRAYSCALECHARSDEGRADATIONMODEL): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 
-	$(CONNECTEDCOMPONENTEXTRACTION): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+$(CONNECTEDCOMPONENTEXTRACTION): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
+$(SHADOWBINDING): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+	rm -f $@
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
 
 clean:
 	@rm -f $(OUTPUTFILENAME) 

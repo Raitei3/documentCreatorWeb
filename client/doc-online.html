@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Pdp client</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+      $("#canvas").hide();
+      $('.container_right').hide();
+      $('.loader').hide();
+      });
+    </script>
+    
+    
+  </head>
+  <body class="fill-height">
+    <div class="loader">
+      <div class="cs-loader-inner">
+	<label>	●</label>
+	<label>	●</label>
+	<label>	●</label>
+	<label>	●</label>
+	<label>	●</label>
+	<label>	●</label>
+      </div>
+    </div>
+    <div class="overlay"></div>
+    
+
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+	<div class="navbar-header">
+	  <a class="navbar-brand" href="#">FONT EXTRACTOR</a>
+	</div>
+
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	  <ul class="nav navbar-nav">
+	    
+	    
+	    <li class="dropdown">
+	      <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		Degradations
+	      </a>
+
+	      <ul class="dropdown-menu" aria-labelledby="dLabel">
+		<li>
+		  <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">
+		    GrayScale Character Degradation
+		  </a>
+		</li>
+		<li>
+		  <a href="#" data-toggle="modal" data-target="#ShadowBindingDegradationModal">
+		    Shadow Binding Degradation
+		  </a>
+		</li>
+	      </ul>
+	    </li>
+	    <li class="dropdown">
+	      <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		View
+	      </a>
+
+	      <ul class="dropdown-menu" aria-labelledby="dLabel">
+		<li>
+		  <a href="#">
+		    <label>
+		      <input type="checkbox" id="baseline">  Show Baseline
+		    </label>
+		  </a>
+		</li>
+	      </ul>
+	    </li>
+	    
+	  </ul>
+	  <ul class="nav navbar-nav navbar-right">
+	    <li>
+	      <a data-toggle="modal" href="#" data-target="#saveModal" title="Export the font"><span id="button_export" class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
+	    </li>
+	    <li>
+
+	      <a href="#popup" data-toggle="modal" data-target=".bs-example-modal-sm" title="Start with a new Image"><span class="glyphicon glyphicon-plus" id="button_trash" aria-hidden="true"></span></a>
+
+	    </li>
+	  </ul>
+	</div>
+      </div>
+    </nav>
+    <div class="processing">
+      <div class="inside">
+
+	<div class="left">
+	  <div class="zoom-icon">
+	    <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span><br>
+	    <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span><br>
+	    <span class="glyphicon glyphicon-repeat" id="zoom-reset"></span>
+	  </div>
+
+	  <canvas id="canvas" width="500" height="500" data-girar="0"></canvas>
+	  <div class="fileUpload btn btn-primary">
+	    <span>Choose Image</span>
+	    <input type="file" class="upload" name="image" accept="image/*"/>
+	  </div>
+	</div>
+	<div class="right">
+	  <div class="container_right">
+	    <div class="right_up">
+	      <!-- <div class="button_nav_cc row">
+		   <div class="col-md-3">
+		     <button class="buttonPrevious btn btn-default">Previous</button>
+		   </div>
+		   <div class="col-md-3 col-md-offset-6">
+		     <button class="buttonNext btn btn-default">Next</button>
+		   </div>		
+	      </div> -->
+	      
+	      <div class="small-canvas">
+		<div class="content">
+		  <canvas id="small_canvas" data-girar="500"></canvas>
+		</div> 
+	      </div>
+	      <div class="container_option_base" id="letter_options">
+		<div class="field_modification_base">
+		  <div class="row">
+		    <div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
+		      <div class="input-group-addon">Up</div>
+		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="up">
+		      <div class="input-group-btn-vertical">
+			<button class="btn btn-default" type="button" data-id="up"><i class="fa fa-caret-up"></i></button>
+			<button class="btn btn-default" type="button" data-id="up"><i class="fa fa-caret-down"></i></button>
+		      </div>
+		    </div>
+		    <div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
+		      <div class="input-group-addon">Down</div>
+		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="down">
+		      <div class="input-group-btn-vertical">
+			<button class="btn btn-default" type="button" data-id="down"><i class="fa fa-caret-up"></i></button>
+			<button class="btn btn-default" type="button" data-id="down"><i class="fa fa-caret-down"></i></button>
+		      </div>
+		    </div>
+		  </div>		
+		  <div class="row">
+		    <div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
+		      <div class="input-group-addon">Left</div>
+		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="left">
+		      <div class="input-group-btn-vertical">
+			<button class="btn btn-default" type="button" data-id="left"><i class="fa fa-caret-up"></i></button>
+			<button class="btn btn-default" type="button" data-id="left"><i class="fa fa-caret-down"></i></button>
+		      </div>
+		    </div>
+		    <div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
+		      <div class="input-group-addon">Right</div>
+		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="right">
+		      <div class="input-group-btn-vertical">
+			<button class="btn btn-default" type="button" data-id="right"><i class="fa fa-caret-up"></i></button>
+			<button class="btn btn-default" type="button" data-id="right"><i class="fa fa-caret-down"></i></button>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="row">
+		    <div class="input-group spinner col-sm-5 col-sm-offset-3 modif-line-value">
+		      <div class="input-group-addon">Baseline</div>
+		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="baselineCC">
+		      <div class="input-group-btn-vertical">
+			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-up"></i></button>
+			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-down"></i></button>
+		      </div>
+		    </div>
+		  </div>		
+		</div>
+		<div class="row controls">
+		  <div class="row @">
+		    <div class="input-group col-md-6 col-sm-6 col-md-offset-2">
+		      <input id="letter" class="form-control" type="text" value="" placeholder="" name="q">
+		      <div class="input-group-btn">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span id="mydropdowndisplay">Letter</span> <span class="caret"></span></button>
+			<ul class="dropdown-menu" id="mydropdownmenu">
+			  <li><a href="#">Letter</a></li>
+			  <li><a href="#">Unicode</a></li>
+			</ul>
+			<input type="hidden" id="mydropwodninput" name="category">
+		      </div>
+		    </div>
+		    <div class="col-md-2 col-sm-6 add-button">
+		      <button type="button" class="btn btn-primary" id="save">Save</button>
+		    </div>
+		  </div>
+		  <div class="row controle">
+		    <div class="col-md-2 col-sm-6 add-button col-md-offset-4">
+		      <button type="button" class="btn btn-default" id="mergeButton" disabled="disabled">Merge</button>
+		    </div>
+		    <div class="col-md-2 col-sm-6 add-button">
+		      <button type="button" class="btn btn-default" id="mergeButton" disabled="disabled">Split</button>
+		    </div>
+		  </div>
+		</div>
+
+	      </div>
+	      <div class="container_option_base" id="baseline_options">
+		<div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
+		  <div class="input-group-addon">Baseline</div>
+		  <input type="text" class="form-control" value="42" pattern="[0-9]*" id="baselineValue">
+		  <div class="input-group-btn-vertical">
+		    <button class="btn btn-default" type="button" data-id="baselineValue"><i class="fa fa-caret-up"></i></button>
+		    <button class="btn btn-default" type="button" data-id="baselineValue"><i class="fa fa-caret-down"></i></button>
+		  </div>
+		</div>
+		<div class="col-md-2 col-sm-6 add-button">
+		  <button type="button" class="btn btn-primary" id="saveBaseline">Save</button>
+		</div>
+	      </div>
+	    </div>
+	    <div class="right_down">
+	      <ul class="row letter-list" id="letter-list">
+	      </ul>
+	    </div>
+	    
+	  </div>
+
+	</div>
+      </div>
+    </div>
+
+    <div class="made_with">
+      Made with <a href="https://github.com/titi38/libnavajo">libnavajo</a>
+    </div>
+
+
+
+    <!-- Modals section  -->
+
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Export font</h4>
+	  </div>
+	  <div class="modal-body">
+	    <input class="form-control" id="fontName" type="text" data-tabindex="1" placeholder="font name">
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" id="exportFont" class="btn btn-primary">Export</button>
+	  </div>
+	</div>
+      </div>
+    </div>	
+
+    <div class="modal fade" id="GrayScaleCharacterDegradationModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Character Degradation Level Adjustement</h4>
+	  </div>
+	  <div class="modal-body input-inside">
+	    <input id="GrayScaleCharacterDegradationValue" type="range" value="5" max="10" min="0" step="1">
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="GrayScaleCharacterDegradationExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    
+    <div class="modal fade" id="ShadowBindingDegradationModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Shadow Binding Degradation</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Border : <br/>
+	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="left" checked> Left <br>
+	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="right"> Right <br>
+	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="top"> Top <br>
+	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="bottom"> Bottom
+	  </div>
+	  <div class="modal-body input-inside">
+	    Width :
+	    <input id="ShadowBindingDegradationWidthValue" type="range" value="50" max="100" min="0" step="1">
+	  </div>
+	  <div class="modal-body input-inside">
+	    Intensity :
+	    <input id="ShadowBindingDegradationIntensityValue" type="range" value="0.5" max="1" min="0" step="0.01">
+	    </div>
+	  <div class="modal-body input-inside">
+	    Angle :
+	    <input id="ShadowBindingDegradationAngleValue" type="range" value="45" max="90" min="0" step="1">
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="ShadowBindingDegradationExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+</div>
+<script type="text/javascript" src="js/Blob.js"></script>
+<script type="text/javascript" src="js/FileSaver.js"></script>
+<script type="text/javascript" src="js/settings.js"></script>
+<script type="text/javascript" src="js/session.js"></script>
+<script type="text/javascript" src="js/init.js" ></script>
+<script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+<script type="text/javascript" src="js/controller.js" ></script>
+<script type="text/javascript" src="js/upload_file.js" ></script>
+</body>
+</html>
