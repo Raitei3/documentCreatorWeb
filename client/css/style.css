@@ -53,6 +53,7 @@ body {
 
 .navbar{
 	margin-bottom: 0px !important;
+    margin: auto;
 }
 .navbar-nav,.navbar-right{
 	display: none;

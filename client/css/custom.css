@@ -1,0 +1,57 @@
+/* your styles go here */
+
+.comment{color:green;}
+
+.line:after{
+  content: " ";
+  display: block;
+  width: 200px;
+  height: 2px;
+  margin: 40px auto 40px;
+  background: #596B73;
+}
+
+
+	
+	.boxgrid a{ color:#C8DCE5; }
+	 .boxgrid h3{ margin: 10px 10px 0 10px; color:#FFF; font:18pt Arial, sans-serif; letter-spacing:-1px; font-weight: bold; 
+	 text-transform: lowercase; }
+	
+	.boxgrid{ 
+		width: 1000px; 
+		height: 532px; 
+		margin:10px; 
+		
+		background:#161613; 
+		border: solid 2px #8399AF; 
+		overflow: hidden; 
+		position: relative; 
+		margin:auto;
+	}
+	
+	.boxgrid img{ 
+			position: absolute; 
+			top: 0; 
+			left: 0; 
+			border: 0; 
+		}
+	
+		.boxgrid p{ 
+			padding: 0 10px; 
+			color:#afafaf; 
+			
+			font:10pt "Lucida Grande", Arial, sans-serif; 
+		}
+		
+	.boxgrid:hover .boxcaption{ 
+
+    	position: absolute; 
+    	top:85%;
+    	left: 0;
+    	animation-duration: 4s;
+		background: #000; 
+		height: 100px; 
+		width: 100%; 
+		opacity: .8; 
+		height :15%;
+		}
