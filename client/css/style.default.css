@@ -38,7 +38,9 @@ section {
   font-family: 'Roboto Condensed', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #5091da; 
+}
+.color-doc {
+    color: 5091da; 
 }
 .heading {
   text-align: center;
@@ -998,6 +1000,70 @@ label {
   background-color: #ffffff;
   border-color: #dddddd;
 }
+
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db; 
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fileUpload {
+	width: 120px;
+	position: relative;
+}
+.fileUpload input.upload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 10px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.upload_image{
+	margin: auto;
+}
+
+.input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+.input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px;
+  margin-left: -1px;
+  position: relative;
+  border-radius: 0;
+}
+.input-group-btn-vertical > .btn:first-child {
+  border-top-right-radius: 4px;
+}
+.input-group-btn-vertical > .btn:last-child {
+  margin-top: -2px;
+  border-bottom-right-radius: 4px;
+}
+.input-group-btn-vertical i{
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
 /* responsive utilities */
 @media (max-width: 767px) {
   .text-center-xs {
