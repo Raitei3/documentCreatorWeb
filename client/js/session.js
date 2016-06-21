@@ -3,8 +3,8 @@
  * \class Session
  */
 function Session() {
-	this.token;
-	var that = this;
+    this.token;
+    var that = this;
 }
 
 /*!
@@ -82,19 +82,19 @@ Session.prototype.imageInfos = function(filename, callback)
  */
 Session.prototype.removeSession = function(isAsync)
 {
-	$.ajax({
-    url: 'stopSession.txt',
-    type: 'POST',
-    data: "token=" + this.token,
-    async: isAsync,
-    success: function(data, textStatus, jqXHR)
-    {
-    },
-    error: function(error)
-    {
- 			console.log('ERRORS: ' + error);
-    }
-	});
+    $.ajax({
+	url: 'stopSession.txt',
+	type: 'POST',
+	data: "token=" + this.token,
+	async: isAsync,
+	success: function(data, textStatus, jqXHR)
+	{
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
 }
 
 
@@ -108,21 +108,21 @@ Session.prototype.removeSession = function(isAsync)
  */
 Session.prototype.getInfoOnCC = function(id, idCC, idLine, callback)
 {
-	$.ajax({
-    url: 'getInfoOnCC.txt',
-    type: 'POST',
-    data: "token=" + this.token + "&idCC=" + idCC +"&idLine="+ idLine,
-    context: callback,
-    success: function(data, textStatus, jqXHR)
-    {
-    	var info = JSON.parse(data);
-    	callback.manipulateInfos(id, info.left, info.right, info.up, info.down, info.letter, info.baseline);
-    },
-    error: function(error)
-    {
- 			console.log('ERRORS: ' + error);
-    }
-	});
+    $.ajax({
+	url: 'getInfoOnCC.txt',
+	type: 'POST',
+	data: "token=" + this.token + "&idCC=" + idCC +"&idLine="+ idLine,
+	context: callback,
+	success: function(data, textStatus, jqXHR)
+	{
+    	    var info = JSON.parse(data);
+    	    callback.manipulateInfos(id, info.left, info.right, info.up, info.down, info.letter, info.baseline);
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
 }
 
 /*!
@@ -140,18 +140,18 @@ Session.prototype.getInfoOnCC = function(id, idCC, idLine, callback)
  */
 Session.prototype.updateInfoOnCC = function(activeId, activeLine, jsonId, left, right, up, down, baseline,letter)
 {
-	$.ajax({
-    url: 'updateInfoOnCC.txt',
-    type: 'POST',
-    data: "token=" + this.token + "&activeid=" + activeId + "&activeline=" + activeLine + "&id=" + jsonId + "&left=" + left + "&right=" + right + "&up=" + up + "&down=" + down + "&baseline=" + baseline + "&letter=" + letter,
-    success: function(data, textStatus, jqXHR)
-    {
-    },
-    error: function(error)
-    {
- 			console.log('ERRORS: ' + error);
-    }
-	});
+    $.ajax({
+	url: 'updateInfoOnCC.txt',
+	type: 'POST',
+	data: "token=" + this.token + "&activeid=" + activeId + "&activeline=" + activeLine + "&id=" + jsonId + "&left=" + left + "&right=" + right + "&up=" + up + "&down=" + down + "&baseline=" + baseline + "&letter=" + letter,
+	success: function(data, textStatus, jqXHR)
+	{
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
 }
 
 /*!
@@ -164,25 +164,25 @@ Session.prototype.extractFont = function(fontname)
     $('.overlay').show();
     $('.loader').show();
     
-	$.ajax({
-    url: 'extractFont.txt',
-    type: 'POST',
-    data: "token=" + this.token +"&fontname=" + fontname,
-    success: function(data, textStatus, jqXHR)
-    {
-        var file = new Blob([data], {type: "text/plain;charset=utf-8"});
-        saveAs(file, fontname + ".of");
-        
-        $('.loader').hide();
-        $('.overlay').hide();
-        $('#saveModal').modal('hide');
-		  
-    },
-    error: function(error)
-    {
- 			console.log('ERRORS: ' + error);
-    }
-	});
+    $.ajax({
+	url: 'extractFont.txt',
+	type: 'POST',
+	data: "token=" + this.token +"&fontname=" + fontname,
+	success: function(data, textStatus, jqXHR)
+	{
+            var file = new Blob([data], {type: "text/plain;charset=utf-8"});
+            saveAs(file, fontname + ".of");
+            
+            $('.loader').hide();
+            $('.overlay').hide();
+            $('#saveModal').modal('hide');
+	    
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
 }
 
 /*!
@@ -194,17 +194,17 @@ Session.prototype.extractFont = function(fontname)
 Session.prototype.updateBaseline = function(idLine, value)
 {
     $.ajax({
-    url: 'updateBaseline.txt',
-    type: 'POST',
-    data: "token=" + this.token +"&idLine=" + idLine + "&value=" + value,
-    success: function(data, textStatus, jqXHR)
-    {
-          
-    },
-    error: function(error)
-    {
+	url: 'updateBaseline.txt',
+	type: 'POST',
+	data: "token=" + this.token +"&idLine=" + idLine + "&value=" + value,
+	success: function(data, textStatus, jqXHR)
+	{
+            
+	},
+	error: function(error)
+	{
             console.log('ERRORS: ' + error);
-    }
+	}
     });
 }
 /*!
@@ -228,7 +228,7 @@ Session.prototype.merge = function(activeId, activeLine, jsonId, callback)
         },
         error: function(error)
         {
-                console.log('ERRORS: ' + error);
+            console.log('ERRORS: ' + error);
         }
     });
 }
@@ -259,16 +259,42 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
 }
 
 
-Session.prototype.shadowBindingDegradation = function(border, width, intensity, angle, callback)
+Session.prototype.shadowBinding = function(border, width, intensity, angle, callback)
 {    
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
 
     $.ajax({
-        url: 'shadowBindingDegradation.txt',
+        url: 'shadowBinding.txt',
         type: 'POST',
         data: 'token=' + this.token + '&border=' + border + '&width=' + width + "&intensity=" + intensity + "&angle=" + angle,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            callback.replaceImage(data);
+
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+
+Session.prototype.phantomCharacter = function(frequency, callback)
+{
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'phantomCharacter.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&frequency=' + frequency,
         context: callback,
         success : function(data, textStatus, jqXHR)
         {

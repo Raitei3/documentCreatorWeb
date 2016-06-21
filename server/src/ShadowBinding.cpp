@@ -1,4 +1,5 @@
 #include <opencv2/imgproc/imgproc.hpp>
+#include "convertor.h"
 #include "../headers/ShadowBinding.hpp"
 #include <cassert>
 
@@ -84,5 +85,16 @@ void shadowBinding(cv::Mat &matOut, ShadowBorder border, int distance, float int
     darkenImagePart(matOut, rec, coeff);
     
   }
+}
 
+
+QImage shadowBinding(const QImage &imgOriginal, ShadowBorder border, int distance, float intensity, float angle)
+{
+  cv::Mat matOut = Convertor::getCvMat(imgOriginal);  
+
+  shadowBinding(matOut, border, distance, intensity, angle);
+
+  const QImage out = Convertor::getQImage(matOut);
+    
+  return out;
 }

@@ -9,47 +9,56 @@ Session::Session(const Session& session):m_originalFileName(""),m_displayedFileN
 }
 Session::~Session()
 {
-	delete m_image;
-	m_image = nullptr;
-	delete m_font;
-	m_font = nullptr;
+  delete m_image;
+  m_image = nullptr;
+  delete m_font;
+  m_font = nullptr;
 }
 
 void Session::setOriginalFileName(const std::string &f){
-	m_originalFileName = f;
-	if(m_displayedFileName == "")
-		m_displayedFileName = f;
+  m_originalFileName = f;
+  if(m_displayedFileName == "")
+    m_displayedFileName = f;
 }
 
 std::string Session::getOriginalFileName() const{
-	return m_originalFileName;
+  return m_originalFileName;
 }
 
 void Session::setDisplayedFileName(const std::string &f){
-	m_displayedFileName = f;
+  m_displayedFileName = f;
 }
 
 std::string Session::getDisplayedFileName() const{
-	return m_displayedFileName;
+  return m_displayedFileName;
 }
 
 Image* Session::getImage(){
-	return m_image;
+  return m_image;
 }
 Font* Session::getFont(){
-	return m_font;
+  return m_font;
 }
 
 void Session::setToken(int t){
-	m_token = t;
+  m_token = t;
 }
 
 int Session::getToken() const{
-	return m_token;
+  return m_token;
 }
+
 void Session::saveDisplayedImage(const std::string &upload_dir){
-	if(m_displayedFileName == m_originalFileName)
-		m_displayedFileName = std::to_string(m_token) + "Displayed.png";
-	cv::imwrite(upload_dir + m_displayedFileName, m_image->getMat());
+  static int cpt = -1;
+  cpt++;
+  
+  m_displayedFileName = std::to_string(m_token) + "_" + std::to_string(cpt) + "_Displayed.png";
+  
+  /*
+  if(m_displayedFileName == m_originalFileName){
+    m_displayedFileName = std::to_string(m_token) + "Displayed.png";
+  }
+  */
+  cv::imwrite(upload_dir + m_displayedFileName, m_image->getMat());
 }
 

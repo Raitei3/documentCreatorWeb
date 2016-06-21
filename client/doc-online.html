@@ -44,15 +44,34 @@
                 <li class="dropdown">
                     <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">2D Degradations</a>
                     <ul class="dropdown-menu" aria-labelledby="dLabel">
-		        <li>
-		            <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">GrayScale Character Degradation</a>
-		        </li>
-		        <li>
-		            <a href="#" data-toggle="modal" data-target="#ShadowBindingDegradationModal">Shadow Binding Degradation</a>
-		        </li>
+			<li>
+			  <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">
+			    GrayScale Character Degradation
+			  </a>
+			</li>
+			<li>
+			  <a href="#" data-toggle="modal" data-target="#ShadowBindingModal">
+			    Shadow Binding
+			  </a>
+			</li>
+			<li>
+			  <a href="#" data-toggle="modal" data-target="#PhantomCharacterModal">
+			    Phantom Character
+			  </a>
+			</li>
+			<li>
+			  <a href="#" data-toggle="modal" data-target="#BleedThroughModal">
+			    Bleed Through
+			  </a>
+			</li>
                     </ul>
                 <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li>
-              </ul>
+		<li class="dropdown">
+		   <a id="download_img">
+			Download Image
+		   </a>
+		</li>              
+	       </ul>
             </div>
           </div>
         </div>
@@ -335,7 +354,7 @@
       </div>
     </div>	
 
-    <!-- MOD// SHADOW BINDING  -->
+
     <div class="modal fade" id="ShadowBindingDegradationModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
 	<div class="modal-content">
@@ -371,7 +390,115 @@
 	</div>
       </div>
     </div>
+
+    <!-- MOD// GRAYSCALE CHARACTER DEGRADATION  -->
+    <div class="modal fade" id="GrayScaleCharacterDegradationModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Character Degradation Level Adjustement</h4>
+	  </div>
+	  <div class="modal-body input-inside">
+	    <input id="GrayScaleCharacterDegradationValue" type="range" value="5" max="10" min="0" step="1">
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="GrayScaleCharacterDegradationExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- MOD// SHADOW BINDING  -->
+    <div class="modal fade" id="ShadowBindingModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Shadow Binding</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Border : <br/>
+	    <input type="radio" name="ShadowBindingBorder" value="left" checked> Left <br>
+	    <input type="radio" name="ShadowBindingBorder" value="right"> Right <br>
+	    <input type="radio" name="ShadowBindingBorder" value="top"> Top <br>
+	    <input type="radio" name="ShadowBindingBorder" value="bottom"> Bottom
+	  </div>
+	  <div class="modal-body input-inside">
+	    Width :
+	    <input id="ShadowBindingWidth" type="range" value="50" max="100" min="0" step="1">
+	  </div>
+	  <div class="modal-body input-inside">
+	    Intensity :
+	    <input id="ShadowBindingIntensity" type="range" value="0.5" max="1" min="0" step="0.01">
+	    </div>
+	  <div class="modal-body input-inside">
+	    Angle :
+	    <input id="ShadowBindingAngle" type="range" value="45" max="90" min="0" step="1">
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="ShadowBindingExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- MOD// PHANTOM CHARACTER  -->
+    <div class="modal fade" id="PhantomCharacterModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Phantom Character</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Frequency : <br/>
+	    <input type="radio" name="PhantomCharacterFrequency" value="0" checked> low amount<br>
+	    <input type="radio" name="PhantomCharacterFrequency" value="1"> medium amount<br>
+	    <input type="radio" name="PhantomCharacterFrequency" value="2"> high amount <br>
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="PhantomCharacterExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
     
+    <!-- MOD// BLEEDTHROUGH  -->
+    <div class="modal fade" id="BleedThroughModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 class="modal-title">Bleed Through</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Number of iteration : <br/>
+	    <input id="BleedThroughNbIteration" type="range" value="50" max="100" min="1" step="1">
+	  </div>
+	  
+	  <div class="modal-body">
+	      <span>Choose Image Verso</span>
+	      <input type="file" id="BleedThroughVerso" accept="image/*"/>
+	      <canvas id="CanvasBleedThroughVerso" width="100" height="100" data-girar="0"></canvas>
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="PhantomCharacterExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
     <!-- FOOTER  -->
     <footer>
         <div class="row copyright">

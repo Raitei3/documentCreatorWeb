@@ -119,30 +119,60 @@ function Controller(canvas, previewCanvas, listCharacter) {
     }, true);
 
 
+    // Click to download image
+    document.getElementById('download_img').addEventListener('click', function(){
+	var img = controller.canvas.image.img.src;
+	var img_split = img.split('/');
+	var extension = img.split('.');
+	img = img_split[img_split.length - 1];
+	extension = extension[extension.length - 1];
+	document.getElementById('download_img').setAttribute('href','data/' + img);
+	document.getElementById('download_img').setAttribute('download', "doc-online." + extension);
+    }, true);
+
     /* ====================
        === DEGRADATIONS ===
        ==================== */
     
-    document.getElementById('ShadowBindingDegradationExec').addEventListener('click', function(){
-	var all_border = document.getElementsByName("ShadowBindingDegradationBorderValue");
+    document.getElementById('ShadowBindingExec').addEventListener('click', function(){
+	var all_border = document.getElementsByName("ShadowBindingBorder");
 	var border;
 	for (var i = 0; i < all_border.length; i++) {
 	    if (all_border[i].checked) {
 		border = all_border[i].value;
+		break;
 	    }
 	}
 	
-        session.shadowBindingDegradation(
+        session.shadowBinding(
 	    border,
-	    document.getElementById('ShadowBindingDegradationWidthValue').value,
-	    document.getElementById('ShadowBindingDegradationIntensityValue').value,
-	    document.getElementById('ShadowBindingDegradationAngleValue').value,
+	    document.getElementById('ShadowBindingWidth').value,
+	    document.getElementById('ShadowBindingIntensity').value,
+	    document.getElementById('ShadowBindingAngle').value,
 	    controller);
     }, true);
 
     
+    document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
+	var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
+	var frequency;
+	for (var i = 0; i < all_frequency.length; i++) {
+	    if (all_frequency[i].checked) {
+		frequency = all_frequency[i].value;
+		break;
+	    }
+	}
+	
+        session.phantomCharacter(
+	    frequency,
+	    controller);
+    }, true);
+    
+    
     document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
-        session.grayScaleCharsDegradation(document.getElementById('GrayScaleCharacterDegradationValue').value, controller);
+        session.grayScaleCharsDegradation(
+	    document.getElementById('GrayScaleCharacterDegradationValue').value,
+	    controller);
     }, true);
 
 

@@ -1,6 +1,7 @@
 #ifndef SHADOWBINDING_HPP
 #define SHADOWBINDING_HPP
 
+#include <QImage>
 #include <opencv2/core/core.hpp>
 
 
@@ -13,6 +14,9 @@
 
 enum class ShadowBorder {TOP=0, RIGHT, BOTTOM, LEFT};
 
-void shadowBinding(cv::Mat &matOut, ShadowBorder border, int distance, float intensity, float angle);
+extern QImage shadowBinding(const QImage &imgOriginal, ShadowBorder border, int distance, float intensity, float angle);
+
+extern void shadowBinding(cv::Mat &matOut, ShadowBorder border, int distance, float intensity, float angle);
+
 
 #endif //SHADOWBINDING_HPP

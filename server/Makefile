@@ -21,23 +21,34 @@ endif
 LIB_DIR      = lib
 CXX 	=  g++ -std=c++11 -Wall -Wextra -g
 
+
+#Paths found on Ubuntu
+#TODO: Check that it is the same paths on Debian (OS of the IUT server).
+#      BUT IT WILL NOT BUILD ON MACOSX !!!
+#TODO: Use a proper build system...
+QT_CXXFLAGS=-isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtXmlPatterns
+
+QT_LIBS=/usr/lib/x86_64-linux-gnu/libQt5Xml.so /usr/lib/x86_64-linux-gnu/libQt5XmlPatterns.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so
+
+
 ifeq ($(OS),MACOSX)
 LIBSSL_DIR = /usr/local/Cellar/openssl/1.0.1j
-LIBS       = -lnavajo -L../../$(LIB_DIR) -lz  -L$(LIBSSL_DIR)/lib -lssl -lcrypto  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy
+LIBS       = -lnavajo -L../../$(LIB_DIR) -lz  -L$(LIBSSL_DIR)/lib -lssl -lcrypto  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy $(QT_LIBS)
 DEFS            =   -D__darwin__ -D__x86__ -fPIC -fno-common -D_REENTRANT
-CXXFLAGS        =  -O3  -Wdeprecated-declarations
+CXXFLAGS        =  -O3  -Wdeprecated-declarations $(QT_CXXFLAGS)
 else
 ifeq ($(LBITS),64)
   LIB_DIR=lib64
 endif
-LIBS       = -lnavajo -L../../$(LIB_DIR) -lz -lssl -lcrypto -pthread  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy
+LIBS       = -lnavajo -L../../$(LIB_DIR) -lz -lssl -lcrypto -pthread  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy $(QT_LIBS)
 DEFS            =  -DLINUX -Wall -Wno-unused -fexceptions -fPIC -D_REENTRANT
-CXXFLAGS        =  -O4  -Wdeprecated-declarations
+CXXFLAGS        =  -O4  -Wdeprecated-declarations $(QT_CXXFLAGS)
 endif
 
 
 CPPFLAGS	= -I. \
             -I$(LIBSSL_DIR)/include \
+		  	-Iheaders \
 		  	-I../../include \
 			-I/usr/include/opencv -I/usr/include/opencv2
 LD		=  g++ 
@@ -56,6 +67,9 @@ MAIN_OBJS = \
 		  Binarization.o \
 		  GrayscaleCharsDegradationModel.o \
 		  ShadowBinding.o \
+		  PhantomCharacter.o \
+		  convertor.o \
+		  BlurFilter.o \
 		  connectedcomponentextraction.o \
 		  main.o \
 
@@ -77,9 +91,13 @@ GRAYSCALECHARSDEGRADATIONMODEL= GrayscaleCharsDegradationModel
 
 CONNECTEDCOMPONENTEXTRACTION= connectedcomponentextraction
 
-SHADOWBINDIN= ShadowBinding
+SHADOWBINDING= ShadowBinding
 
+PHANTOMCHARACTER= PhantomCharacter
 
+CONVERTOR= convertor
+
+BLURFILTER= BlurFilter
 
 #######################
 # DEPENDENCE'S RULES  #
@@ -127,11 +145,23 @@ $(GRAYSCALECHARSDEGRADATIONMODEL): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 
+$(SHADOWBINDING): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+	rm -f $@
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
+$(PHANTOMCHARACTER): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+	rm -f $@
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
 $(CONNECTEDCOMPONENTEXTRACTION): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 
-$(SHADOWBINDING): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+$(CONVERTOR): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+	rm -f $@
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
+$(BLURFILTER): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 
