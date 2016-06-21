@@ -104,7 +104,13 @@ function Controller(canvas, previewCanvas, listCharacter) {
     document.getElementById('button_trash').addEventListener('click', function(e){
         session.removeSession(true);
         location.reload();
-    }, true);    
+    }, true); 
+    
+    // Click on the menu
+    document.getElementById('button_menu').addEventListener('click', function(e){
+        session.removeSession(true);
+        location.reload();
+    }, true);   
 
     // Click on the export button
     document.getElementById('exportFont').addEventListener('click', function(e){

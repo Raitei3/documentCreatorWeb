@@ -59,6 +59,8 @@ Session.prototype.imageInfos = function(filename, callback)
     data: "token=" + this.token,
     success: function(data, textStatus, jqXHR)
     {
+      $('#titlesession').hide();
+      $('#tutosession').hide();
       $('#canvas').show();
       $('.zoom-icon').show();
       $('.navbar-nav').show();
