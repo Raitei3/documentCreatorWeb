@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/custom.css">
     <link href="css/normalize.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
+    <!-- scripts -->
     <script type="text/javascript" src="js/jquery.min.js" ></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -29,6 +29,7 @@
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
 	<div class="overlay"><div class="loader"></div></div>
       
+      <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
       <header class="header">
       <div class="sticky-wrapper">
         <div role="navigation" class="navbar navbar-default navbar-fixed-top">
@@ -38,37 +39,33 @@
             </div>
             <div id="navigation" class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-default">
-                <li><a data-toggle="modal" href="#" data-target="#devModal">Home</a></li>
-                <li><a data-toggle="modal" href="#" data-target="#devModal">Create your document</a></li>
+                <li><a data-toggle="modal" href="#" data-target="#devModal">Home</a></li><!--HOME is not yet developped-->
+                <li><a data-toggle="modal" href="#" data-target="#devModal">Create your document</a></li><!--not yet developped-->
                 <li><a href="#" data-toggle="modal" data-target=".bs-example-modal-sm" title="Start with a new Image"><span id="button_menu" aria-hidden="true">Font Creator</span></a></li>
                 <li class="dropdown">
                     <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">2D Degradations</a>
                     <ul class="dropdown-menu" aria-labelledby="dLabel">
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">
-			    GrayScale Character Degradation
-			  </a>
+			    GrayScale Character Degradation</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#ShadowBindingModal">
-			    Shadow Binding
-			  </a>
+			    Shadow Binding</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#PhantomCharacterModal">
-			    Phantom Character
-			  </a>
+			    Phantom Character</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#BleedThroughModal">
-			    Bleed Through
-			  </a>
+			    Bleed Through</a>
 			</li>
                     </ul>
-                <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li>
+            <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li><!--not yet developped-->
 		<li class="dropdown">
 		   <a id="download_img">Download Image</a>
-		</li>              
+		</li> 
 	       </ul>
             </div>
           </div>
@@ -76,6 +73,7 @@
       </div>
     </header>
       
+      <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
       <section class="no-padding-bottom">
   <div class="container">
     <div class="row" id="titlesession">
@@ -93,9 +91,9 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row"><!-- big_canvas -->
         <div class="col-md-12" class="text-center">
-            <canvas id="canvas" width="1300" height="450" data-girar="0"></canvas>
+            <canvas id="canvas" width="1400" height="450" data-girar="0"></canvas>
         </div>
     </div>
   </div>
@@ -105,20 +103,10 @@
   </div>
 </section>   
           
+      <!--USER MENU--> <!--USER MENU--> <!--USER MENU--> <!--USER MENU-->
 	<div class="right">
 	  <div class="container_right">
-	    <div class="right_up">
-	      <!-- <div class="button_nav_cc row">
-		   <div class="col-md-3">
-		     <button class="buttonPrevious btn btn-default">Previous</button>
-		   </div>
-		   <div class="col-md-3 col-md-offset-6">
-		     <button class="buttonNext btn btn-default">Next</button>
-		   </div>		
-	      </div> -->
-
-       
-    <!--USER MENU-->        
+	    <div class="right_up">        
     <div class="row">
         
         <div class="col-md-2">
@@ -193,12 +181,12 @@
 			 </ul>
 			 <input type="hidden" id="mydropwodninput" name="category">
 		      </div>
-                  <a href="#"><span class="glyphicon glyphicon-ok" id="save"></span></a> 
+                  <a><span class="glyphicon glyphicon-ok" id="save"></span></a> 
                   </div>     
                 </div>
                 <div class="row">
-                <a href="#"><span class="glyphicon glyphicon-resize-small" id="mergeButton" disabled="disabled"></span></a>  Merge<br>
-	            <a href="#"><span class="glyphicon glyphicon-resize-full" id="splitButton" disabled="disabled"></span></a>  Split 
+                <a><span class="glyphicon glyphicon-resize-small" id="mergeButton" disabled="disabled"></span></a>  Merge<br>
+	            <a><span class="glyphicon glyphicon-resize-full" id="splitButton" disabled="disabled"></span></a>  Split 
                 <!--split option is not yet developped-->
                       </div>
 		      </div>
@@ -213,6 +201,7 @@
                 <ul class="row letter-list" id="letter-list"></ul>
             </div>
         </div>
+        
         
         <div class="col-md-2"><!--OPTIONS-->
             <div class="row">
@@ -229,12 +218,11 @@
                 <input type="checkbox" id="baseline">  Show Baseline
             </div>
         </div>
+        
+        
     </div>
 </div> 
           
-          
-            
-	      
 	      <div class="container_option_base" id="baseline_options">
 		<div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
 		  <div class="input-group-addon">Baseline</div>
@@ -250,15 +238,10 @@
 	      </div>
 	    </div> 
 	    
-	  </div> 
-
-	</div>
-      </div>
-    </div>
+	  </div>
 
 
-
-    <!-- Modals section  -->
+    <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->
     
     <!-- MOD// EXPORT FONT  -->
     <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -288,7 +271,7 @@
 	    <h4 class="modal-title">Help</h4>
 	  </div>
 	  <div class="modal-body">
-	   <p class="text-justify"><b>Step by step guide:</b><br><br><b>I - </b>Upload an image (supported formats are JPEG, JPG, PNG, TIFF and TIF).<br><br><b>II - </b>Select a letter with your mouse. It will appear in the <i>Letter Preview </i> field.<br><br><b>III - </b>If you are not happy with the native selection, you can correct the baseline and the different border lines in the <i>Lines Modifications </i> field.<br><br><b>IV - </b>It is possible to merge several selected elements in the <i>Letter Asignment</i> field. For example, if the upper and the lower part of an "i" are detected separately, you can merge them holding ctrl on windows/linux and cmd on mac while selecting both parts.<br><br><b>V - </b>Once you are happy with your character, you can assign it (both letter and unicode are accepted) and save it in the <i>Letter Asignment </i> field.<br><br><b>VI - </b>The <i>Zoom </i> section allows you to zoom in/out and reset zoom and original position.<br><br><b>VII - </b>Several actions are available in the <i>Options </i> field. You can show or unshow the baseline, start again with a new image and download your font. It is also possible to use it directly in Document Creator Online.<br><br><b>VIII - </b>The <i>Alphabet </i> section shows all the letters already extracted. 
+	   <p class="text-justify"><b>Step by step guide:</b><br><br><b>I - </b>Upload an image (supported formats are <b>JPEG</b>, <b>JPG</b>, <b>PNG</b>, <b>TIFF</b> and <b>TIF</b>).<br><br><b>II - </b>Select a letter with your mouse. It will appear in the <b style=color:#5091da;>Letter Preview </b> field. If you are not happy with the native selection, you can correct the baseline and the different border lines.<br><br><b>III - </b>It is possible to merge several selected elements in the <b style=color:#5091da;>Letter Asignment</b> field. For example, if the upper and the lower part of an "i" are detected separately, you can merge them holding <b>ctrl</b> on windows/linux and <b>cmd</b> on mac while selecting both parts.<br><br><b>IV - </b>Once you are happy with your character, you can assign it (both letter and unicode are accepted) and save it in the <b style=color:#5091da;>Letter Asignment </b> field.<br><br><b>V - </b>The <b style=color:#5091da;>Options </b> section allows you to zoom in/out and reset zoom on original position. You also can show or unshow the baseline, start again with a new image and download your font.<br><br><b>VI - </b>The <b style=color:#5091da;>Alphabet </b> section shows all the letters already extracted.<br><br><b>VII - </b>You can add degradations to your image directly from the menu (2D/3D). It is possible to download the modified image at anytime !
  </p>
 	  </div>
 	</div>
@@ -344,7 +327,6 @@
 	</div>
       </div>
     </div>	
-
 
     <div class="modal fade" id="ShadowBindingDegradationModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -497,14 +479,15 @@
         </div>
     </footer>  
       
-</div>
-<script type="text/javascript" src="js/Blob.js"></script>
-<script type="text/javascript" src="js/FileSaver.js"></script>
-<script type="text/javascript" src="js/settings.js"></script>
-<script type="text/javascript" src="js/session.js"></script>
-<script type="text/javascript" src="js/init.js" ></script>
-<script type="text/javascript" src="js/manipulate_canvas.js" ></script>
-<script type="text/javascript" src="js/controller.js" ></script>
-<script type="text/javascript" src="js/upload_file.js" ></script>
+      </div>
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
+
 </body>
 </html>
