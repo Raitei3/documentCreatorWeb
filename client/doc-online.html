@@ -67,9 +67,7 @@
                     </ul>
                 <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li>
 		<li class="dropdown">
-		   <a id="download_img">
-			Download Image
-		   </a>
+		   <a id="download_img">Download Image</a>
 		</li>              
 	       </ul>
             </div>
@@ -125,10 +123,9 @@
         
         <div class="col-md-2">
             <div class="row"></div><div class="row"></div><div class="row"></div>
-            <input type="text" class="form-control" value="42" pattern="[0-9]*" id="left">
-            <div class="input-group spinner modif-line-value"><p class="text-center">
+            <div id="left" class="input-group spinner modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
-                    </button>Left Line
+                    </button><span style="color:#e74c3c;">Left Line</span>
 			        <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
                 </div>
         </div>
@@ -141,33 +138,28 @@
             <div class="field_modification_base">
             
             <div class="row">
-                <div class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
+                <div id="up" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br>Upper Line<br>
+                    </button><br><span style="color:#e74c3c;">Upper Line</span><br>
 			        <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
                 </div>
-                <input type="text" class="form-control" value="42" pattern="[0-9]*" id="up">
                 
                 <div class="box" class="small-canvas">
-		          <div class="content"><canvas id="small_canvas"  width="150" height="120" data-girar="500"></canvas></div>
+		          <div class="content"><canvas id="small_canvas"  width="150" height="100" data-girar="500"></canvas></div>
                 </div>
                 
-                <input type="text" class="form-control" value="42" pattern="[0-9]*" id="down">
-                <div class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
+                <div id="down" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br>Lower Line<br>
+                    </button><br><span style="color:#e74c3c;">Lower Line</span><br>
 			        <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
 		        </div>
                 
                 <div class="row">
-		    <div class="input-group spinner col-sm-6 col-sm-offset-1 modif-line-value">
-		      <div class="input-group-addon" style="color:#2ecc71;">Baseline</div>
-		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="baselineCC">
-		      <div class="input-group-btn-vertical">
-			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-up"></i></button>
-			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-down"></i></button>
-		      </div>
-		    </div>
+                    <div id="baselineCC" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
+                    </button><br><span style="color:#2ecc71;">Baseline</span><br>
+			        <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
+		        </div>
 		  </div>
                 </div>
                 </div>
@@ -177,10 +169,9 @@
         
         <div class="col-md-2">
             <div class="row"></div><div class="row"></div><div class="row"></div>
-            <input type="text" class="form-control" value="42" pattern="[0-9]*" id="right">
-            <div class="input-group spinner modif-line-value"><p class="text-center">
+            <div id="right" class="input-group spinner modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
-                    </button>Right Line
+                    </button><span style="color:#e74c3c;">Right Line</span>
 			        <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
                 </div>
         </div>
@@ -228,9 +219,9 @@
                 <p><b>OPTIONS</b></p>
             </div>
             <div class="row">
-                <a href="#"><span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span></a>  Zoom in<br>
-                <a href="#"><span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span></a>  Zoom out<br>
-	            <a href="#"><span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span></a>  Reset zoom<br>
+                <a><span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span></a>  Zoom in<br>
+                <a><span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span></a>  Zoom out<br>
+	            <a><span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span></a>  Reset zoom<br>
                 <a data-toggle="modal" href="#" data-target="#saveModal" title="Export the font"><span id="button_export" class="glyphicon glyphicon-download" aria-hidden="true"></span></a>  Export the font<br>
                 <a href="#popup" data-toggle="modal" data-target=".bs-example-modal-sm" title="Start with a new Image"><span class="glyphicon glyphicon-remove" id="button_trash" aria-hidden="true"></span></a>  Start from scratch<br>
                 <a data-toggle="modal" href="#" data-target="#helpModal" title="Export the font"><span class="glyphicon glyphicon-question-sign"></span></a>  Help<br>
