@@ -577,6 +577,10 @@ STYLE SWITCHER FOR DEMO
     margin-left: 0;
   }
 }
+
+.top-buffer { margin-top:40px; }
+.left-buffer { margin-left:60px; }
+
 .navbar-brand {
   float: left;
   padding: 0 15px;
