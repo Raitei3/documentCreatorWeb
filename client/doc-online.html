@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/custom.css">
     <link href="css/normalize.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
+    <!-- scripts -->
     <script type="text/javascript" src="js/jquery.min.js" ></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -29,6 +29,7 @@
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
 	<div class="overlay"><div class="loader"></div></div>
       
+      <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
       <header class="header">
       <div class="sticky-wrapper">
         <div role="navigation" class="navbar navbar-default navbar-fixed-top">
@@ -38,39 +39,33 @@
             </div>
             <div id="navigation" class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-default">
-                <li><a data-toggle="modal" href="#" data-target="#devModal">Home</a></li>
-                <li><a data-toggle="modal" href="#" data-target="#devModal">Create your document</a></li>
+                <li><a data-toggle="modal" href="#" data-target="#devModal">Home</a></li><!--HOME is not yet developped-->
+                <li><a data-toggle="modal" href="#" data-target="#devModal">Create your document</a></li><!--not yet developped-->
                 <li><a href="#" data-toggle="modal" data-target=".bs-example-modal-sm" title="Start with a new Image"><span id="button_menu" aria-hidden="true">Font Creator</span></a></li>
                 <li class="dropdown">
                     <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">2D Degradations</a>
                     <ul class="dropdown-menu" aria-labelledby="dLabel">
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">
-			    GrayScale Character Degradation
-			  </a>
+			    GrayScale Character Degradation</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#ShadowBindingModal">
-			    Shadow Binding
-			  </a>
+			    Shadow Binding</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#PhantomCharacterModal">
-			    Phantom Character
-			  </a>
+			    Phantom Character</a>
 			</li>
 			<li>
 			  <a href="#" data-toggle="modal" data-target="#BleedThroughModal">
-			    Bleed Through
-			  </a>
+			    Bleed Through</a>
 			</li>
                     </ul>
-                <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li>
+            <li><a data-toggle="modal" href="#" data-target="#devModal">3D Degradations</a></li><!--not yet developped-->
 		<li class="dropdown">
-		   <a id="download_img">
-			Download Image
-		   </a>
-		</li>              
+		   <a id="download_img">Download Image</a>
+		</li> 
 	       </ul>
             </div>
           </div>
@@ -78,6 +73,7 @@
       </div>
     </header>
       
+      <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
       <section class="no-padding-bottom">
   <div class="container">
     <div class="row" id="titlesession">
@@ -95,9 +91,9 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row"><!-- big_canvas -->
         <div class="col-md-12" class="text-center">
-            <canvas id="canvas" width="1300" height="450" data-girar="0"></canvas>
+            <canvas id="canvas" width="1400" height="450" data-girar="0"></canvas>
         </div>
     </div>
   </div>
@@ -107,130 +103,119 @@
   </div>
 </section>   
           
+      <!--USER MENU--> <!--USER MENU--> <!--USER MENU--> <!--USER MENU-->
 	<div class="right">
 	  <div class="container_right">
-	    <div class="right_up">
-	      <!-- <div class="button_nav_cc row">
-		   <div class="col-md-3">
-		     <button class="buttonPrevious btn btn-default">Previous</button>
-		   </div>
-		   <div class="col-md-3 col-md-offset-6">
-		     <button class="buttonNext btn btn-default">Next</button>
-		   </div>		
-	      </div> -->
-
-       
-    <!--USER MENU-->        
-    <div class="row">
+	   <div class="right_up"> 
         
-        <div class="col-md-2">
-            <div class="row"></div><div class="row"></div><div class="row"></div>
-            <input type="text" class="form-control" value="42" pattern="[0-9]*" id="left">
-            <div class="input-group spinner modif-line-value"><p class="text-center">
-                    <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
-                    </button>Left Line
-			        <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                </div>
-        </div>
-        
-        <div class="col-md-2"><!--PREVIEW-->
-            <div class="row">
-                <p class="text-center"><b>LETTER PREVIEW</b></p>
-            </div>
-            <div class="container_option_base" id="letter_options">
-            <div class="field_modification_base">
+         <div class="container"> 
+         <div class="row">
+             
+        <div class="row">    
             
+        <div class="col-md-6"><!--PREVIEW-->
+            <div class="row">  
+            <p class="text-center"><b>LETTER PREVIEW</b></p>
+            </div>
             <div class="row">
-                <div class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
+             <div id="up" class="input-group spinner col-sm-12 modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br>Upper Line<br>
+                    </button><br><span style="color:#e74c3c; font-size:10px;">Upper Line</span><br>
 			        <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
                 </div>
-                <input type="text" class="form-control" value="42" pattern="[0-9]*" id="up">
-                
-                <div class="box" class="small-canvas">
-		          <div class="content"><canvas id="small_canvas"  width="150" height="120" data-girar="500"></canvas></div>
-                </div>
-                
-                <input type="text" class="form-control" value="42" pattern="[0-9]*" id="down">
-                <div class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
-                    <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br>Lower Line<br>
-			        <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
-		        </div>
-                
-                <div class="row">
-		    <div class="input-group spinner col-sm-6 col-sm-offset-1 modif-line-value">
-		      <div class="input-group-addon" style="color:#2ecc71;">Baseline</div>
-		      <input type="text" class="form-control" value="42" pattern="[0-9]*" id="baselineCC">
-		      <div class="input-group-btn-vertical">
-			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-up"></i></button>
-			<button class="btn btn-default" type="button" data-id="baselineCC"><i class="fa fa-caret-down"></i></button>
-		      </div>
-		    </div>
-		  </div>
-                </div>
-                </div>
-		  </div>
-            
         </div>
-        
-        <div class="col-md-2">
-            <div class="row"></div><div class="row"></div><div class="row"></div>
-            <input type="text" class="form-control" value="42" pattern="[0-9]*" id="right">
-            <div class="input-group spinner modif-line-value"><p class="text-center">
+            
+                <div class="row">
+                    <div class="col-sm-4 top-buffer" >
+                    <div id="left" class="input-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
+                    </button><span style="color:#e74c3c; font-size:10px;">Left Line</span>
+			        <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                </div>
+                </div>
+               
+                <div class="col-sm-4">
+                <div class="box" class="small-canvas">
+		          <div class="content"><canvas id="small_canvas"  width="150" height="100" data-girar="500"></canvas></div>
+                </div>
+                </div>
+                
+                <div class="col-sm-4 top-buffer">
+                <div id="right" class="input-group spinner modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
-                    </button>Right Line
+                    </button><span style="color:#e74c3c; font-size:10px;">Right Line</span>
 			        <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
                 </div>
-        </div>
-        
-        
-        <div class="col-md-2"><!--ASIGNMENT-->
-            <div class="row"><p><b>LETTER ASIGNMENT</b></p>
+                </div>
+                    
+                </div>
+            
+                
+                <div class="row">
+                <div class="col-sm-2 col-sm-offset-4">
+                <div id="down" class="input-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
+                    </button><br><span style="color:#e74c3c; font-size:10px;">Lower Line</span><br>
+			        <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
+		        </div>
+                </div>
+                <div class="col-sm-2">
+                <div id="baselineCC" class="col-md-ofinput-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
+                    </button><br><span style="color:#2ecc71; font-size:10px;">Baseline</span><br>
+			        <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
+		        </div>
+                </div>
+                </div>
+            
             </div>
+            
+        <div class="col-md-2"><!--ASIGNMENT-->
             <div class="row">
-                  <div class="row controls">
+                <p><b>LETTER ASIGNMENT</b></p>
+            </div>
+
+
 		      <div class="row">
-		      <div class="input-group col-md-2 col-sm-6">
+		      <div class="input-group col-sm-8">
+                  <div class="row">
 		          <input id="letter" class="form-control" type="text" value="" placeholder="" name="q">
-                  <div class="input-group-btn">
+                  </div>
+                  <div class="row">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span id="mydropdowndisplay">Letter</span> <span class="caret"></span></button>
 			 <ul class="dropdown-menu" id="mydropdownmenu">
 			  <li><a href="#">LETTER</a></li>
 			  <li><a href="#">UNICODE</a></li>
 			 </ul>
+             Save <a><span class="glyphicon glyphicon-ok" id="save"></span></a>
 			 <input type="hidden" id="mydropwodninput" name="category">
-		      </div>
-                  <a href="#"><span class="glyphicon glyphicon-ok" id="save"></span></a> 
-                  </div>     
-                </div>
-                <div class="row">
-                <a href="#"><span class="glyphicon glyphicon-resize-small" id="mergeButton" disabled="disabled"></span></a>  Merge<br>
-	            <a href="#"><span class="glyphicon glyphicon-resize-full" id="splitButton" disabled="disabled"></span></a>  Split 
+                  </div>
+                  <a><span class="glyphicon glyphicon-resize-small" id="mergeButton" disabled="disabled"></span></a>  Merge<br>
+	            <a><span class="glyphicon glyphicon-resize-full" id="splitButton" disabled="disabled"></span></a>  Split 
                 <!--split option is not yet developped-->
-                      </div>
-		      </div>
-            </div>
+                </div>
+                </div>
         </div>
-        
-        <div class="col-md-2"><!--ALPHABET-->
+            
+             <div class="col-md-2"><!--ALPHABET-->
             <div class="row">
                 <p><b>ALPHABET</b></p>
             </div>
             <div class="row">
-                <ul class="row letter-list" id="letter-list"></ul>
+                <div class="col-sm-8">
+                <ul class="row letter-list" id="letter-list" style="padding: 0; list-style-type: none;"></ul>
+                </div>
             </div>
         </div>
-        
-        <div class="col-md-2"><!--OPTIONS-->
+            
+            <div class="col-md-2"><!--OPTIONS-->
             <div class="row">
                 <p><b>OPTIONS</b></p>
             </div>
             <div class="row">
-                <a href="#"><span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span></a>  Zoom in<br>
-                <a href="#"><span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span></a>  Zoom out<br>
-	            <a href="#"><span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span></a>  Reset zoom<br>
+                <a><span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span></a>  Zoom in<br>
+                <a><span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span></a>  Zoom out<br>
+	            <a><span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span></a>  Reset zoom<br>
                 <a data-toggle="modal" href="#" data-target="#saveModal" title="Export the font"><span id="button_export" class="glyphicon glyphicon-download" aria-hidden="true"></span></a>  Export the font<br>
                 <a href="#popup" data-toggle="modal" data-target=".bs-example-modal-sm" title="Start with a new Image"><span class="glyphicon glyphicon-remove" id="button_trash" aria-hidden="true"></span></a>  Start from scratch<br>
                 <a data-toggle="modal" href="#" data-target="#helpModal" title="Export the font"><span class="glyphicon glyphicon-question-sign"></span></a>  Help<br>
@@ -238,12 +223,13 @@
                 <input type="checkbox" id="baseline">  Show Baseline
             </div>
         </div>
-    </div>
-</div> 
-          
-          
             
-	      
+    </div>
+        
+          </div>
+          </div>    
+          </div> 
+          
 	      <div class="container_option_base" id="baseline_options">
 		<div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
 		  <div class="input-group-addon">Baseline</div>
@@ -256,18 +242,13 @@
 		<div class="col-md-2 col-sm-6 add-button">
 		  <button type="button" class="btn btn-primary" id="saveBaseline">Save</button>
 		</div>
-	      </div>
-	    </div> 
+	     </div>
 	    
-	  </div> 
-
-	</div>
-      </div>
-    </div>
+        </div> 
+	    </div>
 
 
-
-    <!-- Modals section  -->
+    <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->
     
     <!-- MOD// EXPORT FONT  -->
     <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -297,7 +278,7 @@
 	    <h4 class="modal-title">Help</h4>
 	  </div>
 	  <div class="modal-body">
-	   <p class="text-justify"><b>Step by step guide:</b><br><br><b>I - </b>Upload an image (supported formats are JPEG, JPG, PNG, TIFF and TIF).<br><br><b>II - </b>Select a letter with your mouse. It will appear in the <i>Letter Preview </i> field.<br><br><b>III - </b>If you are not happy with the native selection, you can correct the baseline and the different border lines in the <i>Lines Modifications </i> field.<br><br><b>IV - </b>It is possible to merge several selected elements in the <i>Letter Asignment</i> field. For example, if the upper and the lower part of an "i" are detected separately, you can merge them holding ctrl on windows/linux and cmd on mac while selecting both parts.<br><br><b>V - </b>Once you are happy with your character, you can assign it (both letter and unicode are accepted) and save it in the <i>Letter Asignment </i> field.<br><br><b>VI - </b>The <i>Zoom </i> section allows you to zoom in/out and reset zoom and original position.<br><br><b>VII - </b>Several actions are available in the <i>Options </i> field. You can show or unshow the baseline, start again with a new image and download your font. It is also possible to use it directly in Document Creator Online.<br><br><b>VIII - </b>The <i>Alphabet </i> section shows all the letters already extracted. 
+	   <p class="text-justify"><b>Step by step guide:</b><br><br><b>I - </b>Upload an image (supported formats are <b>JPEG</b>, <b>JPG</b>, <b>PNG</b>, <b>TIFF</b> and <b>TIF</b>).<br><br><b>II - </b>Select a letter with your mouse. It will appear in the <b style=color:#5091da;>Letter Preview </b> field. If you are not happy with the native selection, you can correct the baseline and the different border lines.<br><br><b>III - </b>It is possible to merge several selected elements in the <b style=color:#5091da;>Letter Asignment</b> field. For example, if the upper and the lower part of an "i" are detected separately, you can merge them holding <b>ctrl</b> on windows/linux and <b>cmd</b> on mac while selecting both parts.<br><br><b>IV - </b>Once you are happy with your character, you can assign it (both letter and unicode are accepted) and save it in the <b style=color:#5091da;>Letter Asignment </b> field.<br><br><b>V - </b>The <b style=color:#5091da;>Options </b> section allows you to zoom in/out and reset zoom on original position. You also can show or unshow the baseline, start again with a new image and download your font.<br><br><b>VI - </b>The <b style=color:#5091da;>Alphabet </b> section shows all the letters already extracted.<br><br><b>VII - </b>You can add degradations to your image directly from the menu (2D/3D). It is possible to download the modified image at anytime !
  </p>
 	  </div>
 	</div>
@@ -328,64 +309,9 @@
 	    <h4 class="modal-title">Credits</h4>
 	  </div>
 	  <div class="modal-body">
-    <p class="text-justify">Font creator has been developed by <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T.Autret</a>, <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A.Boschet</a>, <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T.Labrousse</a>,<a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R.Tisné </a></p>
+    <p class="text-justify">Document Creator is a software developed by Journet Nicholas (<a href="mailto:journet@labri.fr">journet@labri.fr</a>) and Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal@labri.fr</a>).<br><br>Font creator has been developed by <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T.Autret</a>, <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A.Boschet</a>, <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T.Labrousse</a>,<a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R.Tisné </a>and<a href="mailto:jimmy.gouraud@hotmail.fr"> J.Gouraud</a>. Design by <a href="http://www.whitebeears.com">F.Bruneau </a></p>
       <p>Made with <a href="https://github.com/titi38/libnavajo/">libnavajo</a> and <a href="http://opencv.org">OpenCV</a></p>
-	  </div>
-	</div>
-      </div>
-    </div>
-
-    <!-- MOD// GRAYSCALE  -->
-    <div class="modal fade" id="GrayScaleCharacterDegradationModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-	<div class="modal-content">
-	  <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h4 class="modal-title">Character Degradation Level Adjustement</h4>
-	  </div>
-	  <div class="modal-body input-inside">
-	    <input id="GrayScaleCharacterDegradationValue" type="range" value="5" max="10" min="0" step="1">
-	  </div>
-	  <div class="modal-footer">
-	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-	    <button type="button" data-dismiss="modal" id="GrayScaleCharacterDegradationExec" class="btn btn-primary">Ok</button>
-	  </div>
-	</div>
-      </div>
-    </div>	
-
-
-    <div class="modal fade" id="ShadowBindingDegradationModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-	<div class="modal-content">
-	  <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h4 class="modal-title">Shadow Binding Degradation</h4>
-	  </div>
-	  
-	  <div class="modal-body">
-	    Border : <br/>
-	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="left" checked> Left <br>
-	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="right"> Right <br>
-	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="top"> Top <br>
-	    <input type="radio" name="ShadowBindingDegradationBorderValue" value="bottom"> Bottom
-	  </div>
-	  <div class="modal-body input-inside">
-	    Width :
-	    <input id="ShadowBindingDegradationWidthValue" type="range" value="50" max="100" min="0" step="1">
-	  </div>
-	  <div class="modal-body input-inside">
-	    Intensity :
-	    <input id="ShadowBindingDegradationIntensityValue" type="range" value="0.5" max="1" min="0" step="0.01">
-	    </div>
-	  <div class="modal-body input-inside">
-	    Angle :
-	    <input id="ShadowBindingDegradationAngleValue" type="range" value="45" max="90" min="0" step="1">
-	  </div>
-	  
-	  <div class="modal-footer">
-	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-	    <button type="button" data-dismiss="modal" id="ShadowBindingDegradationExec" class="btn btn-primary">Ok</button>
+      <p class="credit roboto"><a href="http://bootstrapious.com/portfolio-themes">Bootstrap Portfolio Themes</a></p>
 	  </div>
 	</div>
       </div>
@@ -506,14 +432,15 @@
         </div>
     </footer>  
       
-</div>
-<script type="text/javascript" src="js/Blob.js"></script>
-<script type="text/javascript" src="js/FileSaver.js"></script>
-<script type="text/javascript" src="js/settings.js"></script>
-<script type="text/javascript" src="js/session.js"></script>
-<script type="text/javascript" src="js/init.js" ></script>
-<script type="text/javascript" src="js/manipulate_canvas.js" ></script>
-<script type="text/javascript" src="js/controller.js" ></script>
-<script type="text/javascript" src="js/upload_file.js" ></script>
+      </div>
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
+
 </body>
 </html>

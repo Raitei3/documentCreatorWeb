@@ -831,7 +831,7 @@ static bool degradeComposant(cv::Mat &output, const CC &degradedCC, const CCs &c
 cv::Mat phantomCharacter(const cv::Mat &input, int frequency)
 {
   cv::Mat output = input.clone();
-
+  
   CCs ccs;
   cv::Mat inputBin = binarize(input);
   ConnectedComponentExtraction::extractAllConnectedComponents(inputBin, ccs, 4);
@@ -916,7 +916,6 @@ cv::Mat phantomCharacter(const cv::Mat &input, int frequency)
   std::cerr<<"wrote "<<degradationsFilename<<"\n";
 
 #endif //SAVE_DEGRADATIONS_IMAGE
-  
 
   return output;
 }

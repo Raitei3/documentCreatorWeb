@@ -24,6 +24,7 @@ function prepareUpload(event)
     
     session.startSession(data, askForInfo);  
 }
+
 function askForInfo(filename)
 {
     session.imageInfos(filename, init);

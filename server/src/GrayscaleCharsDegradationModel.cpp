@@ -246,6 +246,11 @@ cv::Mat GrayscaleCharsDegradationModel::degradateByLevel_cv(int level)
   } else{
     src = degradate_cv(level, 20, 30, 50);
   }
+
+  // ====================================
+  cv::cvtColor(src, src, CV_GRAY2BGR);
+  // ====================================
+
   return src;
 }
 

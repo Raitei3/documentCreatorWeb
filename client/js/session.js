@@ -17,31 +17,32 @@ function Session() {
 Session.prototype.startSession = function(file, callback)
 {
     // Loading panel
+    
     $('.overlay').show();
     $('.loader').show();
 
-	$.ajax({
-    url: 'uploader.txt',
-    type: 'POST',
-    data: file,
-    cache: false,
-    processData: false,
-    contentType: false,
-    context : this,
-    success: function(responseJson, textStatus, jqXHR)
-    {
-    	var response = JSON.parse(responseJson);
-    	if(response.error == null)
-    	{
+    $.ajax({
+	url: 'uploader.txt',
+	type: 'POST',
+	data: file,
+	cache: false,
+	processData: false,
+	contentType: false,
+	context : this,
+	success: function(responseJson, textStatus, jqXHR)
+	{
+    	    var response = JSON.parse(responseJson);
+    	    if(response.error == null)
+    	    {
     		this.token = response.token;
     		callback(response.fileName);
-    	}
-    },
-    error: function(jqXHR, textStatus, errorThrown)
-    {
-        console.log('ERRORS: ' + textStatus);
-    }
-  });
+    	    }
+	},
+	error: function(jqXHR, textStatus, errorThrown)
+	{
+            console.log('ERRORS: ' + textStatus);
+	}
+    });
 }
 
 /*!
@@ -52,28 +53,28 @@ Session.prototype.startSession = function(file, callback)
  */
 Session.prototype.imageInfos = function(filename, callback)
 {
-	var imagePath = "data/" + filename;
-	$.ajax({
-    url: 'getBoundingBox.txt',
-    type: 'POST',
-    data: "token=" + this.token,
-    success: function(data, textStatus, jqXHR)
-    {
-      $('#titlesession').hide();
-      $('#tutosession').hide();
-      $('#canvas').show();
-      $('.zoom-icon').show();
-      $('.navbar-nav').show();
-      
-      $('.loader').hide();
-      $('.overlay').hide();
-      callback(imagePath, JSON.parse(data).boundingbox, JSON.parse(data).baseline);
-    },
-    error: function(error)
-    {
- 			console.log('ERRORS: ' + error);
-    }
-	});
+    var imagePath = "data/" + filename;
+    $.ajax({
+	url: 'getBoundingBox.txt',
+	type: 'POST',
+	data: "token=" + this.token,
+	success: function(data, textStatus, jqXHR)
+	{
+	    $('#titlesession').hide();
+	    $('#tutosession').hide();
+	    $('#canvas').show();
+	    $('.zoom-icon').show();
+	    $('.navbar-nav').show();
+	    
+	    $('.loader').hide();
+	    $('.overlay').hide();
+	    callback(imagePath, JSON.parse(data).boundingbox, JSON.parse(data).baseline);
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
 }
 
 /*!

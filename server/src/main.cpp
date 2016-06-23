@@ -280,7 +280,7 @@ class MyDynamicRepository : public DynamicRepository
       MPFD::Parser *parser = request->getMPFDparser();
       std::map<std::string,MPFD::Field *> fields=parser->GetFieldsMap();
       std::map<std::string,MPFD::Field *>::iterator it;
-      for (it=fields.begin();it!=fields.end();++it) 
+      for (it=fields.begin(); it!=fields.end(); ++it) 
       {
         if(isFormatSupported(fields[it->first]->GetFileName()))
         {     
@@ -289,13 +289,12 @@ class MyDynamicRepository : public DynamicRepository
           else
           {   
             std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
-            // ==============================================================================
-            NVJ_LOG->append(NVJ_INFO, "Got file field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:["  + fields[it->first]->GetTempFileName() + "]\n");
+            NVJ_LOG->append(NVJ_INFO, "Got file field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
 
 
-            std::ifstream  src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
+            std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
 	    std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
-            std::ofstream  dst( dstFilename.c_str(), std::ios::binary);
+            std::ofstream dst(dstFilename.c_str(), std::ios::binary);
             if (!src || !dst)
               NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
             else

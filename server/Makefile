@@ -7,6 +7,7 @@
 OUTPUTFILENAME = PrecompiledRepository.cc
 NAVAJO_PRECOMPILER_EXEC = ../bin/navajoPrecompiler
 
+
 UNAME := $(shell uname)
 LBITS := $(shell getconf LONG_BIT)
 
@@ -55,6 +56,8 @@ LD		=  g++
 
 LDFLAGS        = -Wall -Wno-unused -O3   
 
+FOLDER_FILES_OBJECT= files_object
+
 MAIN_NAME     = main
 
 MAIN_OBJS = \
@@ -99,6 +102,7 @@ CONVERTOR= convertor
 
 BLURFILTER= BlurFilter
 
+
 #######################
 # DEPENDENCE'S RULES  #
 #######################
@@ -110,7 +114,9 @@ all: $(MAIN_NAME)
 
 $(MAIN_NAME): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
-	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS) 
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+	mkdir $(FOLDER_FILES_OBJECT)
+	mv *.o $(FOLDER_FILES_OBJECT)
 
 
 $(IMAGE): $(MAIN_OBJS) $(LIB_STATIC_NAME)
@@ -167,7 +173,8 @@ $(BLURFILTER): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 
 
 clean:
-	@rm -f $(OUTPUTFILENAME) 
+	@rm -rf $(FOLDER_FILES_OBJECT)
+	@rm -f $(MAIN_NAME)
 	@for i in $(MAIN_OBJS); do  rm -f $$i ; done
 
 

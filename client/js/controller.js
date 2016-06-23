@@ -103,12 +103,15 @@ function Controller(canvas, previewCanvas, listCharacter) {
     // Click on the trash button
     document.getElementById('button_trash').addEventListener('click', function(e){
         session.removeSession(true);
+	alert("removeSession true - trash!");
+	
         location.reload();
     }, true); 
     
     // Click on the menu
     document.getElementById('button_menu').addEventListener('click', function(e){
         session.removeSession(true);
+	alert("removeSession true - menu!");
         location.reload();
     }, true);   
 
@@ -211,7 +214,8 @@ function Controller(canvas, previewCanvas, listCharacter) {
 
     // When the user quit the application
     window.onunload = function() { 
-       session.removeSession(false);
+	session.removeSession(false);
+	alert("removeSession false !");
     };
 
 }
