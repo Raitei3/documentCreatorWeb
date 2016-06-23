@@ -106,63 +106,72 @@
       <!--USER MENU--> <!--USER MENU--> <!--USER MENU--> <!--USER MENU-->
 	<div class="right">
 	  <div class="container_right">
-	    <div class="right_up">        
-    <div class="row">
+	   <div class="right_up"> 
         
-        <div class="col-md-2">
-            <div class="row"></div><div class="row"></div><div class="row"></div>
-            <div id="left" class="input-group spinner modif-line-value"><p class="text-center">
-                    <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
-                    </button><span style="color:#e74c3c;">Left Line</span>
-			        <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
-                </div>
+         <div class="container"> 
+         <div class="row">
+             
+        <div class="row">     
+        <div class="col-md-6"><!--PREVIEW-->
+            <p class="text-center"><b>LETTER PREVIEW</b></p>
         </div>
-        
-        <div class="col-md-2"><!--PREVIEW-->
-            <div class="row">
-                <p class="text-center"><b>LETTER PREVIEW</b></p>
-            </div>
-            <div class="container_option_base" id="letter_options">
-            <div class="field_modification_base">
+        </div>
             
-            <div class="row">
-                <div id="up" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
+        <div class="row">
+             <div id="up" class="input-group spinner col-md-6 modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
                     </button><br><span style="color:#e74c3c;">Upper Line</span><br>
 			        <button class="btn btn-default" data-id="up" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
                 </div>
-                
+        </div>
+            
+            <div class="row"> 
+                <div class="container_option_base" id="letter_options">
+            <div class="field_modification_base">
+                <div class="row">
+                    <div class="col-md-2 top-buffer" >
+                    <div id="left" class="input-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
+                    </button><span style="color:#e74c3c;">Left Line</span>
+			        <button class="btn btn-default" data-id="left" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
+                </div>
+                </div>
+               
+                <div class="col-md-2">
                 <div class="box" class="small-canvas">
 		          <div class="content"><canvas id="small_canvas"  width="150" height="100" data-girar="500"></canvas></div>
                 </div>
-                
-                <div id="down" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
-                    <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br><span style="color:#e74c3c;">Lower Line</span><br>
-			        <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
-		        </div>
-                
-                <div class="row">
-                    <div id="baselineCC" class="input-group spinner col-sm-6 col-sm-offset-3 modif-line-value"><p class="text-center">
-                    <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
-                    </button><br><span style="color:#2ecc71;">Baseline</span><br>
-			        <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
-		        </div>
-		  </div>
                 </div>
-                </div>
-		  </div>
-            
-        </div>
-        
-        <div class="col-md-2">
-            <div class="row"></div><div class="row"></div><div class="row"></div>
-            <div id="right" class="input-group spinner modif-line-value"><p class="text-center">
+                
+                <div class="col-md-2 top-buffer">
+                <div id="right" class="input-group spinner modif-line-value"><p class="text-center">
                     <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-left"></span>
                     </button><span style="color:#e74c3c;">Right Line</span>
 			        <button class="btn btn-default" data-id="right" style="border:none;"><span class="glyphicon glyphicon-chevron-right"></span></button></p>
                 </div>
-        </div>
+                </div>
+                    
+                </div>
+                </div>
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                <div id="down" class="input-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
+                    </button><br><span style="color:#e74c3c;">Lower Line</span><br>
+			        <button class="btn btn-default" data-id="down" style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
+		        </div>
+                </div>
+                <div class="col-md-1">
+                <div id="baselineCC" class="col-md-ofinput-group spinner modif-line-value"><p class="text-center">
+                    <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-up"></span>
+                    </button><br><span style="color:#2ecc71;">Baseline</span><br>
+			        <button class="btn btn-default" data-id="baselineCC"  style="border:none;"><span class="glyphicon glyphicon-chevron-down"></span></button></p>
+		        </div>
+                </div>
+                </div>
         
         
         <div class="col-md-2"><!--ASIGNMENT-->
@@ -202,7 +211,6 @@
             </div>
         </div>
         
-        
         <div class="col-md-2"><!--OPTIONS-->
             <div class="row">
                 <p><b>OPTIONS</b></p>
@@ -220,8 +228,9 @@
         </div>
         
         
-    </div>
-</div> 
+          </div>
+          </div>    
+          </div> 
           
 	      <div class="container_option_base" id="baseline_options">
 		<div class="input-group spinner col-sm-5 col-sm-offset-1 modif-line-value">
@@ -235,10 +244,10 @@
 		<div class="col-md-2 col-sm-6 add-button">
 		  <button type="button" class="btn btn-primary" id="saveBaseline">Save</button>
 		</div>
-	      </div>
-	    </div> 
+	     </div>
 	    
-	  </div>
+        </div> 
+	    </div>
 
 
     <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->
@@ -302,8 +311,9 @@
 	    <h4 class="modal-title">Credits</h4>
 	  </div>
 	  <div class="modal-body">
-    <p class="text-justify">Font creator has been developed by <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T.Autret</a>, <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A.Boschet</a>, <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T.Labrousse</a>,<a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R.Tisné </a></p>
+    <p class="text-justify">Document Creator is a software developed by Journet Nicholas (<a href="mailto:journet@labri.fr">journet@labri.fr</a>) and Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal@labri.fr</a>).<br><br>Font creator has been developed by <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T.Autret</a>, <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A.Boschet</a>, <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T.Labrousse</a>,<a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R.Tisné </a>and<a href="mailto:jimmy.gouraud@hotmail.fr"> J.Gouraud</a>. Design by <a href="http://www.whitebeears.com">F.Bruneau </a></p>
       <p>Made with <a href="https://github.com/titi38/libnavajo/">libnavajo</a> and <a href="http://opencv.org">OpenCV</a></p>
+      <p class="credit roboto"><a href="http://bootstrapious.com/portfolio-themes">Bootstrap Portfolio Themes</a></p>
 	  </div>
 	</div>
       </div>
