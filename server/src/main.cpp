@@ -755,7 +755,91 @@ class MyDynamicRepository : public DynamicRepository
     }
   } phantomCharacterDegradation;
 
+  // ===========================================================================
+   class UploaderImgRectoBleedThrough: public DynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      if (!request->isMultipartContent())
+        return false;
 
+      // retrieval of the image
+      MPFD::Parser *parser = request->getMPFDparser();
+      std::map<std::string,MPFD::Field *> fields=parser->GetFieldsMap();
+      std::map<std::string,MPFD::Field *>::iterator it;
+      for (it=fields.begin(); it!=fields.end(); ++it) 
+      {
+        if(isFormatSupported(fields[it->first]->GetFileName()))
+        {     
+          if (fields[it->first]->GetType()==MPFD::Field::TextType)
+            return false;
+          else
+          {   
+            std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
+            NVJ_LOG->append(NVJ_INFO, "Got Img Recto: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
+
+            std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
+	    std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
+            std::ofstream dst(dstFilename.c_str(), std::ios::binary);
+            if (!src || !dst)
+              NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
+            else
+              dst << src.rdbuf();
+            src.close();
+            dst.close();
+            myUploadRepo->reload();
+            std::string json_Session =  "{\"fileName\":\"" + newFileName + "\"}";
+            NVJ_LOG->append(NVJ_ERROR, json_Session);
+            return fromString(json_Session, response); 
+          }
+        } else {
+          return fromString("{\"error\":\"This format of image isn't correct\"}", response);
+        }
+
+      }
+      return true;
+    }
+  } uploaderImgRectoBleedThrough;
+
+  
+  class BleedThroughDegradation: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {      
+      std::string tokenParam;
+      std::string nbIterationsParam;
+      std::string imgRectoParam;
+      
+      request->getParameter("token", tokenParam);
+      request->getParameter("nbIterations", nbIterationsParam);
+      request->getParameter("imgRecto", imgRectoParam);
+
+      int nbIterations = stoi(nbIterationsParam);
+      
+      int token = stoi(tokenParam);
+      int sessionIndex = getActiveSessionFromToken(token);
+      if(sessionIndex != -1)
+      {
+        QImage img_verso((UPLOAD_DIR + imgRectoParam).c_str());
+        QImage img_recto(activeSessions.at(sessionIndex)->getDisplayedFileName().c_str());
+        QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
+        
+        QString filename((UPLOAD_DIR + gen_random(".png")).c_str());
+        img_bleed_through.save(filename);
+        Image img(filename.toStdString()); 
+        
+        activeSessions.at(sessionIndex)->getImage()->setMat(img.getMat());
+        activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+        myUploadRepo->reload();
+        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+      }
+      else
+      {
+        return fromString("Error : this session doesn't exist", response);
+      }
+
+    }
+  } bleedThroughDegradation;
   
   class Controller: public MyDynamicPage
   {
@@ -782,6 +866,8 @@ class MyDynamicRepository : public DynamicRepository
     add("grayScaleCharsDegradation.txt",&grayScaleCharsDegradation);
     add("shadowBinding.txt",&shadowBindingDegradation);
     add("phantomCharacter.txt",&phantomCharacterDegradation);
+    add("bleedThrough.txt",&bleedThroughDegradation);
+    add("uploaderImgRectoBleedThrough.txt",&uploaderImgRectoBleedThrough);
   }
 };
 

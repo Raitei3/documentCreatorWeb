@@ -20,9 +20,20 @@ function prepareUpload(event)
         data.append(key, value);
     });
 
-    $('.fileUpload').hide();
     
-    session.startSession(data, askForInfo);  
+    if (event.target.id == "img_start_session"){
+	$('.fileUpload').hide();
+	session.startSession(data, askForInfo);
+    }
+    
+    else if (event.target.id == "img_verso_bleed_through"){
+	session.uploadImgRecto(data, updateImgRecto);
+    } 
+}
+
+function updateImgRecto(filename)
+{
+    $("#BleedThroughImgVerso").attr('src','data/' + filename);
 }
 
 function askForInfo(filename)

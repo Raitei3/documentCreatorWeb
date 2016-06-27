@@ -103,7 +103,6 @@ function Controller(canvas, previewCanvas, listCharacter) {
     // Click on the trash button
     document.getElementById('button_trash').addEventListener('click', function(e){
         session.removeSession(true);
-	alert("removeSession true - trash!");
 	
         location.reload();
     }, true); 
@@ -111,7 +110,6 @@ function Controller(canvas, previewCanvas, listCharacter) {
     // Click on the menu
     document.getElementById('button_menu').addEventListener('click', function(e){
         session.removeSession(true);
-	alert("removeSession true - menu!");
         location.reload();
     }, true);   
 
@@ -129,6 +127,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
 	var extension = img.split('.');
 	img = img_split[img_split.length - 1];
 	extension = extension[extension.length - 1];
+	
 	document.getElementById('download_img').setAttribute('href','data/' + img);
 	document.getElementById('download_img').setAttribute('download', "doc-online." + extension);
     }, true);
@@ -136,6 +135,14 @@ function Controller(canvas, previewCanvas, listCharacter) {
     /* ====================
        === DEGRADATIONS ===
        ==================== */
+    
+    document.getElementById('BleedThroughExec').addEventListener('click', function(){
+        session.bleedThrough(
+	    document.getElementById('BleedThroughNbIteration').value,
+	    document.getElementById('BleedThroughImgVerso').src,
+	    controller);
+    }, true);
+
     
     document.getElementById('ShadowBindingExec').addEventListener('click', function(){
 	var all_border = document.getElementsByName("ShadowBindingBorder");
@@ -215,7 +222,6 @@ function Controller(canvas, previewCanvas, listCharacter) {
     // When the user quit the application
     window.onunload = function() { 
 	session.removeSession(false);
-	alert("removeSession false !");
     };
 
 }

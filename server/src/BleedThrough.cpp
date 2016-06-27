@@ -1,10 +1,4 @@
 #include "BleedThrough.hpp"
-#include <QDebug>
-#include <QRgb>
-#include <QThread>
-#include <QProgressDialog>
-#include <cassert>
-#include <iostream>
 
 /*
   Code inspired from original Cuong's code.
@@ -568,151 +562,7 @@ bleedThrough(const QImage &imgRectoP, const QImage &imgVersoP, int nbIter, int x
 
 
 //#include <DocumentCreator/context/CurrentRandomDocumentContext.h>
-#include <context/CurrentRandomDocumentContext.h>
 #include <QSharedPointer>
-
-QImage BleedThrough::apply()
-{
-  qDebug() << "*********** BleedThrough::apply() _nbIter="<<_nbIter<<"\n";
-  
-
-
-    if (_verso.isNull()) {
-        qDebug() << "verso is null";
-        return QImage();
-    }
-
-    qDebug() << metaObject()->className() << ":::" << "APPLYING";
-
-    QImage originalRecto = getBackGround();
-
-    const int width = originalRecto.width();
-    const int height = originalRecto.height();
-
-    _verso = _verso.scaled(width, height);
-
-    assert(originalRecto.width() == _verso.width());
-    assert(originalRecto.height() == _verso.height());
-
-    QImage imgRecto = originalRecto.copy();
-    QImage imgVerso = _verso;
-
-#ifndef NDEBUG
-    //DEBUG
-    {
-      const char *filename = "/tmp/tmp_recto.png";
-      std::cerr<<"DEBUG BleedThrough: write recto"<<filename<<"\n";
-      imgRecto.save(filename);
-    }
-    {
-      const char *filename = "/tmp/tmp_verso.png";
-      std::cerr<<"DEBUG BleedThrough: write verso"<<filename<<"\n";
-      imgVerso.save(filename);
-      std::cerr<<"DEBUG _nbIter="<<_nbIter<<"\n";
-    }
-#endif //NDEBUG
-
-    QProgressDialog progress(QString("Bleed Through Effect"), QString("Cancel"), 0, _nbIter);
-    progress.setWindowModality(Qt::WindowModal);
-
-    //B: CODE DUPLICATION with bleedThroughMT0()
-    // add QProgressDialog update.
-
-
-
-
-    const std::vector<uchar> originalRectoGray = getGray(originalRecto);
-    const std::vector<uchar> versoGray = getGray(imgVerso);
-    std::vector<uchar> rectoGray = getGray(imgRecto);
-
-    if (originalRectoGray.empty() || versoGray.empty() || rectoGray.empty())
-      return QImage();
-
-    std::vector<uchar> outGray(width*height);
-    
-    //B: divide only lines (for cache)
-    
-    const int nbThreadsPerCol = 1;
-    const int nbThreadsPerRow = 4; //B:TODO:OPTIM: choose the number of threads according to hardware
-    
-    const int blockWidth = (width ) / nbThreadsPerCol;
-    const int blockHeight = (height ) / nbThreadsPerRow;
-    
-    //B:TODO:OPTIM: this is a stencil operation !
-    //We can code it with some communication/synchronization between threads (for borders) to be be much faster !
-    //We would avoit to create/run/destroy the threads each time, and keep them alive during the nbIter iterations !
-    
-    QVector<BleedThroughDiffusionThreadA*> threads;
-    threads.reserve(nbThreadsPerCol*nbThreadsPerRow);
-    
-    const int lNbIter = _nbIter;
-    for (int p=0; p<lNbIter; ++p) {
-
-      progress.setValue(p);
-      
-      if (progress.wasCanceled()) {
-	break;
-      }
-
-      for (int l = 0; l < nbThreadsPerRow; ++l) {
-	const int y = l * blockHeight;
-	const int h = (l != nbThreadsPerRow-1 ? blockHeight : height-y );
-	for (int k = 0; k < nbThreadsPerCol ; ++k) {
-	  const int x = k * blockWidth;
-	  const int w = (k != nbThreadsPerCol-1 ? blockWidth : width-x );
-	  
-	  
-	  BleedThroughDiffusionThreadA* thread1 = new BleedThroughDiffusionThreadA(originalRectoGray, rectoGray, versoGray,
-										   width, height,
-										   QPoint(x, y),
-										   QPoint(x+w, y+h));
-	  thread1->start();
-	  threads.push_back(thread1);
-	}
-      }
-   
-      for (BleedThroughDiffusionThreadA *thread : threads) {
-	thread->wait();
-	thread->getRecto(outGray);
-	delete thread;
-      }
-      threads.clear();
-      
-      outGray.swap(rectoGray);
-
-#if 0
-      //B: If we emit during progression
-      // we will save intermediary images !!!
-
-      Context::CurrentRandomDocumentContext::instance()->addProperty("trans_iter", QString::number(p));//B: ???
-      if (p % 16 == 0) { //B: update frequency should be dependant on image size
-	QImage recto = makeRGBfromGray(width, height, rectoGray);
-	emit imageReady(recto);
-      }
-#endif
-      
-    }
-   
-    progress.setValue(lNbIter);
-    
-    QImage out = makeRGBfromGray(width, height, rectoGray);
-  
-#ifndef NDEBUG
-    qDebug() << "BleedThrough::apply() emit imageReady(out)\n";
-
-    /*
-    {
-      const char *filename = "/tmp/tmp.png";
-      std::cerr<<"DEBUG BleedThrough: write "<<filename<<"\n";
-      out.save(filename);
-    }
-    */
-#endif //NDEBUG
-
-    emit imageReady(out);
-
-    return out;
-}
 
     
 void BleedThrough::setVerso(const QString &path)
@@ -723,10 +573,4 @@ void BleedThrough::setVerso(const QString &path)
   _verso = _verso.mirrored(true, false);
   qDebug() << path << " " << _verso.isNull()<<"\n";
   //apply();
-}
-
-void BleedThrough::setVersoAndApply(const QString &path)
-{
-  setVerso(path);
-  apply();
 }

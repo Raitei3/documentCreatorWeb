@@ -73,6 +73,7 @@ MAIN_OBJS = \
 		  PhantomCharacter.o \
 		  convertor.o \
 		  BlurFilter.o \
+		  BleedThrough.o \
 		  connectedcomponentextraction.o \
 		  main.o \
 
@@ -102,6 +103,7 @@ CONVERTOR= convertor
 
 BLURFILTER= BlurFilter
 
+BLEEDTHROUGH= BleedThrough
 
 #######################
 # DEPENDENCE'S RULES  #
@@ -113,10 +115,11 @@ BLURFILTER= BlurFilter
 all: $(MAIN_NAME)
 
 $(MAIN_NAME): $(MAIN_OBJS) $(LIB_STATIC_NAME)
-	rm -f $@
+	@rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
-	mkdir $(FOLDER_FILES_OBJECT)
-	mv *.o $(FOLDER_FILES_OBJECT)
+	@rm -rf $(FOLDER_FILES_OBJECT)
+	@mkdir $(FOLDER_FILES_OBJECT)
+	@mv *.o $(FOLDER_FILES_OBJECT)
 
 
 $(IMAGE): $(MAIN_OBJS) $(LIB_STATIC_NAME)
@@ -168,6 +171,10 @@ $(CONVERTOR): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 
 $(BLURFILTER): $(MAIN_OBJS) $(LIB_STATIC_NAME)
+	rm -f $@
+	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
+
+$(BLEEDTHROUGH): $(MAIN_OBJS) $(LIB_STATIC_NAME)
 	rm -f $@
 	$(LD) $(LDFLAGS) -o $@ $(MAIN_OBJS) $(LIB_STATIC_NAME) $(LIBS)
 

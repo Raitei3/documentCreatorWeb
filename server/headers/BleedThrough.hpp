@@ -1,6 +1,12 @@
 #ifndef BLEEDTHROUGH_HPP
 #define BLEEDTHROUGH_HPP
 
+#include <QDebug>
+#include <QRgb>
+#include <QThread>
+#include <QProgressDialog>
+#include <cassert>
+#include <iostream>
 
 
 /*
