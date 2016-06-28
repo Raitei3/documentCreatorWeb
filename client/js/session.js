@@ -344,7 +344,7 @@ Session.prototype.uploadImgRecto = function(file, callback)
     // Loading panel  
     $('.overlay').show();
     $('.loader').show();
-
+    
     $.ajax({
 	url: 'uploaderImgRectoBleedThrough.txt',
 	type: 'POST',

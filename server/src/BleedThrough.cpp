@@ -37,6 +37,7 @@ static
 void
 convertToAtLeast8Bit(QImage &src)
 {
+  
   if (src.depth() < 8) {
 #ifndef NDEBUG
     const QSize s = src.size();

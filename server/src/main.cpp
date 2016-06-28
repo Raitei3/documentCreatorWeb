@@ -46,7 +46,10 @@ void exitFunction( int dummy )
   {
     delete activeSessions.at(i);
   }
-  if (webServer != NULL) webServer->stopService();
+  if (webServer != NULL)
+  {
+    webServer->stopService();
+  }
 }
 
 /*
@@ -63,8 +66,9 @@ bool isFormatSupported( const std::string &fileName)
   std::transform(extension.begin(), extension.end(), extension.begin(), ::toupper);
   std::unordered_set<std::string> format ={"JPG","JPEG","PNG","TIFF","TIF"};
   std::unordered_set<std::string>::const_iterator got = format.find(extension);
-  if (got != format.end())
+  if (got != format.end()){
     return true;
+  }
   return false;
 }
 
@@ -230,7 +234,7 @@ std::string gen_random(std::string extension) {
 static
 std::string InitiateSession(std::string fileName, HttpRequest *request)
 {
-  int cptExample=0;
+  int cptExample = 0;
   Session * mySession = new Session((UPLOAD_DIR)+fileName);
   
   srand(time(NULL));
@@ -756,7 +760,13 @@ class MyDynamicRepository : public DynamicRepository
   } phantomCharacterDegradation;
 
   // ===========================================================================
-   class UploaderImgRectoBleedThrough: public DynamicPage
+  // ===========================================================================
+  // ======                                                               ======
+  // ===========================================================================
+  // ===========================================================================
+  
+
+  class UploaderImgRectoBleedThrough: public DynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
@@ -769,38 +779,36 @@ class MyDynamicRepository : public DynamicRepository
       std::map<std::string,MPFD::Field *>::iterator it;
       for (it=fields.begin(); it!=fields.end(); ++it) 
       {
-        if(isFormatSupported(fields[it->first]->GetFileName()))
-        {     
-          if (fields[it->first]->GetType()==MPFD::Field::TextType)
-            return false;
-          else
-          {   
-            std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
-            NVJ_LOG->append(NVJ_INFO, "Got Img Recto: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
-
-            std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
-	    std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
-            std::ofstream dst(dstFilename.c_str(), std::ios::binary);
-            if (!src || !dst)
-              NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
-            else
-              dst << src.rdbuf();
-            src.close();
-            dst.close();
-            myUploadRepo->reload();
-            std::string json_Session =  "{\"fileName\":\"" + newFileName + "\"}";
-            NVJ_LOG->append(NVJ_ERROR, json_Session);
-            return fromString(json_Session, response); 
-          }
-        } else {
+        if(! isFormatSupported(fields[it->first]->GetFileName()))
+        {
           return fromString("{\"error\":\"This format of image isn't correct\"}", response);
         }
+        if (fields[it->first]->GetType()==MPFD::Field::TextType)
+        {
+          return false;
+        }
+        
+        std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
+        NVJ_LOG->append(NVJ_INFO, "Got Image Recto field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
 
+        std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
+        std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
+        std::ofstream dst(dstFilename.c_str(), std::ios::binary);
+        if (!src || !dst){
+          NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
+        } else {
+          dst << src.rdbuf();
+        }
+        src.close();
+        dst.close();
+        myUploadRepo->reload();
+        std::string json_Session = "{\"fileName\":\"" + newFileName + "\"}";
+        NVJ_LOG->append(NVJ_ERROR, json_Session);
+        return fromString(json_Session, response); 
       }
       return true;
     }
   } uploaderImgRectoBleedThrough;
-
   
   class BleedThroughDegradation: public MyDynamicPage
   {

@@ -516,7 +516,7 @@ PreviewCanvas.prototype.draw = function() {
             ctx.moveTo(0, this.image.y + this.position_up_line);
             ctx.lineTo(this.width, this.image.y + this.position_up_line);
             ctx.lineWidth = 1 / this.scaleY;
-            ctx.strokeStyle = COLOR_PREVIEW_LINES;
+            ctx.strokeStyle = COLOR_PREVIEW_LINES_UP;
             ctx.stroke();
 
             //DownLine
@@ -524,7 +524,7 @@ PreviewCanvas.prototype.draw = function() {
             ctx.moveTo(0, this.image.y + this.position_down_line);
             ctx.lineTo(this.width, this.image.y + this.position_down_line);
             ctx.lineWidth = 1 / this.scaleY;
-            ctx.strokeStyle = COLOR_PREVIEW_LINES;
+            ctx.strokeStyle = COLOR_PREVIEW_LINES_DOWN;
             ctx.stroke();
 
             //LeftLine
@@ -532,7 +532,7 @@ PreviewCanvas.prototype.draw = function() {
             ctx.moveTo(this.image.x + this.position_left_line, 0);
             ctx.lineTo(this.image.x + this.position_left_line, this.height);
             ctx.lineWidth = 1 / this.scaleX;
-            ctx.strokeStyle = COLOR_PREVIEW_LINES;
+            ctx.strokeStyle = COLOR_PREVIEW_LINES_LEFT;
             ctx.stroke();
 
             //RightLine
@@ -540,12 +540,12 @@ PreviewCanvas.prototype.draw = function() {
             ctx.moveTo(this.image.x + this.position_right_line, 0);
             ctx.lineTo(this.image.x + this.position_right_line, this.height);
             ctx.lineWidth = 1 / this.scaleX;
-            ctx.strokeStyle = COLOR_PREVIEW_LINES;
+            ctx.strokeStyle = COLOR_PREVIEW_LINES_RIGHT;
             ctx.stroke();
 
             //Baseline
             ctx.beginPath();
-            ctx.setLineDash([5,2]);
+            ctx.setLineDash([5, 2]);
             ctx.moveTo(0, this.image.y + this.position_baseline);
             ctx.lineTo(this.width , this.image.y + this.position_baseline);
             ctx.lineWidth = 1 / this.scaleX;
