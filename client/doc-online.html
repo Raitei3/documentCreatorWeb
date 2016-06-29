@@ -80,6 +80,11 @@
 			Bleed Through
 		      </a>
 		    </li>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#BlurFilterModal">
+			Blur Filter
+		      </a>
+		    </li>
                   </ul>
 		<li><!--not yet developped -->
 		  <a data-toggle="modal" href="#" data-target="#devModal">
@@ -441,8 +446,8 @@
 	  <div class="modal-body">
 	    <p class="text-justify">
 	      Document Creator is a software developed by
-	      Journet Nicholas (<a href="mailto:journet@labri.fr">journet[X]labri.fr</a>) and
-	      Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal[X]labri.fr</a>).
+	      Journet Nicholas (<a href="mailto:journet@labri.fr">journet [at] labri.fr</a>) and
+	      Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal [at] labri.fr</a>).
 	      <br><br>
 	      Font creator has been developed by
 	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T.Autret</a>,
@@ -471,9 +476,11 @@
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 	      ×
 	    </button>
-	    <h4 class="modal-title">Character Degradation Level Adjustement</h4>
+	    <h4 class="modal-title">Character Degradation Level Adjustment</h4>
 	  </div>
 	  <div class="modal-body input-inside">
+	    <span style="float:left">Lowest</span>
+	    <span style="float:right">Highest</span>
 	    <input id="GrayScaleCharacterDegradationValue" type="range" value="5" max="10" min="0" step="1">
 	  </div>
 	  <div class="modal-footer">
@@ -553,7 +560,7 @@
       </div>
     </div>
     
-    <!-- MOD// BLEEDTHROUGH  -->
+    <!-- MOD// BLEED THROUGH  -->
     <div class="modal fade" id="BleedThroughModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
 	<div class="modal-content">
@@ -572,9 +579,9 @@
 	  <div class="modal-body">
 	    Choose Image Verso
 	    <input id="img_verso_bleed_through" text="" type="file" accept="image/*"/>
-	    <img id="BleedThroughImgVerso" width="200" height="200" data-girar="0"></canvas>
+	    <img id="BleedThroughImgVerso" width="200" height="200" data-girar="0"></img>
 	  </div>
-	  
+
 	  <div class="modal-footer">
 	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
 	    <button type="button" data-dismiss="modal" id="BleedThroughExec" class="btn btn-primary">Ok</button>
@@ -583,17 +590,49 @@
       </div>
     </div>
 
+
+    <!-- MOD// BLUR FILTER  -->
+    <div class="modal fade" id="BlurFilterModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Blur Filter</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    These pictures are real blur examples on old documents. <br>
+	    Choose the blur that you want to apply on your document. <br><br>
+	    <div id="change_img_blur_filter" class="text-center">
+	      <button class="btn btn-default" data-id="change_img_left" style="border:none;">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	      </button>
+	      <img id="BlurFilterExample" src="img/blurExamples/blurGenerated1.png" style="clip: rect(0px, 65px, 35px, 40px);" width="200" height="200" data-girar="0"></img>
+	      <button class="btn btn-default" data-id="change_img_right" style="border:none;">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	      </button>
+	    </div>
+	  </div>
+
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="BlurFilterExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+
     <!-- FOOTER  -->
     <footer>
       <div class="row copyright">
-        <p class="text-center">
+	<p class="text-center">
 	  <a href="https://github.com/titi38/libnavajo">
 	    <span class="glyphicon glyphicon-education" id="git"></span>
 	  </a>
-	  Made with
-	  <a href="https://github.com/titi38/libnavajo">
-	    libnavajo
-	  </a>
+	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
 	</p>
       </div>
     </footer>  

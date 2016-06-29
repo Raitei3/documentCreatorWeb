@@ -758,15 +758,9 @@ class MyDynamicRepository : public DynamicRepository
 
     }
   } phantomCharacterDegradation;
-
-  // ===========================================================================
-  // ===========================================================================
-  // ======                                                               ======
-  // ===========================================================================
-  // ===========================================================================
   
 
-  class UploaderImgRectoBleedThrough: public DynamicPage
+  class UploaderImgVersoBleedThrough: public DynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
@@ -789,7 +783,7 @@ class MyDynamicRepository : public DynamicRepository
         }
         
         std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
-        NVJ_LOG->append(NVJ_INFO, "Got Image Recto field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
+        NVJ_LOG->append(NVJ_INFO, "Got Image Verso field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
 
         std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
         std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
@@ -808,7 +802,8 @@ class MyDynamicRepository : public DynamicRepository
       }
       return true;
     }
-  } uploaderImgRectoBleedThrough;
+  } uploaderImgVersoBleedThrough;
+
   
   class BleedThroughDegradation: public MyDynamicPage
   {
@@ -816,11 +811,11 @@ class MyDynamicRepository : public DynamicRepository
     {      
       std::string tokenParam;
       std::string nbIterationsParam;
-      std::string imgRectoParam;
+      std::string imgVersoParam;
       
       request->getParameter("token", tokenParam);
       request->getParameter("nbIterations", nbIterationsParam);
-      request->getParameter("imgRecto", imgRectoParam);
+      request->getParameter("imgVerso", imgVersoParam);
 
       int nbIterations = stoi(nbIterationsParam);
       
@@ -828,7 +823,9 @@ class MyDynamicRepository : public DynamicRepository
       int sessionIndex = getActiveSessionFromToken(token);
       if(sessionIndex != -1)
       {
-        QImage img_verso((UPLOAD_DIR + imgRectoParam).c_str());
+        QImage img_verso((UPLOAD_DIR + imgVersoParam).c_str());
+        img_verso = img_verso.mirrored(true, false);
+        
         QImage img_recto(activeSessions.at(sessionIndex)->getDisplayedFileName().c_str());
         QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
         
@@ -848,6 +845,38 @@ class MyDynamicRepository : public DynamicRepository
 
     }
   } bleedThroughDegradation;
+
+  
+  class BlurFilterDegradation: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {      
+      std::string tokenParam;
+      std::string intensityParam;
+      
+      request->getParameter("token", tokenParam);
+      request->getParameter("intensity", intensityParam);
+
+      int intensity = stoi(intensityParam);
+      
+      int token = stoi(tokenParam);
+      int sessionIndex = getActiveSessionFromToken(token);
+      if(sessionIndex != -1)
+      {
+        cv::Mat matOut = activeSessions.at(sessionIndex)->getImage()->getMat();
+        activeSessions.at(sessionIndex)->getImage()->setMat(blurFilter(matOut, Method::GAUSSIAN, intensity));
+        activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+        myUploadRepo->reload();
+        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+      }
+      else
+      {
+        return fromString("Error : this session doesn't exist", response);
+      }
+
+    }
+  } blurFilterDegradation;
+
   
   class Controller: public MyDynamicPage
   {
@@ -875,7 +904,8 @@ class MyDynamicRepository : public DynamicRepository
     add("shadowBinding.txt",&shadowBindingDegradation);
     add("phantomCharacter.txt",&phantomCharacterDegradation);
     add("bleedThrough.txt",&bleedThroughDegradation);
-    add("uploaderImgRectoBleedThrough.txt",&uploaderImgRectoBleedThrough);
+    add("uploaderImgVersoBleedThrough.txt",&uploaderImgVersoBleedThrough);
+    add("blurFilter.txt",&blurFilterDegradation);
   }
 };
 

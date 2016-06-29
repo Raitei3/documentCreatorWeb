@@ -42,11 +42,12 @@ function Controller(canvas, previewCanvas, listCharacter) {
         controller.canvas.draw();
     }, true);
 
-     // Change the up line on the preview
+    // Change the up line on the preview
     $( "#up" ).change(function() {
         controller.previewCanvas.position_up_line = parseFloat($(this).val());
         controller.previewCanvas.draw();
     });
+    
     // Change the down line on the preview
     $( "#down" ).change(function() {
         controller.previewCanvas.position_down_line = parseFloat($(this).val());
@@ -136,6 +137,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
        === DEGRADATIONS ===
        ==================== */
     
+    // Bleed Through
     document.getElementById('BleedThroughExec').addEventListener('click', function(){
         session.bleedThrough(
 	    document.getElementById('BleedThroughNbIteration').value,
@@ -144,6 +146,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
     }, true);
 
     
+    // Shadow Binding
     document.getElementById('ShadowBindingExec').addEventListener('click', function(){
 	var all_border = document.getElementsByName("ShadowBindingBorder");
 	var border;
@@ -161,8 +164,9 @@ function Controller(canvas, previewCanvas, listCharacter) {
 	    document.getElementById('ShadowBindingAngle').value,
 	    controller);
     }, true);
-
     
+
+    // Phantom Character
     document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
 	var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
 	var frequency;
@@ -178,7 +182,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
 	    controller);
     }, true);
     
-    
+    // GrayScale Character Degradation
     document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
         session.grayScaleCharsDegradation(
 	    document.getElementById('GrayScaleCharacterDegradationValue').value,

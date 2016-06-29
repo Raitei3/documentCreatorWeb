@@ -27,11 +27,11 @@ function prepareUpload(event)
     }
     
     else if (event.target.id == "img_verso_bleed_through"){
-	session.uploadImgRecto(data, updateImgRecto);
+	session.uploadImgVerso(data, updateImgVerso);
     } 
 }
 
-function updateImgRecto(filename)
+function updateImgVerso(filename)
 {
     $("#BleedThroughImgVerso").attr('src','data/' + filename);
 }

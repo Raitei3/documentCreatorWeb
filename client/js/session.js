@@ -311,18 +311,18 @@ Session.prototype.phantomCharacter = function(frequency, callback)
     });
 }
 
-Session.prototype.bleedThrough = function(nbIterations, imgRecto, callback)
+Session.prototype.bleedThrough = function(nbIterations, imgVerso, callback)
 {
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
-    var img_split = imgRecto.split("/");
-    filenameImgRecto = img_split[img_split.length - 1];
+    var img_split = imgVerso.split("/");
+    filenameImgVerso = img_split[img_split.length - 1];
 
     $.ajax({
         url: 'bleedThrough.txt',
         type: 'POST',
-        data: 'token=' + this.token + '&nbIterations=' + nbIterations + '&imgRecto=' + filenameImgRecto,
+        data: 'token=' + this.token + '&nbIterations=' + nbIterations + '&imgVerso=' + filenameImgVerso,
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
@@ -338,15 +338,39 @@ Session.prototype.bleedThrough = function(nbIterations, imgRecto, callback)
     });
 }
 
+Session.prototype.blurFilter = function(intensity, callback)
+{
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
 
-Session.prototype.uploadImgRecto = function(file, callback)
+    $.ajax({
+        url: 'blurFilter.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&intensity=' + intensity,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            callback.replaceImage(data);
+
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+Session.prototype.uploadImgVerso = function(file, callback)
 {
     // Loading panel  
     $('.overlay').show();
     $('.loader').show();
     
     $.ajax({
-	url: 'uploaderImgRectoBleedThrough.txt',
+	url: 'uploaderImgVersoBleedThrough.txt',
 	type: 'POST',
 	data: file,
 	cache: false,
