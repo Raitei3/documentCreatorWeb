@@ -133,9 +133,37 @@ function Controller(canvas, previewCanvas, listCharacter) {
 	document.getElementById('download_img').setAttribute('download', "doc-online." + extension);
     }, true);
 
-    /* ====================
-       === DEGRADATIONS ===
-       ==================== */
+    /* =======================
+       === DEGRADATIONS 2D ===
+       ======================= */
+
+    // Blur Filter
+    document.getElementById('BlurFilterExec').addEventListener('click', function(){
+	var src = document.getElementById('BlurFilterExample').src;
+	intensity = src.charAt(src.length - 5);
+        session.blurFilter(intensity, controller);
+    }, true);
+
+    // Blur Filter - change image blur
+    document.getElementById('change_img_blur_filter').addEventListener('click', function(event){
+	if(event.target.nodeName == "BUTTON") {
+	    var src = document.getElementById('BlurFilterExample').src;
+	    numImg = src.charAt(src.length - 5);
+	    if ($(event.target).data("id") == "change_img_left") {
+		numImg = parseInt(numImg) - 1;
+		if (numImg < 1){
+		    numImg = 4;
+		}
+	    } else if ($(event.target).data("id") == "change_img_right") {
+		numImg = parseInt(numImg) + 1;
+		if (numImg > 4){
+		    numImg = 1;
+		}
+	    }
+	    var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
+	    document.getElementById('BlurFilterExample').setAttribute('src', new_src);
+	}
+    });
     
     // Bleed Through
     document.getElementById('BleedThroughExec').addEventListener('click', function(){
