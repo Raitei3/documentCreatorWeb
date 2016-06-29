@@ -758,12 +758,6 @@ class MyDynamicRepository : public DynamicRepository
 
     }
   } phantomCharacterDegradation;
-
-  // ===========================================================================
-  // ===========================================================================
-  // ======                                                               ======
-  // ===========================================================================
-  // ===========================================================================
   
 
   class UploaderImgRectoBleedThrough: public DynamicPage
@@ -810,6 +804,7 @@ class MyDynamicRepository : public DynamicRepository
     }
   } uploaderImgRectoBleedThrough;
   
+  
   class BleedThroughDegradation: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
@@ -829,6 +824,8 @@ class MyDynamicRepository : public DynamicRepository
       if(sessionIndex != -1)
       {
         QImage img_verso((UPLOAD_DIR + imgRectoParam).c_str());
+        img_verso = img_verso.mirrored(true, false);
+        
         QImage img_recto(activeSessions.at(sessionIndex)->getDisplayedFileName().c_str());
         QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
         
