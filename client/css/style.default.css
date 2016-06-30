@@ -39,6 +39,20 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+.circle {
+    width:50px;
+    height:50px;
+    border-radius:25px;
+    font-size:18px;
+    color:#fff;
+    line-height:50px;
+    text-align:center;
+    background:#5091da; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .color-doc {
     color: 5091da; 
 }
@@ -1061,7 +1075,8 @@ label {
     width: 60px;
     height: 60px;
     position: absolute;
-    left: 48%;
+    margin-left: auto;
+    margin-right: auto;
     top: 50%;
     animation: spin 2s linear infinite;
 }
