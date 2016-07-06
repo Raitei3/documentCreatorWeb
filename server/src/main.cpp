@@ -34,6 +34,28 @@ LocalRepository *myUploadRepo = NULL;
 
 std::vector<Session*> activeSessions;
 
+
+
+/* split the string "chaine" */
+int split(std::vector<std::string>& vecteur, std::string chaine, char separateur)
+{
+  vecteur.clear();
+
+  std::string::size_type stTemp = chaine.find(separateur);
+	
+  while(stTemp != std::string::npos)
+  {
+    vecteur.push_back(chaine.substr(0, stTemp));
+    chaine = chaine.substr(stTemp + 1);
+    stTemp = chaine.find(separateur);
+  }
+	
+  vecteur.push_back(chaine);
+
+  return vecteur.size();
+}
+
+
 /*
  * \brief Function use when the service is closed and killed the active session
  *
@@ -232,18 +254,18 @@ std::string gen_random(std::string extension) {
  * \return a string JSON
  */
 static
-std::string InitiateSession(std::string fileName, HttpRequest *request)
+std::string InitiateSession(std::string fileName, HttpRequest* request)
 {
   int cptExample = 0;
-  Session * mySession = new Session((UPLOAD_DIR)+fileName);
+  Session* mySession = new Session((UPLOAD_DIR) + fileName);
   
   srand(time(NULL));
   cptExample = rand();
   mySession->setToken(cptExample);
-  mySession->setOriginalFileName((UPLOAD_DIR)+fileName);   
+  mySession->setOriginalFileName(fileName);   
   activeSessions.push_back(mySession);
   mySession->getImage()->ComputeMask();
-  return "{\"fileName\":\""+fileName+"\",\"token\":" + std::to_string(mySession->getToken())+"}";
+  return "{\"fileName\":\"" + fileName + "\",\"token\":" + std::to_string(mySession->getToken()) + "}";
 }
 
 /*
@@ -273,7 +295,8 @@ class MyDynamicRepository : public DynamicRepository
   {    
   };
 
-  class Uploader: public DynamicPage
+    
+  class StartSession: public DynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
@@ -297,7 +320,7 @@ class MyDynamicRepository : public DynamicRepository
 
 
             std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
-	    std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
+	    std::string dstFilename = std::string(UPLOAD_DIR) + newFileName;
             std::ofstream dst(dstFilename.c_str(), std::ios::binary);
             if (!src || !dst)
               NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
@@ -307,7 +330,7 @@ class MyDynamicRepository : public DynamicRepository
             dst.close();
             myUploadRepo->reload();
             std::string json_Session = InitiateSession(newFileName, request);
-            NVJ_LOG->append(NVJ_ERROR, json_Session);
+            NVJ_LOG->append(NVJ_ERROR, "Start Session : " + json_Session);
             return fromString(json_Session, response); 
           }
         } else {
@@ -317,7 +340,99 @@ class MyDynamicRepository : public DynamicRepository
       }
       return true;
     }
-  } uploader;
+  } startSession;
+
+  
+  class stopSession: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string token;
+      request->getParameter("token", token);
+      int sessionIndex = getActiveSessionFromToken(stoi(token));
+      if (sessionIndex == -1)
+      {
+        return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
+      }
+      
+      std::string originalFileName = activeSessions.at(sessionIndex)->getOriginalFileName();
+      if (remove((UPLOAD_DIR + originalFileName).c_str()) != 0)
+      {
+        NVJ_LOG->append(NVJ_ERROR, "Error Deleted - Original Image");
+        return fromString("{\"error\":\"An error append when deleting the image\"}", response);
+      }
+      
+      if(activeSessions.at(sessionIndex)->getOriginalFileName() != activeSessions.at(sessionIndex)->getDisplayedFileName())
+      {
+        std::vector<std::string> splitStr;
+        split(splitStr, activeSessions.at(sessionIndex)->getDisplayedFileName(), '_');
+        int numImage = std::stoi(splitStr[1]);
+
+        std::string fileDisplayedPath;
+        for (int i = 0; i <= numImage; i++){
+          fileDisplayedPath = UPLOAD_DIR + splitStr[0] + "_" + std::to_string(i) + "_" + splitStr[2];
+
+          if(remove(fileDisplayedPath.c_str()) != 0)
+          {
+            NVJ_LOG->append(NVJ_ERROR, "Error Deleted - Degraded Images");
+            return fromString("{\"error\":\"An error append when deleting the image\"}", response);
+          }
+        }
+      }
+      delete activeSessions.at(sessionIndex);
+      activeSessions.erase(activeSessions.begin() + sessionIndex);
+      NVJ_LOG->append(NVJ_ERROR, "Deleted Session");
+      return fromString("{\"success\":\"Goodbye\"}", response);
+    }
+
+  } stopSession;
+
+  
+  class UploadImage: public DynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      if (!request->isMultipartContent())
+        return false;
+      
+      // retrieval of the image
+      MPFD::Parser *parser = request->getMPFDparser();
+      std::map<std::string,MPFD::Field *> fields=parser->GetFieldsMap();
+      std::map<std::string,MPFD::Field *>::iterator it;
+      for (it=fields.begin(); it!=fields.end(); ++it) 
+      {
+        if(! isFormatSupported(fields[it->first]->GetFileName()))
+        {
+          return fromString("{\"error\":\"This format of image isn't correct\"}", response);
+        }
+        if (fields[it->first]->GetType()==MPFD::Field::TextType)
+        {
+          return false;
+        }
+        
+        std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
+        NVJ_LOG->append(NVJ_INFO, "Got Image field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
+
+        std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
+        std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
+        std::ofstream dst(dstFilename.c_str(), std::ios::binary);
+        if (!src || !dst){
+          NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
+        } else {
+          dst << src.rdbuf();
+        }
+        src.close();
+        dst.close();
+        myUploadRepo->reload();
+        
+        std::string json_Session = "{\"fileName\":\"" + newFileName + "\"}";
+        NVJ_LOG->append(NVJ_ERROR, "Upload Image : " + json_Session);
+        return fromString(json_Session, response); 
+      }
+      return true;
+    }
+  } uploadImage;
+
 
   class getBoundingBox: public MyDynamicPage
   {
@@ -555,54 +670,18 @@ class MyDynamicRepository : public DynamicRepository
   } merge;
 
 
-  class stopSession: public MyDynamicPage
-  {
-    bool getPage(HttpRequest* request, HttpResponse *response)
-    {
-      std::string token;
-      request->getParameter("token", token);
-      int sessionIndex = getActiveSessionFromToken(stoi(token));
-      if(sessionIndex != -1)
-      {
-        std::string filePath = activeSessions.at(sessionIndex)->getOriginalFileName();
-        if( remove( filePath.c_str() ) != 0 )
-        {
-          NVJ_LOG->append(NVJ_ERROR, "Error Deleted");
-          return fromString("{\"error\":\"An error append when deleting the image\"}", response);
-        } else {
-          if(activeSessions.at(sessionIndex)->getOriginalFileName() != activeSessions.at(sessionIndex)->getDisplayedFileName())
-          {
-            std::string fileDisplayedPath = UPLOAD_DIR + activeSessions.at(sessionIndex)->getDisplayedFileName();
-            if( remove( fileDisplayedPath.c_str()) != 0 )
-            {
-              NVJ_LOG->append(NVJ_ERROR, "Error Deleted");
-              return fromString("{\"error\":\"An error append when deleting the image\"}", response);
-            }
-          }
-          delete activeSessions.at(sessionIndex);
-          activeSessions.erase(activeSessions.begin() + sessionIndex);
-          NVJ_LOG->append(NVJ_ERROR, "Deleted");
-          return fromString("{\"success\":\"Goodbye\"}", response);
-        }
-      } else {
-        return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
-      }
-    }
-
-  } stopSession;
-
   class extractFont: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
       std::string token;
+      std::string fontname;
       request->getParameter("token", token);
+      request->getParameter("fontname", fontname);
+      
       int sessionIndex = getActiveSessionFromToken(stoi(token));
       if(sessionIndex != -1)
       { 
-        int sessionIndex = getActiveSessionFromToken(stoi(token));
-        std::string fontname;
-        request->getParameter("fontname", fontname);
         return fromString(extractFontInOf(sessionIndex, fontname), response);
       } else {
         return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
@@ -665,6 +744,7 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->getImage()->setMat(grayDegradation.degradateByLevel_cv(level));
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - GrayScale Character : level = " + levelParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else
@@ -718,6 +798,7 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->getImage()->setMat(matOut);
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - Shadow Binding : border = " + borderParam + "; width = " + widthParam + "; intensity = " + intensityParam + "; angle = " + angleParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else
@@ -749,61 +830,16 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->getImage()->setMat(phantomCharacter(matOut, frequency));
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - Phantom Character : frequency = " + frequencyParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else
       {
         return fromString("Error : this session doesn't exist", response);
       }
-
     }
   } phantomCharacterDegradation;
   
-
-  class UploaderImgVersoBleedThrough: public DynamicPage
-  {
-    bool getPage(HttpRequest* request, HttpResponse *response)
-    {
-      if (!request->isMultipartContent())
-        return false;
-
-      // retrieval of the image
-      MPFD::Parser *parser = request->getMPFDparser();
-      std::map<std::string,MPFD::Field *> fields=parser->GetFieldsMap();
-      std::map<std::string,MPFD::Field *>::iterator it;
-      for (it=fields.begin(); it!=fields.end(); ++it) 
-      {
-        if(! isFormatSupported(fields[it->first]->GetFileName()))
-        {
-          return fromString("{\"error\":\"This format of image isn't correct\"}", response);
-        }
-        if (fields[it->first]->GetType()==MPFD::Field::TextType)
-        {
-          return false;
-        }
-        
-        std::string newFileName = gen_random(fields[it->first]->GetFileName().substr(fields[it->first]->GetFileName().find(".")));
-        NVJ_LOG->append(NVJ_INFO, "Got Image Verso field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
-
-        std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
-        std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
-        std::ofstream dst(dstFilename.c_str(), std::ios::binary);
-        if (!src || !dst){
-          NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
-        } else {
-          dst << src.rdbuf();
-        }
-        src.close();
-        dst.close();
-        myUploadRepo->reload();
-        std::string json_Session = "{\"fileName\":\"" + newFileName + "\"}";
-        NVJ_LOG->append(NVJ_ERROR, json_Session);
-        return fromString(json_Session, response); 
-      }
-      return true;
-    }
-  } uploaderImgVersoBleedThrough;
-
   
   class BleedThroughDegradation: public MyDynamicPage
   {
@@ -823,10 +859,10 @@ class MyDynamicRepository : public DynamicRepository
       int sessionIndex = getActiveSessionFromToken(token);
       if(sessionIndex != -1)
       {
+        QImage img_recto((UPLOAD_DIR + activeSessions.at(sessionIndex)->getDisplayedFileName()).c_str());
         QImage img_verso((UPLOAD_DIR + imgVersoParam).c_str());
         img_verso = img_verso.mirrored(true, false);
         
-        QImage img_recto(activeSessions.at(sessionIndex)->getDisplayedFileName().c_str());
         QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
         
         QString filename((UPLOAD_DIR + gen_random(".png")).c_str());
@@ -836,6 +872,7 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->getImage()->setMat(img.getMat());
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - Bleed Through : number iterations = " + nbIterationsParam + "; image verso = " + UPLOAD_DIR + imgVersoParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else
@@ -867,6 +904,7 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->getImage()->setMat(blurFilter(matOut, Method::GAUSSIAN, intensity));
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - Blur Filter : intensity = " + intensityParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else
@@ -892,19 +930,21 @@ class MyDynamicRepository : public DynamicRepository
   MyDynamicRepository() : DynamicRepository()
   {
     add("index.html",&controller);
-    add("uploader.txt",&uploader);
+    add("startSession.txt",&startSession);
+    add("stopSession.txt",&stopSession);
+    add("uploadImage.txt",&uploadImage);
+
     add("getBoundingBox.txt",&getBoundingBox);
     add("getInfoOnCC.txt",&getInfoOnCC);
     add("updateInfoOnCC.txt",&updateInfoOnCC);
-    add("stopSession.txt",&stopSession);
     add("extractFont.txt",&extractFont);
     add("updateBaseline.txt",&updateBaseline);
     add("merge.txt",&merge);
+    
     add("grayScaleCharsDegradation.txt",&grayScaleCharsDegradation);
     add("shadowBinding.txt",&shadowBindingDegradation);
     add("phantomCharacter.txt",&phantomCharacterDegradation);
     add("bleedThrough.txt",&bleedThroughDegradation);
-    add("uploaderImgVersoBleedThrough.txt",&uploaderImgVersoBleedThrough);
     add("blurFilter.txt",&blurFilterDegradation);
   }
 };
@@ -933,7 +973,6 @@ int main(int argc, char** argv )
 
   myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
   webServer->addRepository(myUploadRepo);
-
 
   webServer->startService();
 

@@ -238,7 +238,7 @@ BoundingBox.prototype.removeToSelection = function (id){
  * \param baseline list of baselines
  * \param boundingBox list of boundingBox
  */
-function Canvas(canvas, image, baseline, boundingBox) {
+function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
     var myCanvas = this;
 
     this.canvas = canvas;
@@ -247,10 +247,17 @@ function Canvas(canvas, image, baseline, boundingBox) {
     this.ctx = canvas.getContext('2d');
 
     this.image = image;
+    
+    // Permet de savoir si c'est une dégradation ou un font-creator
+    this.typeOfCanvas = typeOfCanvas;
 
-    this.baseline = baseline;
-    this.boundingBox = boundingBox;
-
+    if (this.typeOfCanvas == "font-creator"){
+	this.baseline = baseline;
+	this.boundingBox = boundingBox;
+    }
+    
+    this.typeOfCanvas = typeOfCanvas;
+    
     this.dragging = false;
 
     this.scale = 1.0;
@@ -282,6 +289,8 @@ function Canvas(canvas, image, baseline, boundingBox) {
         myCanvas.draw();
     }
 }
+
+
 /*!
  * When the mouse down (Dectection for moving the image)
  * \memberof Canvas
@@ -299,7 +308,7 @@ Canvas.prototype.onMouseDown= function(e){
         this.dragoffy = my - image.y;             
         this.dragging = true;
         this.draw();
-      }
+    }
 }
 
 /*!
@@ -371,33 +380,36 @@ Canvas.prototype.clear = function() {
  * \memberof Canvas
  */
 Canvas.prototype.draw = function() {
-  if (!this.valid) {
-    var ctx = this.ctx;
+    if (!this.valid) {
+	var ctx = this.ctx;
 
-    // get the translation to apply to center the image
-    var newWidth = this.width * this.scale;
-    var newHeight = this.height * this.scale;
-    this.panX = -((newWidth-this.width)/2);
-    this.panY = -((newHeight-this.height)/2);
+	// get the translation to apply to center the image
+	var newWidth = this.width * this.scale;
+	var newHeight = this.height * this.scale;
+	this.panX = -((newWidth-this.width)/2);
+	this.panY = -((newHeight-this.height)/2);
 
-    this.clear();
+	this.clear();
 
-    // Save the current context
-    ctx.save();
+	// Save the current context
+	ctx.save();
 
-    // Apply modifications (zoom, translation) all elements drawing after this will have the modifications
-    ctx.translate(this.panX, this.panY);
-    ctx.scale(this.scale, this.scale);
-    
-    // Draw all elements
-    this.image.draw(ctx);
-    this.baseline.draw(ctx, this.image);
-    this.boundingBox.draw(ctx, this.image);
+	// Apply modifications (zoom, translation) all elements drawing after this will have the modifications
+	ctx.translate(this.panX, this.panY);
+	ctx.scale(this.scale, this.scale);
+	
+	// Draw all elements
+	this.image.draw(ctx);
+	
+	if (this.typeOfCanvas == "font-creator"){
+	    this.baseline.draw(ctx, this.image);
+	    this.boundingBox.draw(ctx, this.image);
+	}
+	
+	// Restore the context
+	ctx.restore();
 
-    // Restore the context
-    ctx.restore();
-
-  }
+    }
 }
 
 /*!
@@ -419,6 +431,7 @@ Canvas.prototype.getMouse = function(e) {
     return {x: mouseXT, y: mouseYT};
 }
 
+
 Canvas.prototype.changeImage = function(imagePath) {
     var canvas = this;
     this.image.img.src = imagePath;
@@ -426,6 +439,7 @@ Canvas.prototype.changeImage = function(imagePath) {
         canvas.draw();
     }
 }
+
 
 /*!
  * preview canvas 
@@ -618,8 +632,9 @@ function ListCharacter(){
  */
 ListCharacter.prototype.addToCharacter = function(character){
     var number = 0;
-    if(this.list.has(character))
-        number = this.list.get(character);
+    if(this.list.has(character)) {
+	number = this.list.get(character);
+    }
     this.list.set(character, number+1);
 }
 
@@ -648,7 +663,7 @@ ListCharacter.prototype.draw = function(){
     var listHTMl = $("#letter-list");
     listHTMl.empty();
     for (var [key, value] of this.list)
-      listHTMl.append( "<li class=\"col-sm-15 listItem\" data-character=\"" + key + "\">" + key + "<span class=\"pull-right letter-number\">" + value + "</span></li>");
+      listHTMl.append( "<li class=\"col-sm-3 listItem\" data-character=\"" + key + "\">" + key + "<span class=\"pull-right letter-number\">" + value + "</span></li>");
 }
 
 /*!
@@ -657,34 +672,31 @@ ListCharacter.prototype.draw = function(){
  * \param boundingBox list of boundingBox from the server
  * \param baselines list of baselines from the server
  */
-function init(src, boundingBox, baseline) {
-    var image = new ProcessingImage(src);
-    var imagePreview = new ProcessingImage(src);
+function init(src, boundingBox, baseline, typeOfController) {
+    if (typeOfController == "font-creator"){
+	var image = new ProcessingImage(src);
+	var imagePreview = new ProcessingImage(src);
+	
+	var listRect = new Array();
+	for (var rect in boundingBox) {
+            listRect.push(new Rectangle({x:boundingBox[rect].x, y:boundingBox[rect].y, w:boundingBox[rect].width, h: boundingBox[rect].height},boundingBox[rect].idCC, boundingBox[rect].idLine));
+	} 
+	var boundingBox = new BoundingBox(listRect);
+	
+	var listBaseline = new Array();
+	for (var line in baseline) {
+            listBaseline.push(new Line(baseline[line].idLine, baseline[line].x_begin,baseline[line].y_baseline,baseline[line].x_end));
+	}
+	var baseline = new Baseline(listBaseline);
     
-
-    var listRect = new Array();
-    for (var rect in boundingBox) {
-        listRect.push(new Rectangle({x:boundingBox[rect].x, y:boundingBox[rect].y, w:boundingBox[rect].width, h: boundingBox[rect].height},boundingBox[rect].idCC, boundingBox[rect].idLine));
-    } 
-    var boundingBox = new BoundingBox(listRect);
-    
-    var listBaseline = new Array();
-    for (var line in baseline) {
-        listBaseline.push(new Line(baseline[line].idLine, baseline[line].x_begin,baseline[line].y_baseline,baseline[line].x_end));
+	var normalCanvas = new Canvas(document.getElementById('canvas'), image, baseline, boundingBox, "font-creator");
+	var previewCanvas = new PreviewCanvas(document.getElementById('small_canvas'), imagePreview);
+	var listCharacter = new ListCharacter();
+	var controller = new Controller(normalCanvas, previewCanvas, listCharacter);
+    } else {
+	var image = new ProcessingImage(src);
+	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "degradation");
+	var controller = new ControllerDegradation(normalCanvas);
     }
-    var baseline = new Baseline(listBaseline);
-
-    var previewCanvas = new PreviewCanvas(document.getElementById('small_canvas'), imagePreview);
-    var normalCanvas = new Canvas(document.getElementById('canvas'), image, baseline, boundingBox);
-
-
-    var listCharacter = new ListCharacter();
-    var controller = new Controller(normalCanvas, previewCanvas, listCharacter);
 }
-
-
-
-
-
-
 

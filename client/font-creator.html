@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Doc Creator Online</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Google fonts - Roboto Condensed for headings, Open Sans for copy-->
+    <link rel="stylesheet" href="css/google_api.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!-- scripts -->
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+      $('#font-creator-practice').hide();
+      $('.loader').hide();   
+      });
+    </script>
+    <link rel="shortcut icon" href="favicon.png">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
+    <div class="overlay">
+      <div class="loader">
+      </div>
+    </div>
+    
+    <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
+    <header class="header">
+      <div class="sticky-wrapper">
+	<div role="navigation" class="navbar navbar-default navbar-fixed-top">
+	  <div class="container">
+            <div class="navbar-header">
+              <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	      </button>
+            </div>
+            <div id="navigation" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-default">
+		<li>
+		  <a href="home-online.html">Home</a>
+		</li>
+		<li>
+		  <a href="font-creator.html">Font Creator</a>
+		</li>
+		<li>
+		  <a href="degradations.html">Degradations</a>
+		</li>
+		<li>
+		  <a href="create-your-document.html">Create your document</a>
+		</li>
+	      </ul>
+            </div>
+	  </div>
+	</div>
+      </div>
+    </header>
+
+    <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
+    <section id="font-creator">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-12">
+            <h2 class="heading">FONT CREATOR</h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-12 text-center">
+            <p>
+	      <b>
+		Welcome to Font Creator<br>
+		First, upload an image (supported formats are JPEG, JPG, PNG, TIF and TIFF)<br>
+		Then, extract your font !
+	      </b>
+	    </p>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-sm-offset-5 col-sm-2 text-center">
+            <div class="fileUpload btn btn-primary">
+	      <span>Upload</span>
+              <input id="start_font_creator" type="file" class="upload" name="image" accept="image/*"/>
+            </div>
+          </div>
+	</div>
+    </section>   
+    
+    <!--USER MENU--> <!--USER MENU--> <!--USER MENU--> <!--USER MENU-->
+    <section id="font-creator-practice">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-4"><!--PREVIEW-->
+	    <div class="container_right">
+	      <div class="row">
+		<div class="col-md-12 section_portion"><!--OPTIONS-->
+		  <div class="row text-center">
+		    <b>OPTIONS</b>
+		  </div>
+		  <div class="row">
+		    <div class="col-md-6">
+		      <a href="#">
+			<span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>  
+		      </a>Zoom in<br>
+		      <a href="#">
+			<span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
+		      </a>Zoom out<br>
+		      <a href="#">  
+			<span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
+		      </a>Reset zoom<br>
+		      <input type="checkbox" id="baseline" style="margin:0px;">
+		      Show Baseline
+		    </div>
+		    
+		    <div class="col-md-6">
+		      <a href="#" data-toggle="modal" data-target="#saveModal" title="Export the font">
+			<span class="glyphicon glyphicon-download"></span>
+		      </a>Export the font<br>
+		      <a href="#" title="Start with a new Image">
+			<span class="glyphicon glyphicon-remove" id="button_trash"></span>
+		      </a>Start from scratch<br>
+		      <a data-toggle="modal" href="#" data-target="#helpModal">
+			<span class="glyphicon glyphicon-question-sign"></span>
+		      </a>Help
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="col-md-12 section_portion"><!--PREVIEW-->
+		  <div class="row text-center">  
+		    <b> LETTER PREVIEW </b>
+		  </div>
+
+		  <div class="row text-center">
+		    <div class="col-md-4" style="border-radius: 50%; width: 115px; height: 115px; margin:10px 10px 0px 20px; padding:0px; border:1px black solid">
+		      <div id="up" class="spinner text-center">
+			<button class="btn btn-default" data-id="up" style="border:none; color:#ff0000;padding:2px;">
+			  <span class="glyphicon glyphicon-chevron-up"></span>
+			</button>
+			<br>
+			<button class="btn btn-default" data-id="up" style="border:none; color:#ff0000;padding:2px;">
+			  <span class="glyphicon glyphicon-chevron-down"></span>
+			</button>
+		      </div>
+		      
+		      <div class="col-md-4" style="padding:0px">
+			<div id="left" class="spinner text-center">
+			  <button class="btn btn-default" data-id="left" style="border:none; color:#0000ff; padding:2px;">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			  </button>
+			  <button class="btn btn-default" data-id="left" style="border:none; color:#0000ff; padding:2px;">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			  </button>
+			</div>
+		      </div>
+		      
+		      <div class="col-md-4 text-center" style="padding:0px">
+			Lines
+		      </div>
+		      
+		      <div class="col-md-4" style="padding:0px">
+			<div id="right" class="spinner text-center">
+			  <button class="btn btn-default" data-id="right" style="border:none; color:#ff8000;padding:2px;">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			  </button>
+			  <button class="btn btn-default" data-id="right" style="border:none; color:#ff8000;padding:2px;">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			  </button>
+			</div>
+		      </div>
+
+		      <div id="down" class="spinner text-center">
+			<button class="btn btn-default" data-id="down" style="border:none; color:#cc00ff;padding:2px;">
+			  <span class="glyphicon glyphicon-chevron-up"></span>
+			</button>
+			<br/>
+			<button class="btn btn-default" data-id="down" style="border:none; color:#cc00ff;padding:2px;">
+			  <span class="glyphicon glyphicon-chevron-down"></span>
+			</button>
+		      </div>
+		    </div>
+		    
+		    <div class="col-md-5" style="margin:5px; padding:0px;">
+		      <div class="box" class="small-canvas">
+			<div class="content">
+			  <canvas id="small_canvas" width="200" height="150" data-girar="500"></canvas>
+			</div>
+		      </div>
+		    </div>
+		    
+		    <div class="col-md-2" style="padding:0px; margin:34px 5px 0px">
+		      <div id="baselineCC" class="spinner text-center">
+			<button class="btn btn-default" data-id="baselineCC" style="border:none; color:#33cc33; padding:3px;">
+			  <span class="glyphicon glyphicon-chevron-up"></span>
+			</button>
+			<br>
+			Baseline
+			<br>
+			<button class="btn btn-default" data-id="baselineCC" style="border:none; color:#33cc33; padding:3px;">
+			  <span class="glyphicon glyphicon-chevron-down"></span>
+			</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		
+		<div class="col-md-12 section_portion"><!--ASSIGNMENT-->
+		  <div class="row text-center">
+		    <b>LETTER ASSIGNMENT</b>
+		  </div>
+		  
+		  <div class="row">
+		    <div class="col-md-4">
+		      <input type="radio" name="type_letter" value="letter" checked> Letter<br>
+		      <input type="radio" name="type_letter" value="unicode"> Unicode<br>
+		    </div>
+		    
+		    <div class="col-md-4">
+		      <div class="input-group">
+			<input id="letter" size="5" maxlength="5" class="form-control" type="text" value="" placeholder="letter">
+		      </div>
+		      <a href="#">
+			<span class="glyphicon glyphicon-ok" id="save"></span>
+		      </a>Save
+		    </div>
+
+		    <div class="col-md-4">
+		      <a href="#">
+			<span class="glyphicon glyphicon-resize-small" id="mergeButton"></span>
+		      </a>Merge<br>
+		      <a href="#" data-toggle="modal" data-target="#devModal">
+			<span class="glyphicon glyphicon-resize-full" id="splitButton"></span>
+		      </a>Split
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="col-md-12 section_portion"><!--ALPHABET-->
+		  <div class="row text-center">
+		    <b>ALPHABET</b>
+		  </div>
+		  <div class="row">
+		    <div class="col-sm-12" style="height:80px; overflow:auto;">
+		      <ul class="letter-list" id="letter-list" style="padding: 0; list-style-type: none;"></ul>
+		    </div>
+		  </div>
+		</div>
+	      </div> 
+	    </div>
+	  </div>
+	  <div class="col-md-8 text-center" style="margin: 5px 0px;">
+	    <canvas id="canvas" width="900" height="652" data-girar="0"></canvas>
+	  </div>
+	</div>
+      </div>
+    </section>
+
+
+    <!-- ================================
+	 ======== MODALS SECTION ========
+         ================================ -->
+        
+    <!-- MOD// EXPORT FONT  -->
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Export font</h4>
+	  </div>
+	  <div class="modal-body">
+	    <input class="form-control" id="fontName" type="text" data-tabindex="1" placeholder="Font name">
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">
+	      Close
+	    </button>
+	    <button type="button" id="exportFont" class="btn btn-primary">
+	      Export
+	    </button>
+	  </div>
+	</div>
+      </div>
+    </div>	
+
+    <!-- MOD// HELP  -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Help</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p class="text-justify">
+	      <b>Step by step guide:</b>
+	      <br><br>
+	      <b>I - </b> <b style=color:#5091da;>Upload </b> an image (supported formats are <b>JPEG</b>, <b>JPG</b>, <b>PNG</b>, <b>TIFF</b> and <b>TIF</b>).
+	      <br><br>
+	      <b>II - </b>Select a letter with your mouse. It will appear in the <b style=color:#5091da;>Letter Preview </b> field. If you are not happy with the native selection, you can correct the baseline and the different border lines.
+	      <br><br>
+	      <b>III - </b>It is possible to merge several selected elements in the <b style=color:#5091da;>Letter Assignment</b> field. For example, if the upper and the lower part of an "i" are detected separately, you can merge them holding <b>ctrl</b> on windows/linux and <b>cmd</b> on mac while selecting both parts.
+	      <br><br>
+	      <b>IV - </b>Once you are happy with your character, you can assign it (both letter and unicode are accepted) and save it in the <b style=color:#5091da;>Letter Assignment </b> field.
+	      <br><br>
+	      <b>V - </b>The <b style=color:#5091da;>Alphabet </b> section shows all the letters already extracted.
+	      <br><br>
+	      <b>VI - </b>The <b style=color:#5091da;>Options </b> section allows you to zoom in/out and reset zoom on original position. You also can show or unshow the baseline, start again with a new image and download your font.
+	      <br><br>
+	      <b>VII - </b>You can add degradations to your image directly from the menu <b style=color:#5091da;>Degradations </b>. It is possible to download the modified image at anytime !
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- MOD// DEV  -->
+    <div class="modal fade" id="devModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">×</button>
+	    <h4 class="modal-title">Work in progress</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p class="text-justify">
+	      <span class="glyphicon glyphicon-wrench"></span>
+	      We are sorry, this part of Document Creator Online is still in development.
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- MOD// CREDITS  -->
+    <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Credits</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p class="text-justify">
+	      Document Creator is a software developed by
+	      Journet Nicholas (<a href="mailto:journet@labri.fr">journet [at] labri.fr</a>) and
+	      Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal [at] labri.fr</a>).
+	      <br><br>
+	      Font creator has been developed by
+	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T. Autret</a>,
+	      <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A. Boschet</a>,
+	      <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T. Labrousse</a>,
+	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a> and
+	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>.
+	      Design by <a href="http://www.whitebeears.com">F. Bruneau </a>
+	    </p>
+	    <p>
+	      Made with <a href="https://github.com/titi38/libnavajo/">libnavajo</a> and <a href="http://opencv.org">OpenCV</a>
+	    </p>
+	    <p class="credit roboto">
+	      <a href="http://bootstrapious.com/portfolio-themes">Bootstrap Portfolio Themes</a>
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+
+    <!-- FOOTER  -->
+    <footer>  
+      <div class="row copyright">
+	<p class="text-center">
+	  <a data-toggle="modal" href="#" data-target="#creditModal">
+	    <span class="glyphicon glyphicon-info-sign"></span>
+	  </a>Credits<br>
+	  
+	  <a href="https://github.com/titi38/libnavajo">
+	    <span class="glyphicon glyphicon-education" id="git"></span>
+	  </a>
+	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
+	</p>
+      </div>
+    </footer>  
+
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
+  </body>
+</html>

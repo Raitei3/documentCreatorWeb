@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Doc Creator Online</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Google fonts - Roboto Condensed for headings, Open Sans for copy-->
+    <link rel="stylesheet" href="css/google_api.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!-- scripts -->
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+      $('#degradations').show();
+      $('#degradation_practice').hide();
+      $('.loader').hide();   
+      });
+    </script>
+    <link rel="shortcut icon" href="favicon.png">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
+    <div class="overlay">
+      <div class="loader">
+      </div>
+    </div>
+    
+    <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
+    <header class="header">
+      <div class="sticky-wrapper">
+	<div role="navigation" class="navbar navbar-default navbar-fixed-top">
+	  <div class="container">
+            <div class="navbar-header">
+              <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	      </button>
+            </div>
+            <div id="navigation" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-default">
+		<li>
+		  <a href="home-online.html">Home</a>
+		</li>
+		<li>
+		  <a href="font-creator.html">Font Creator</a>
+		</li>
+		<li>
+		  <a href="degradations.html">Degradations</a>
+		</li>
+		<li>
+		  <a href="create-your-document.html">Create your document</a>
+		</li>
+	      </ul>
+            </div>
+	  </div>
+	</div>
+      </div>
+    </header>
+
+    <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
+    <section id="degradations">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-12">
+            <h2 class="heading">DEGRADATIONS</h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-12 text-center">
+            <p>
+	      <b>
+		Welcome to Degradations<br>
+		First, upload an image (supported formats are JPEG, JPG, PNG, TIF, and TIFF)<br>
+		Then, degrade it !
+	      </b>
+	    </p>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="text-center">
+            <div class="fileUpload btn btn-primary">
+	      <span>Upload</span>
+              <input id="start_degradation" type="file" class="upload" name="image" accept="image/*"/>
+            </div>
+          </div>
+	</div>
+      </div>
+    </section>   
+
+    <section id="degradation_practice">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-3">
+	    <div class="row">
+	      <div class="col-md-12 section_portion" style="padding:10px;"><!--OPTIONS-->
+		<div class="row text-center">
+		  <b>OPTIONS</b>
+		</div>
+		<div class="row">
+		  <div class="col-md-5">
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>  
+		    </a>Zoom in<br>
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
+		    </a>Zoom out<br>
+		    <a href="#">  
+		      <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
+		    </a>Reset zoom<br>
+		    <!--
+		    <a href="#">  
+		      <span class="glyphicon glyphicon-refresh"></span>
+		    </a>Reset image
+		    -->
+		  </div>
+		  <div class="col-md-7">
+		    <a href="#" title="Start with a new Image">
+		      <span class="glyphicon glyphicon-remove" id="button_trash"></span>
+		    </a>Start from scratch<br>
+		    <a id="download_img" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download Image<br>
+		    <a data-toggle="modal" href="#" data-target="#helpModal">
+		      <span class="glyphicon glyphicon-question-sign"></span>
+		    </a>Help
+		  </div>
+		</div>
+	      </div>
+	      <div class="col-md-12 section_portion"><!--OPTIONS -->
+		<div class="row text-center">
+		  <b>DEGRADATIONS</b>
+		</div>
+		<div class="row text-center li_degradation">
+		  <ul>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#GrayScaleCharacterDegradationModal">
+			GrayScale Character Degradation
+		      </a>
+		    </li>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#ShadowBindingModal">
+			Shadow Binding
+		      </a>
+		    </li>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#PhantomCharacterModal">
+			Phantom Character
+		      </a>
+		    </li>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#BleedThroughModal">
+			Bleed Through
+		      </a>
+		    </li>
+		    <li>
+		      <a href="#" data-toggle="modal" data-target="#BlurFilterModal">
+			Blur Filter
+		      </a>
+		    </li>
+		  </ul>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-md-8 text-center" style="margin: 5px 0px;">
+	    <canvas id="canvas" width="900" height="680" data-girar="0"></canvas>
+	  </div>
+	</div>
+      </div>
+    </section>
+
+    <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->	
+
+    
+    <!-- MOD// GRAYSCALE CHARACTER DEGRADATION  -->
+    <div class="modal fade" id="GrayScaleCharacterDegradationModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Character Degradation Level Adjustment</h4>
+	  </div>
+	  <div class="modal-body input-inside">
+	    <span style="float:left">Lowest</span>
+	    <span style="float:right">Highest</span>
+	    <input id="GrayScaleCharacterDegradationValue" type="range" value="5" max="10" min="0" step="1">
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">
+	      Close
+	    </button>
+	    <button type="button" data-dismiss="modal" id="GrayScaleCharacterDegradationExec" class="btn btn-primary">
+	      Ok
+	    </button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- MOD// SHADOW BINDING  -->
+    <div class="modal fade" id="ShadowBindingModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Shadow Binding</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Border : <br/>
+	    <input type="radio" name="ShadowBindingBorder" value="left" checked> Left <br>
+	    <input type="radio" name="ShadowBindingBorder" value="right"> Right <br>
+	    <input type="radio" name="ShadowBindingBorder" value="top"> Top <br>
+	    <input type="radio" name="ShadowBindingBorder" value="bottom"> Bottom
+	  </div>
+	  <div class="modal-body input-inside">
+	    Width :
+	    <input id="ShadowBindingWidth" type="range" value="50" max="100" min="0" step="1">
+	  </div>
+	  <div class="modal-body input-inside">
+	    Intensity :
+	    <input id="ShadowBindingIntensity" type="range" value="0.5" max="1" min="0" step="0.01">
+	  </div>
+	  <div class="modal-body input-inside">
+	    Angle :
+	    <input id="ShadowBindingAngle" type="range" value="45" max="90" min="0" step="1">
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="ShadowBindingExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <!-- MOD// PHANTOM CHARACTER  -->
+    <div class="modal fade" id="PhantomCharacterModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Phantom Character</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Frequency : <br/>
+	    <input type="radio" name="PhantomCharacterFrequency" value="0" checked> low amount<br>
+	    <input type="radio" name="PhantomCharacterFrequency" value="1"> medium amount<br>
+	    <input type="radio" name="PhantomCharacterFrequency" value="2"> high amount <br>
+	  </div>
+	  
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="PhantomCharacterExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <!-- MOD// BLEED THROUGH  -->
+    <div class="modal fade" id="BleedThroughModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Bleed Through</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    Number of iteration : <br/>
+	    <input id="BleedThroughNbIteration" type="range" value="50" max="100" min="1" step="1">
+	  </div>
+	  
+	  <div class="modal-body">
+	    Choose Image Verso
+	    <input id="img_verso_bleed_through" text="" type="file" accept="image/*"/>
+	    <img id="BleedThroughImgVerso" width="200" height="200" data-girar="0"></img>
+	  </div>
+
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="BleedThroughExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+
+    <!-- MOD// BLUR FILTER  -->
+    <div class="modal fade" id="BlurFilterModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Blur Filter</h4>
+	  </div>
+	  
+	  <div class="modal-body">
+	    These pictures are real blur examples on old documents. <br>
+	    Choose the blur that you want to apply on your document. <br><br>
+	    <div id="change_img_blur_filter" class="text-center">
+	      <button class="btn btn-default" data-id="change_img_left" style="border:none;">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	      </button>
+	      <img id="BlurFilterExample" src="img/blurExamples/blurGenerated1.png" style="clip: rect(0px, 65px, 35px, 40px);" width="200" height="200" data-girar="0"></img>
+	      <button class="btn btn-default" data-id="change_img_right" style="border:none;">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	      </button>
+	    </div>
+	  </div>
+
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="BlurFilterExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+     <!-- MOD// HELP  -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Help</h4>
+	  </div>
+	  <div class="modal-body text-justify">
+	    <p>
+	      <b>Step by step guide:</b>
+	    </p>
+	    
+	    <b>I - </b> <b style=color:#5091da;>Upload </b> an image (supported formats are <b>JPEG</b>, <b>JPG</b>, <b>PNG</b>, <b>TIFF</b> and <b>TIF</b>).
+	    <br><br>
+	    <b>II - </b> Choose your <b style=color:#5091da;>degradation </b>:
+	    <ul>
+	      <li>
+		GrayScale Character Degradation
+	      </li>
+	      <li>
+		Shadow Binding
+	      </li>
+	      <li>
+		Phantom Character
+	      </li>
+	      <li>
+		Bleed Through
+	      </li>
+	      <li>
+		Blur Filter
+	      </li>
+	    </ul>
+	    <br>
+	    <b>III - </b>Once you are happy with yours degradations, you can <b style=color:#5091da;>download </b> the modified image at anytime !
+	    <br><br>
+	    <b>IV - </b>You can extract the font to your image directly from the menu <b style=color:#5091da;>Font Creator </b>.
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    
+    <!-- MOD// CREDITS  -->
+    <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Credits</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p class="text-justify">
+	      Document Creator is a software developed by
+	      Journet Nicholas (<a href="mailto:journet@labri.fr">journet [at] labri.fr</a>) and
+	      Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal [at] labri.fr</a>).
+	      <br><br>
+	      Font creator has been developed by
+	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T. Autret</a>,
+	      <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A. Boschet</a>,
+	      <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T. Labrousse</a>,
+	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a> and
+	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>.
+	      Design by <a href="http://www.whitebeears.com">F. Bruneau </a>
+	    </p>
+	    <p>
+	      Made with <a href="https://github.com/titi38/libnavajo/">libnavajo</a> and <a href="http://opencv.org">OpenCV</a>
+	    </p>
+	    <p class="credit roboto">
+	      <a href="http://bootstrapious.com/portfolio-themes">Bootstrap Portfolio Themes</a>
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- FOOTER  -->
+    <footer>  
+      <div class="row copyright">
+	<p class="text-center">
+	  <a data-toggle="modal" href="#" data-target="#creditModal">
+	    <span class="glyphicon glyphicon-info-sign"></span>
+	  </a>Credits<br>
+	  
+	  <a href="https://github.com/titi38/libnavajo">
+	    <span class="glyphicon glyphicon-education" id="git"></span>
+	  </a>
+	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
+	</p>
+      </div>
+    </footer>  
+
+
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
+  </body>
+</html>

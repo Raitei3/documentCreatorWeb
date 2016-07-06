@@ -14,15 +14,14 @@ function Session() {
  * \param file file to upload 
  * \param callback callback method 
  */
-Session.prototype.startSession = function(file, callback)
+Session.prototype.startSession = function(typeOfSession, file, callback)
 {
     // Loading panel
-    
     $('.overlay').show();
     $('.loader').show();
 
     $.ajax({
-	url: 'uploader.txt',
+	url: 'startSession.txt',
 	type: 'POST',
 	data: file,
 	cache: false,
@@ -35,8 +34,10 @@ Session.prototype.startSession = function(file, callback)
     	    if(response.error == null)
     	    {
     		this.token = response.token;
-    		callback(response.fileName);
+    		callback(typeOfSession, response.fileName);
     	    }
+	    $('.overlay').hide();
+	    $('.loader').hide();
 	},
 	error: function(jqXHR, textStatus, errorThrown)
 	{
@@ -45,37 +46,6 @@ Session.prototype.startSession = function(file, callback)
     });
 }
 
-/*!
- * Get informations about the image
- * \memberof Session
- * \param filename filename where the image is stored 
- * \param callback callback method 
- */
-Session.prototype.imageInfos = function(filename, callback)
-{
-    var imagePath = "data/" + filename;
-    $.ajax({
-	url: 'getBoundingBox.txt',
-	type: 'POST',
-	data: "token=" + this.token,
-	success: function(data, textStatus, jqXHR)
-	{
-	    $('#titlesession').hide();
-	    $('#tutosession').hide();
-	    $('#canvas').show();
-	    $('.zoom-icon').show();
-	    $('.navbar-nav').show();
-	    
-	    $('.loader').hide();
-	    $('.overlay').hide();
-	    callback(imagePath, JSON.parse(data).boundingbox, JSON.parse(data).baseline);
-	},
-	error: function(error)
-	{
- 	    console.log('ERRORS: ' + error);
-	}
-    });
-}
 
 /*!
  * Delete the session with the server
@@ -90,6 +60,73 @@ Session.prototype.removeSession = function(isAsync)
 	async: isAsync,
 	success: function(data, textStatus, jqXHR)
 	{
+	},
+	error: function(error)
+	{
+ 	    console.log('ERRORS: ' + error);
+	}
+    });
+}
+
+
+Session.prototype.uploadImage = function(file, callback)
+{
+    // Loading panel  
+    $('.overlay').show();
+    $('.loader').show();
+    
+    $.ajax({
+	url: 'uploadImage.txt',
+	type: 'POST',
+	data: file,
+	cache: false,
+	processData: false,
+	contentType: false,
+	context : this,
+	success: function(responseJson, textStatus, jqXHR)
+	{
+    	    var response = JSON.parse(responseJson);
+    	    if(response.error == null)
+    	    {
+    		callback(response.fileName);
+    	    }
+	    $('.overlay').hide();
+	    $('.loader').hide();
+	},
+	error: function(jqXHR, textStatus, errorThrown)
+	{
+            console.log('ERRORS: ' + textStatus);
+	}
+    });
+}
+
+
+/*!
+ * Get informations about the image
+ * \memberof Session
+ * \param filename filename where the image is stored 
+ * \param callback callback method 
+ */
+Session.prototype.imageInfos = function(typeOfSession, filename, callback)
+{
+    var imagePath = "data/" + filename;
+    
+    $.ajax({
+	url: 'getBoundingBox.txt',
+	type: 'POST',
+	data: "token=" + this.token,
+	success: function(data, textStatus, jqXHR)
+	{
+	    $('#titlesession').hide();
+	    $('#tutosession').hide();
+	    $('#canvas').show();
+	    $('.zoom-icon').show();
+	    $('.navbar-nav').show();
+	    
+	    callback(imagePath, JSON.parse(data).boundingbox, JSON.parse(data).baseline, typeOfSession);
+	    
+	    $('.loader').hide();
+	    $('.overlay').hide();
 	},
 	error: function(error)
 	{
@@ -363,33 +400,3 @@ Session.prototype.blurFilter = function(intensity, callback)
     });
 }
 
-Session.prototype.uploadImgVerso = function(file, callback)
-{
-    // Loading panel  
-    $('.overlay').show();
-    $('.loader').show();
-    
-    $.ajax({
-	url: 'uploaderImgVersoBleedThrough.txt',
-	type: 'POST',
-	data: file,
-	cache: false,
-	processData: false,
-	contentType: false,
-	context : this,
-	success: function(responseJson, textStatus, jqXHR)
-	{
-    	    var response = JSON.parse(responseJson);
-    	    if(response.error == null)
-    	    {
-    		callback(response.fileName);
-    	    }
-	    $('.overlay').hide();
-	    $('.loader').hide();
-	},
-	error: function(jqXHR, textStatus, errorThrown)
-	{
-            console.log('ERRORS: ' + textStatus);
-	}
-    });
-}

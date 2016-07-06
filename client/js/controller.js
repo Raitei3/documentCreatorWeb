@@ -6,8 +6,9 @@ function Controller(canvas, previewCanvas, listCharacter) {
     var controller = this;
 
     // Init
-    $(".container_right").show();
-    $('#baseline_options').hide();
+    $('#font-creator').hide();
+    $('#font-creator-practice').show();
+
     // Select the first Component
     this.canvas.boundingBox.select(0);
     this.canvas.selectedCC = [0];
@@ -15,7 +16,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
     this.previewCanvas.visible = true;
     this.previewCanvas.draw();
 
-    
+
     canvas.canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
 
     // Detect when we click
@@ -47,7 +48,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
         controller.previewCanvas.position_up_line = parseFloat($(this).val());
         controller.previewCanvas.draw();
     });
-    
+
     // Change the down line on the preview
     $( "#down" ).change(function() {
         controller.previewCanvas.position_down_line = parseFloat($(this).val());
@@ -83,17 +84,8 @@ function Controller(canvas, previewCanvas, listCharacter) {
     // Click on the merge button
     document.getElementById('mergeButton').addEventListener('click', function(e){ controller.merge(e); }, true);
 
-     // Click on the save button for baseline
-    document.getElementById('saveBaseline').addEventListener('click', function(e){
-        var value = parseFloat($("#baselineValue").val());
-        controller.canvas.baseline.lines[controller.previewCanvas.idElementSelected].y = value;
-        controller.canvas.draw();
-
-        session.updateBaseline(controller.canvas.baseline.lines[controller.previewCanvas.idElementSelected].id, value);
-    }, true);
-
     // target the save function when pressing the enter key
-    $('.container_right').keypress(function (e) {
+    $('#font-creator-practice').keypress(function (e) {
         var key = e.which;
         if(key == 13)  // the enter key code
         {
@@ -103,120 +95,16 @@ function Controller(canvas, previewCanvas, listCharacter) {
 
     // Click on the trash button
     document.getElementById('button_trash').addEventListener('click', function(e){
-        session.removeSession(true);
-	
+        session.removeSession(true);	
         location.reload();
     }, true); 
-    
-    // Click on the menu
-    document.getElementById('button_menu').addEventListener('click', function(e){
-        session.removeSession(true);
-        location.reload();
-    }, true);   
 
+    
     // Click on the export button
     document.getElementById('exportFont').addEventListener('click', function(e){
         var fontname = $("#fontName").val();
         session.extractFont(fontname);
     }, true);
-
-
-    // Click to download image
-    document.getElementById('download_img').addEventListener('click', function(){
-	var img = controller.canvas.image.img.src;
-	var img_split = img.split('/');
-	var extension = img.split('.');
-	img = img_split[img_split.length - 1];
-	extension = extension[extension.length - 1];
-	
-	document.getElementById('download_img').setAttribute('href','data/' + img);
-	document.getElementById('download_img').setAttribute('download', "doc-online." + extension);
-    }, true);
-
-    /* =======================
-       === DEGRADATIONS 2D ===
-       ======================= */
-
-    // Blur Filter
-    document.getElementById('BlurFilterExec').addEventListener('click', function(){
-	var src = document.getElementById('BlurFilterExample').src;
-	intensity = src.charAt(src.length - 5);
-        session.blurFilter(intensity, controller);
-    }, true);
-
-    // Blur Filter - change image blur
-    document.getElementById('change_img_blur_filter').addEventListener('click', function(event){
-	if(event.target.nodeName == "BUTTON") {
-	    var src = document.getElementById('BlurFilterExample').src;
-	    numImg = src.charAt(src.length - 5);
-	    if ($(event.target).data("id") == "change_img_left") {
-		numImg = parseInt(numImg) - 1;
-		if (numImg < 1){
-		    numImg = 4;
-		}
-	    } else if ($(event.target).data("id") == "change_img_right") {
-		numImg = parseInt(numImg) + 1;
-		if (numImg > 4){
-		    numImg = 1;
-		}
-	    }
-	    var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
-	    document.getElementById('BlurFilterExample').setAttribute('src', new_src);
-	}
-    });
-    
-    // Bleed Through
-    document.getElementById('BleedThroughExec').addEventListener('click', function(){
-        session.bleedThrough(
-	    document.getElementById('BleedThroughNbIteration').value,
-	    document.getElementById('BleedThroughImgVerso').src,
-	    controller);
-    }, true);
-
-    
-    // Shadow Binding
-    document.getElementById('ShadowBindingExec').addEventListener('click', function(){
-	var all_border = document.getElementsByName("ShadowBindingBorder");
-	var border;
-	for (var i = 0; i < all_border.length; i++) {
-	    if (all_border[i].checked) {
-		border = all_border[i].value;
-		break;
-	    }
-	}
-	
-        session.shadowBinding(
-	    border,
-	    document.getElementById('ShadowBindingWidth').value,
-	    document.getElementById('ShadowBindingIntensity').value,
-	    document.getElementById('ShadowBindingAngle').value,
-	    controller);
-    }, true);
-    
-
-    // Phantom Character
-    document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
-	var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
-	var frequency;
-	for (var i = 0; i < all_frequency.length; i++) {
-	    if (all_frequency[i].checked) {
-		frequency = all_frequency[i].value;
-		break;
-	    }
-	}
-	
-        session.phantomCharacter(
-	    frequency,
-	    controller);
-    }, true);
-    
-    // GrayScale Character Degradation
-    document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
-        session.grayScaleCharsDegradation(
-	    document.getElementById('GrayScaleCharacterDegradationValue').value,
-	    controller);
-    }, true);
-
 
     
     // Highlight labelised Component when we hover the letter in the letter list
@@ -238,7 +126,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
             controller.canvas.draw();
         }
     }, '.listItem');
-
+    
     // Increment and Decrement the input values
     (function ($) {
       $('.spinner .btn:first-of-type').on('click', function() {
@@ -255,7 +143,6 @@ function Controller(canvas, previewCanvas, listCharacter) {
     window.onunload = function() { 
 	session.removeSession(false);
     };
-
 }
 
 /*!
@@ -274,8 +161,6 @@ Controller.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
     var id = this.canvas.boundingBox.contains(mx, my, this.canvas.image);
     if(id != 'false')
     {   
-        $("#letter_options").show();
-        $('#baseline_options').hide();
         this.canvas.baseline.select("false");
 
         // If its a ctrl/cmd click 
@@ -319,14 +204,13 @@ Controller.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
         this.canvas.draw();
         return;  
     }
+    
     // Check if we clic on a Baseline
     var id = this.canvas.baseline.contains(mx, my, this.canvas.image);
     if(id != 'false')
     {
         this.canvas.boundingBox.select("false");
         this.canvas.baseline.select(id);
-        $('#letter_options').hide();
-        $('#baseline_options').show();
         this.previewCanvas.zoomTo(this.canvas.baseline.lines[id], id);
         this.previewCanvas.visible = true;
         $("#baselineValue").val(this.canvas.baseline.lines[id].y);
@@ -484,4 +368,161 @@ Controller.prototype.replaceImage = function replaceImage(imagePath)
 {
     this.canvas.changeImage("data/" + imagePath);
     this.previewCanvas.changeImage("data/" + imagePath);
+}
+
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+// ====================================================================================================================
+
+
+
+function ControllerDegradation(canvas) {
+    this.canvas = canvas;
+
+    var controller = this;
+    
+    // Init
+    $('#degradations').hide();
+    $('#degradation_practice').show();
+
+    // Detect when we move the image
+    canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
+    canvas.canvas.addEventListener('mousemove', function(e) { canvas.onMouseMove(e);}, true);
+    canvas.canvas.addEventListener('mouseup', function(e) { canvas.onMouseUp(e);}, true);
+    
+    // Dectection of zoom
+    document.getElementById('zoom-in').addEventListener('click', function(e){ canvas.zoomIn();}, true);
+    document.getElementById('zoom-out').addEventListener('click', function(e){ canvas.zoomOut();}, true);
+    document.getElementById('zoom-reset').addEventListener('click', function(e){ canvas.zoomReset();}, true);
+
+    // Click on the trash button
+    document.getElementById('button_trash').addEventListener('click', function(e){
+        session.removeSession(true);
+        location.reload();
+    }, true);
+    
+    // Click to download image
+    document.getElementById('download_img').addEventListener('click', function(){
+	var img = controller.canvas.image.img.src;
+	var img_split = img.split('/');
+	var extension = img.split('.');
+	img = img_split[img_split.length - 1];
+	extension = extension[extension.length - 1];
+
+	document.getElementById('download_img').setAttribute('href','data/' + img);
+	document.getElementById('download_img').setAttribute('download', 'doc-online.' + extension);
+    }, true);
+
+    /* =======================
+       === DEGRADATIONS 2D ===
+       ======================= */
+    
+    // Blur Filter
+    document.getElementById('BlurFilterExec').addEventListener('click', function(){
+	var src = document.getElementById('BlurFilterExample').src;
+	intensity = src.charAt(src.length - 5);
+        session.blurFilter(intensity, controller);
+    }, true);
+
+    // Blur Filter - change image blur
+    document.getElementById('change_img_blur_filter').addEventListener('click', function(event){
+	if(event.target.nodeName == "BUTTON") {
+	    var src = document.getElementById('BlurFilterExample').src;
+	    numImg = src.charAt(src.length - 5);
+	    if ($(event.target).data("id") == "change_img_left") {
+		numImg = parseInt(numImg) - 1;
+		if (numImg < 1){
+		    numImg = 4;
+		}
+	    } else if ($(event.target).data("id") == "change_img_right") {
+		numImg = parseInt(numImg) + 1;
+		if (numImg > 4){
+		    numImg = 1;
+		}
+	    }
+	    var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
+	    document.getElementById('BlurFilterExample').setAttribute('src', new_src);
+	}
+    });
+
+    // Bleed Through
+    document.getElementById('BleedThroughExec').addEventListener('click', function(){
+        session.bleedThrough(
+	    document.getElementById('BleedThroughNbIteration').value,
+	    document.getElementById('BleedThroughImgVerso').src,
+	    controller);
+    }, true);
+
+    
+    // Shadow Binding
+    document.getElementById('ShadowBindingExec').addEventListener('click', function(){
+	var all_border = document.getElementsByName("ShadowBindingBorder");
+	var border;
+	for (var i = 0; i < all_border.length; i++) {
+	    if (all_border[i].checked) {
+		border = all_border[i].value;
+		break;
+	    }
+	}
+	
+        session.shadowBinding(
+	    border,
+	    document.getElementById('ShadowBindingWidth').value,
+	    document.getElementById('ShadowBindingIntensity').value,
+	    document.getElementById('ShadowBindingAngle').value,
+	    controller);
+    }, true);
+    
+
+    // Phantom Character
+    document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
+	var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
+	var frequency;
+	for (var i = 0; i < all_frequency.length; i++) {
+	    if (all_frequency[i].checked) {
+		frequency = all_frequency[i].value;
+		break;
+	    }
+	}
+	
+        session.phantomCharacter(
+	    frequency,
+	    controller);
+    }, true);
+    
+    // GrayScale Character Degradation
+    document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
+        session.grayScaleCharsDegradation(
+	    document.getElementById('GrayScaleCharacterDegradationValue').value,
+	    controller);
+    }, true);
+
+
+    // When the user quit the application
+    window.onunload = function() { 
+	session.removeSession(false);
+    };
+}
+
+
+ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
+{
+    this.canvas.changeImage("data/" + imagePath);
 }

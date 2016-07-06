@@ -15,10 +15,20 @@
     <!-- scripts -->
     <script type="text/javascript" src="js/jquery.min.js" ></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+      $('.loader').hide();   
+      });
+    </script>
     <link rel="shortcut icon" href="favicon.png">
   </head>
   
+  
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
+    <div class="overlay">
+      <div class="loader">
+      </div>
+    </div>
     
     <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
     <header class="header">
@@ -52,38 +62,31 @@
 	</div>
       </div>
     </header>
+
     
-    
+    <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
     <section class="no-padding-bottom">
       <div class="container">
-	<div class="row">
+	<div class="row" id="titlesession">
 	  <div class="col-md-12">
-            <h2 class="heading">DOCUMENT CREATOR ONLINE</h2>
+            <h2 class="heading">CREATE YOUR DOCUMENT</h2>
 	  </div>
 	</div>
-	<div class="row">
-	  <div class="col-md-4">
-            <div class="circle">1 </div>
-            <p class="text-center"><br><b>Upload an image and extract the font</b></p>
-            <p class="text-center"><a href="font-creator.html" class="btn btn-primary" >GO !</a></p>
-          </div>
-	  <div class="col-md-4">
-            <div class="circle">2 </div>
-            <p class="text-center"><br><b>Upload an image and degrade it</b></p>
-            <p class="text-center"><a href="degradations.html" class="btn btn-primary" >GO !</a></p>
-          </div>
-          <div class="col-md-4">
-            <div class="circle">3 </div>
-            <p class="text-center"><br><b>Create your own document <br><i>(coming soon)</i></b></p>
-	    <p class="text-center"><a href="create-your-document.html" class="btn btn-primary" >GO !</a></p>
-          </div>
-	</div>   
-      </div>
-      <div class="container-fluid">
-	<div class="row no-space">
+	<div class="row" id="tutosession">
+	  <div class="col-md-12 text-center">
+            <p>
+	      <b>
+		<h4>
+		Work in progress
+		</h4>
+		We are sorry, this part of Document Creator Online is still in development.
+	      </b>
+	    </p>
+	  </div>
 	</div>
       </div>
-    </section> 
+    </section>   
+    
 
     
     <!-- MOD// CREDITS  -->
@@ -136,6 +139,15 @@
 	</p>
       </div>
     </footer>  
-    
+
+
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
   </body>
 </html>
