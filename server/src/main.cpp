@@ -23,6 +23,7 @@ using json = nlohmann::json;
 
 static const char *CLIENT_DIR = "../client/";
 static const char *UPLOAD_DIR = "../client/data/";
+static const char *BLUR_IMG_DIR = "Image/blurImages/blurExamples/";
 
 
 /* Const integer for random number of name file generation */
@@ -889,22 +890,42 @@ class MyDynamicRepository : public DynamicRepository
     bool getPage(HttpRequest* request, HttpResponse *response)
     {      
       std::string tokenParam;
+      std::string methodParam;
+      std::string typeIntensityParam;
       std::string intensityParam;
       
       request->getParameter("token", tokenParam);
+      request->getParameter("method", methodParam);
+      request->getParameter("typeIntensity", typeIntensityParam);
       request->getParameter("intensity", intensityParam);
 
-      int intensity = stoi(intensityParam);
-      
+      int intensity;
+      if (typeIntensityParam == "value"){
+        intensity = stoi(intensityParam);
+      } else { // typeIntensityParam == "image"
+        QImage img_blur((BLUR_IMG_DIR + intensityParam).c_str());
+        float dstRadius = getRadiusFourier(img_blur);
+        intensity = searchFitFourier(img_blur, dstRadius);
+      }
+
+      Method method;
+      if (methodParam == "gaussian") {
+        method = Method::GAUSSIAN;
+      } else if (methodParam == "median") {
+        method = Method::MEDIAN;
+      } else { // methodParam == "normal"
+        method = Method::NORMAL;
+      }
+
       int token = stoi(tokenParam);
       int sessionIndex = getActiveSessionFromToken(token);
       if(sessionIndex != -1)
       {
         cv::Mat matOut = activeSessions.at(sessionIndex)->getImage()->getMat();
-        activeSessions.at(sessionIndex)->getImage()->setMat(blurFilter(matOut, Method::GAUSSIAN, intensity));
+        activeSessions.at(sessionIndex)->getImage()->setMat(blurFilter(matOut, method, intensity));
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
-        NVJ_LOG->append(NVJ_ERROR, "Degradation - Blur Filter : intensity = " + intensityParam + ";");
+        NVJ_LOG->append(NVJ_ERROR, "Degradation - Blur Filter : typeIntensity = " + typeIntensityParam + "; image/value = " + (BLUR_IMG_DIR + intensityParam) + "; intensity = " +  std::to_string(intensity) + "; method = " + methodParam + ";");
         return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
       }
       else

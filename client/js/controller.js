@@ -435,30 +435,55 @@ function ControllerDegradation(canvas) {
        ======================= */
     
     // Blur Filter
-    document.getElementById('BlurFilterExec').addEventListener('click', function(){
-	var src = document.getElementById('BlurFilterExample').src;
-	intensity = src.charAt(src.length - 5);
-        session.blurFilter(intensity, controller);
+    document.getElementById('blurFilterExec').addEventListener('click', function(){
+	var tabTypeIntensity = document.getElementsByName("blurFilterTypeIntensity");
+	var typeIntensity;
+	for (var i = 0; i < tabTypeIntensity.length; i++) {
+	    if (tabTypeIntensity[i].checked) {
+		typeIntensity = tabTypeIntensity[i].value;
+		break;
+	    }
+	}
+
+	var intensity;
+	if (typeIntensity == "value"){
+	    intensity = document.getElementById('blurFilterIntensityValue').value;
+	} else { // typeIntensity == "image"
+	    intensity = document.getElementById('blurFilterIntensityImage').src;
+	    intensity = intensity.split('/');
+	    intensity = intensity[intensity.length - 1];
+	}
+
+	var tabMethod = document.getElementsByName("blurFilterMethod");
+	var method;
+	for (var i = 0; i < tabMethod.length; i++) {
+	    if (tabMethod[i].checked) {
+		method = tabMethod[i].value;
+		break;
+	    }
+	}
+
+	session.blurFilter(method, typeIntensity, intensity, controller);
     }, true);
 
     // Blur Filter - change image blur
-    document.getElementById('change_img_blur_filter').addEventListener('click', function(event){
+    document.getElementById('changeImgBlurFilter').addEventListener('click', function(event){
 	if(event.target.nodeName == "BUTTON") {
-	    var src = document.getElementById('BlurFilterExample').src;
+	    var src = document.getElementById('blurFilterIntensityImage').src;
 	    numImg = src.charAt(src.length - 5);
-	    if ($(event.target).data("id") == "change_img_left") {
+	    if ($(event.target).data("id") == "changeImgLeft") {
 		numImg = parseInt(numImg) - 1;
 		if (numImg < 1){
-		    numImg = 4;
+		    numImg = 7;
 		}
-	    } else if ($(event.target).data("id") == "change_img_right") {
+	    } else if ($(event.target).data("id") == "changeImgRight") {
 		numImg = parseInt(numImg) + 1;
-		if (numImg > 4){
+		if (numImg > 7){
 		    numImg = 1;
 		}
 	    }
 	    var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
-	    document.getElementById('BlurFilterExample').setAttribute('src', new_src);
+	    document.getElementById('blurFilterIntensityImage').setAttribute('src', new_src);
 	}
     });
 

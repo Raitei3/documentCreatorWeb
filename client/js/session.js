@@ -375,7 +375,7 @@ Session.prototype.bleedThrough = function(nbIterations, imgVerso, callback)
     });
 }
 
-Session.prototype.blurFilter = function(intensity, callback)
+Session.prototype.blurFilter = function(method, typeIntensity, intensity, callback)
 {
     // Loading panel
     $('.overlay').show();
@@ -384,7 +384,7 @@ Session.prototype.blurFilter = function(intensity, callback)
     $.ajax({
         url: 'blurFilter.txt',
         type: 'POST',
-        data: 'token=' + this.token + '&intensity=' + intensity,
+        data: 'token=' + this.token + '&method=' + method + '&typeIntensity=' + typeIntensity + '&intensity=' + intensity,
         context: callback,
         success : function(data, textStatus, jqXHR)
         {

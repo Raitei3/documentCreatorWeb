@@ -63,4 +63,8 @@ protected :
 
 };
 
+float getRadiusFourier(QImage original);
+int searchFitFourier(QImage original, float radiusExample);
+
+
 #endif //BLURFILTER_HPP
