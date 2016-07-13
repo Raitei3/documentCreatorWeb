@@ -45,7 +45,12 @@ convertToAtLeast8Bit(QImage &src)
     src = src.convertToFormat(QImage::Format_Indexed8);
     assert(src.size() == s);
   }
+  if (src.depth() < 8 || src.width()==0 || src.height()==0) {
+      std::cerr<<"ERROR: convertToAtLeast8Bit: format not handled: src.depth()="<<src.depth()<<" src.width()="<<src.width()<<" height="<<src.height()<<"\n";
+    }
   assert(src.depth() >= 8);
+  assert(src.width() != 0);
+  assert(src.height() != 0);
 }
 
 
@@ -384,6 +389,14 @@ copyImagePart(QImage &dst, int x0_dst, int y0_dst, const QImage &src, int x0_src
     
   }
   else {
+
+    if (src.format() != QImage::Format_Indexed8) {
+      std::cerr<<"ERROR: format not handled: "<<src.format()<<" src.depth()="<<src.depth()<<" src.width()="<<src.width()<<" height="<<src.height()<<"\n";
+    }
+    if (dst.format() != QImage::Format_Indexed8) {
+      std::cerr<<"ERROR: format not handled: "<<dst.format()<<" dst.depth()="<<dst.depth()<<" dst.width()="<<dst.width()<<" height="<<dst.height()<<"\n";
+    }
+    
     assert(src.format() == QImage::Format_Indexed8);
     assert(dst.format() == QImage::Format_Indexed8);
 

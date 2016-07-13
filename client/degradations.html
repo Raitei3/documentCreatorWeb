@@ -17,12 +17,12 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function() {
-      $('#degradations').show();
-      $('#degradation_practice').hide();
+      $('#degradation').show();
+      $('#degradationPractice').hide();
       $('.loader').hide();   
       });
     </script>
-    <link rel="shortcut icon" href="favicon.png">
+    <link rel="shortcut icon" href="img/favicon.png">
   </head>
   
   
@@ -66,7 +66,7 @@
     </header>
 
     <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
-    <section id="degradations">
+    <section id="degradation">
       <div class="container">
 	<div class="row">
 	  <div class="col-md-12">
@@ -78,7 +78,7 @@
             <p>
 	      <b>
 		Welcome to Degradations<br>
-		First, upload an image (supported formats are JPEG, JPG, PNG, TIF, and TIFF)<br>
+		First, upload an image (supported formats are JPEG, JPG, PNG, TIF and TIFF)<br>
 		Then, degrade it !
 	      </b>
 	    </p>
@@ -88,14 +88,14 @@
 	  <div class="text-center">
             <div class="fileUpload btn btn-primary">
 	      <span>Upload</span>
-              <input id="start_degradation" type="file" class="upload" name="image" accept="image/*"/>
+              <input id="startDegradation" type="file" class="upload" name="image" accept="image/*"/>
             </div>
           </div>
 	</div>
       </div>
     </section>   
 
-    <section id="degradation_practice">
+    <section id="degradationPractice">
       <div class="container">
 	<div class="row">
 	  <div class="col-md-3">
@@ -123,9 +123,9 @@
 		  </div>
 		  <div class="col-md-7">
 		    <a href="#" title="Start with a new Image">
-		      <span class="glyphicon glyphicon-remove" id="button_trash"></span>
+		      <span class="glyphicon glyphicon-remove" id="resetImage"></span>
 		    </a>Start from scratch<br>
-		    <a id="download_img" href="#">
+		    <a id="downloadImage" href="#">
 		      <span class="glyphicon glyphicon-download"></span>
 		    </a>Download Image<br>
 		    <a data-toggle="modal" href="#" data-target="#helpModal">
@@ -290,7 +290,7 @@
 	  
 	  <div class="modal-body">
 	    Choose Image Verso
-	    <input id="img_verso_bleed_through" text="" type="file" accept="image/*"/>
+	    <input id="BleedThroughImageVersoInput" text="" type="file" accept="image/*"/>
 	    <img id="BleedThroughImgVerso" width="200" height="200" data-girar="0"></img>
 	  </div>
 

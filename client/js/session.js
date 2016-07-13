@@ -400,3 +400,29 @@ Session.prototype.blurFilter = function(method, typeIntensity, intensity, callba
     });
 }
 
+
+Session.prototype.downloadCreateDocument = function(typeDownload, font, background, text, callback)
+{
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'downloadCreateDocument.txt',
+        type: 'POST',
+        data: 'typeDownload=' + typeDownload + '&font=' + font + '&background=' + background + '&text=' + text,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+	    callback.changeDownload(data);
+	    
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+

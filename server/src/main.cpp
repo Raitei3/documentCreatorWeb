@@ -17,13 +17,17 @@
 #include "../headers/BlurFilter.hpp"
 #include "../headers/BleedThrough.hpp"
 
+#include <QFileInfo>
 
 using json = nlohmann::json;
 
 
 static const char *CLIENT_DIR = "../client/";
 static const char *UPLOAD_DIR = "../client/data/";
-static const char *BLUR_IMG_DIR = "Image/blurImages/blurExamples/";
+static const char *BLUR_IMG_DIR = "data/image/blurImages/blurExamples/";
+static const char *FONT_DIR = "data/font/";
+static const char *BACKGROUND_DIR = "data/background/";
+
 
 
 /* Const integer for random number of name file generation */
@@ -269,6 +273,7 @@ std::string InitiateSession(std::string fileName, HttpRequest* request)
   return "{\"fileName\":\"" + fileName + "\",\"token\":" + std::to_string(mySession->getToken()) + "}";
 }
 
+
 /*
  * \brief Verify if token is valid
  *
@@ -415,7 +420,7 @@ class MyDynamicRepository : public DynamicRepository
         NVJ_LOG->append(NVJ_INFO, "Got Image field: [" + it->first + "] Filename:[" + newFileName + "] TempFilename:[" + fields[it->first]->GetTempFileName() + "]\n");
 
         std::ifstream src(fields[it->first]->GetTempFileName().c_str(), std::ios::binary);
-        std::string dstFilename = std::string(UPLOAD_DIR)+newFileName;
+        std::string dstFilename = std::string(UPLOAD_DIR) + newFileName;
         std::ofstream dst(dstFilename.c_str(), std::ios::binary);
         if (!src || !dst){
           NVJ_LOG->append(NVJ_ERROR, "Copy error: check read/write permissions");
@@ -457,11 +462,10 @@ class MyDynamicRepository : public DynamicRepository
         return fromString(json, response);
       } else {
         return fromString("{\"error\" : You don't have a valid token, retry please\"}", response);
-      }
-      
+      } 
     }
-
   } getBoundingBox;
+  
 
   class getInfoOnCC: public MyDynamicPage
   { 
@@ -861,7 +865,17 @@ class MyDynamicRepository : public DynamicRepository
       if(sessionIndex != -1)
       {
         QImage img_recto((UPLOAD_DIR + activeSessions.at(sessionIndex)->getDisplayedFileName()).c_str());
-        QImage img_verso((UPLOAD_DIR + imgVersoParam).c_str());
+        QString versoFilename((UPLOAD_DIR + imgVersoParam).c_str());
+        QImage img_verso(versoFilename);
+
+        if (! QFileInfo(versoFilename).exists()) {
+          std::cerr<<"ERROR: fverso filename does not exist: "<<versoFilename.toStdString()<<"\n";
+        }
+        
+        if (img_verso.width() == 0 || img_verso.height() == 0)
+          std::cerr<<"ERROR: verso image not loaded correctly !!!\n";
+        assert(img_verso.width() != 0 && img_verso.height() != 0);
+        
         img_verso = img_verso.mirrored(true, false);
         
         QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
@@ -936,6 +950,28 @@ class MyDynamicRepository : public DynamicRepository
     }
   } blurFilterDegradation;
 
+
+  class DownloadCreateDocument: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string typeDownload;
+      std::string font;
+      std::string background;
+      std::string text;
+ 
+      request->getParameter("typeDownload", typeDownload);
+      request->getParameter("font", font);
+      request->getParameter("background", background);
+      request->getParameter("text", text);
+
+      
+      
+      NVJ_LOG->append(NVJ_ERROR, "Create Document - typeDownload = " + typeDownload + "; font = " + font + "; background = " +  background + "; text = \"" + text + "\";");
+      return fromString(background, response); 
+    }
+  } downloadCreateDocument;
+
   
   class Controller: public MyDynamicPage
   {
@@ -950,23 +986,25 @@ class MyDynamicRepository : public DynamicRepository
  public:
   MyDynamicRepository() : DynamicRepository()
   {
-    add("index.html",&controller);
-    add("startSession.txt",&startSession);
-    add("stopSession.txt",&stopSession);
-    add("uploadImage.txt",&uploadImage);
+    add("index.html", &controller);
+    add("startSession.txt", &startSession);
+    add("stopSession.txt", &stopSession);
+    add("uploadImage.txt", &uploadImage);
 
-    add("getBoundingBox.txt",&getBoundingBox);
-    add("getInfoOnCC.txt",&getInfoOnCC);
-    add("updateInfoOnCC.txt",&updateInfoOnCC);
-    add("extractFont.txt",&extractFont);
-    add("updateBaseline.txt",&updateBaseline);
-    add("merge.txt",&merge);
+    add("getBoundingBox.txt", &getBoundingBox);
+    add("getInfoOnCC.txt", &getInfoOnCC);
+    add("updateInfoOnCC.txt", &updateInfoOnCC);
+    add("extractFont.txt", &extractFont);
+    add("updateBaseline.txt", &updateBaseline);
+    add("merge.txt", &merge);
     
-    add("grayScaleCharsDegradation.txt",&grayScaleCharsDegradation);
-    add("shadowBinding.txt",&shadowBindingDegradation);
-    add("phantomCharacter.txt",&phantomCharacterDegradation);
-    add("bleedThrough.txt",&bleedThroughDegradation);
-    add("blurFilter.txt",&blurFilterDegradation);
+    add("grayScaleCharsDegradation.txt", &grayScaleCharsDegradation);
+    add("shadowBinding.txt", &shadowBindingDegradation);
+    add("phantomCharacter.txt", &phantomCharacterDegradation);
+    add("bleedThrough.txt", &bleedThroughDegradation);
+    add("blurFilter.txt", &blurFilterDegradation);
+
+    add("downloadCreateDocument.txt", &downloadCreateDocument);
   }
 };
 

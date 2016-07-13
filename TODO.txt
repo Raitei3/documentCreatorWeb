@@ -1,0 +1,39 @@
+ ================
+ == TODO  LIST ==
+ == 12/07/2016 ==
+ ================
+
+===============
+Partie Client :
+===============
+  à améliorer :
+    - mettre les fichiers html dans un dossier html/
+    - duplication des fichiers d'en-tête et de footer (car on n'utilise pas de php qui permet d'inclure des fichiers)
+    - il faudrait que lorsqu'on clique sur un des menus de test-online ("Home", "Font Creator", etc.), le menu reste en "bleu" pour indiquer là où l'on se situe.
+    
+  index.html :
+    - la vidéo img/doc-creator.mp4 ne fonctionne pas
+    - le lien de téléchargement de Document-Creator ne fonctionne pas (il faut rajouter l'archive dans files/)
+    
+  font-creator.html :
+    - l'options "start from scratch" provoque de façon aléatoire, un "plantage" du site web. Cela le fait aussi lorsque l'on clique sur le menu "font creator"
+    - dans la partie "letter assignment", la sélection "letter"/"unicode" n'a aucune influence sur quoi que ce soit. Utilité?
+    - dans la partie "letter assignment", le "split" n'a pas encore été implémenté.
+
+  degradation.html:
+    - compléter la partie "help", avec une description de chaque dégradation
+    - comme pour font-creator.html, l'options "start from scratch" provoque de façon aléatoire, un "plantage" du site web. Cela le fait aussi lorsque l'on clique sur le menu "degradations"
+    
+
+===============
+Partie Server :
+===============
+  - La baseline doit être compris entre le line "up" et la line "down" afin d'éviter que l'utilisateur ai à cliquer plus de 200 fois lorsque la baseline a mal était placé.
+  - Shadow Binding fait planter le serveur lorsque l'image est trop petite (lorsqu'elle est inférieur à la taille de la dégradation)
+  - BleedThrough fait planter le serveur par moment (2 erreurs différentes trouvés):
+    1. main: src/BleedThrough.cpp:48: void convertToAtLeast8Bit(QImage&): Assertion `src.depth() >= 8' failed.
+       Abandon (core dumped)
+    2. main: src/BleedThrough.cpp:387: void copyImagePart(QImage&, int, int, const QImage&, int, int, int, int): Assertion `src.format() == QImage::Format_Indexed8' failed.
+       Abandon (core dumped)
+  - BlurFilter ne marche pas lorsque l'on essaye de l'appliquer avec des images. (Mais il fonctionne parfaitement si l'on sélectionne l'intensité avec une valeur).
+  

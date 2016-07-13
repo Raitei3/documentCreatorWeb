@@ -688,15 +688,17 @@ function init(src, boundingBox, baseline, typeOfController) {
             listBaseline.push(new Line(baseline[line].idLine, baseline[line].x_begin,baseline[line].y_baseline,baseline[line].x_end));
 	}
 	var baseline = new Baseline(listBaseline);
-    
+	
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, baseline, boundingBox, "font-creator");
 	var previewCanvas = new PreviewCanvas(document.getElementById('small_canvas'), imagePreview);
 	var listCharacter = new ListCharacter();
 	var controller = new Controller(normalCanvas, previewCanvas, listCharacter);
-    } else {
+    } else if (typeOfController == "degradation"){
 	var image = new ProcessingImage(src);
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "degradation");
 	var controller = new ControllerDegradation(normalCanvas);
+    } else { // typeOfController == "createDocument"
+	var controller = new ControllerCreateDocument();
     }
 }
 

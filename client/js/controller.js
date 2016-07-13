@@ -1,3 +1,44 @@
+function ControllerCreateDocument() {
+    
+    var controllerCreateDocument = this;
+    
+    // Init
+    $('#createDocument').hide();
+    $('#createDocumentPractice').show();
+
+    var downloads = document.getElementsByName("createDocumentDownload");
+    for (var i = 0; i < downloads.length; i++){
+	document.getElementById(downloads[i].id).addEventListener('click', function(event){
+	    var fonts = document.getElementById("createDocumentFont");
+	    var font = fonts.options[fonts.selectedIndex].value;
+
+	    var backgrounds = document.getElementById("createDocumentBackground");
+	    var background = backgrounds.options[backgrounds.selectedIndex].value;
+
+	    var text = document.getElementById("createDocumentText").value;
+	    
+	    var type;
+	    if (this.id == "createDocumentDownloadXML"){
+		type = "xml";
+	    } else { // this.id == "createDocumentDownloadPNG"
+		type = "png";
+	    }
+	    	    
+	    session.downloadCreateDocument(type, font, background, text, controllerCreateDocument);
+	}, true);
+    }
+}
+
+ControllerCreateDocument.prototype.changeDownload = function(filename){
+    document.getElementById("createDocumentDownloadXML").setAttribute('href','background/' + filename);
+    document.getElementById("createDocumentDownloadXML").setAttribute('download', 'doc-online.xml');
+    
+    document.getElementById("createDocumentDownloadPNG").setAttribute('href','background/' + filename);
+    document.getElementById("createDocumentDownloadPNG").setAttribute('download', 'doc-online.png');
+}
+
+
+
 function Controller(canvas, previewCanvas, listCharacter) {
     this.canvas = canvas;
     this.previewCanvas = previewCanvas;
@@ -6,8 +47,8 @@ function Controller(canvas, previewCanvas, listCharacter) {
     var controller = this;
 
     // Init
-    $('#font-creator').hide();
-    $('#font-creator-practice').show();
+    $('#fontCreator').hide();
+    $('#fontCreatorPractice').show();
 
     // Select the first Component
     this.canvas.boundingBox.select(0);
@@ -85,7 +126,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
     document.getElementById('mergeButton').addEventListener('click', function(e){ controller.merge(e); }, true);
 
     // target the save function when pressing the enter key
-    $('#font-creator-practice').keypress(function (e) {
+    $('#fontCreatorPractice').keypress(function (e) {
         var key = e.which;
         if(key == 13)  // the enter key code
         {
@@ -94,7 +135,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
     });
 
     // Click on the trash button
-    document.getElementById('button_trash').addEventListener('click', function(e){
+    document.getElementById('resetImage').addEventListener('click', function(e){
         session.removeSession(true);	
         location.reload();
     }, true); 
@@ -399,8 +440,8 @@ function ControllerDegradation(canvas) {
     var controller = this;
     
     // Init
-    $('#degradations').hide();
-    $('#degradation_practice').show();
+    $('#degradation').hide();
+    $('#degradationPractice').show();
 
     // Detect when we move the image
     canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
@@ -413,21 +454,21 @@ function ControllerDegradation(canvas) {
     document.getElementById('zoom-reset').addEventListener('click', function(e){ canvas.zoomReset();}, true);
 
     // Click on the trash button
-    document.getElementById('button_trash').addEventListener('click', function(e){
+    document.getElementById('resetImage').addEventListener('click', function(e){
         session.removeSession(true);
         location.reload();
     }, true);
     
     // Click to download image
-    document.getElementById('download_img').addEventListener('click', function(){
+    document.getElementById('downloadImage').addEventListener('click', function(){
 	var img = controller.canvas.image.img.src;
 	var img_split = img.split('/');
 	var extension = img.split('.');
 	img = img_split[img_split.length - 1];
 	extension = extension[extension.length - 1];
 
-	document.getElementById('download_img').setAttribute('href','data/' + img);
-	document.getElementById('download_img').setAttribute('download', 'doc-online.' + extension);
+	document.getElementById('downloadImage').setAttribute('href','data/' + img);
+	document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
     }, true);
 
     /* =======================

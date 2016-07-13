@@ -20,11 +20,11 @@ function prepareUpload(event)
         data.append(key, value);
     });
 
-    if(event.target.id == "start_degradation"){
+    if(event.target.id == "startDegradation"){
 	session.startSession("degradation", data, askForInfo);
-    } else if (event.target.id == "start_font_creator"){
+    } else if (event.target.id == "startFontCreator"){
 	session.startSession("font-creator", data, askForInfo);
-    } else if (event.target.id == "img_verso_bleed_through"){
+    } else if (event.target.id == "BleedThroughImageVersoInput"){
 	session.uploadImage(data, updateImgVerso);
     } 
 }

@@ -17,10 +17,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function() {
-      $('.loader').hide();   
+        $('.loader').hide();
+        $('#createDocumentPractice').hide();
+        document.getElementById('createDocumentStart').addEventListener('click', function(){
+          init(null, null, null, "createDocument");
+        });
       });
     </script>
-    <link rel="shortcut icon" href="favicon.png">
+    <link rel="shortcut icon" href="img/favicon.png">
   </head>
   
   
@@ -65,28 +69,73 @@
 
     
     <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
-    <section class="no-padding-bottom">
+    <section id="createDocument">
       <div class="container">
-	<div class="row" id="titlesession">
+	<div class="row">
 	  <div class="col-md-12">
             <h2 class="heading">CREATE YOUR DOCUMENT</h2>
 	  </div>
 	</div>
-	<div class="row" id="tutosession">
+	<div class="row">
 	  <div class="col-md-12 text-center">
             <p>
 	      <b>
-		<h4>
-		Work in progress
-		</h4>
+		<h4>Work in progress</h4>
 		We are sorry, this part of Document Creator Online is still in development.
 	      </b>
+	    </p>
+	  </div>
+	  <div class="col-md-12 text-center">
+	    <p class="text-center">
+	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>  
 	    </p>
 	  </div>
 	</div>
       </div>
     </section>   
-    
+
+    <section id="createDocumentPractice">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-3 section_portion">
+	    Font:
+	    <select id="createDocumentFont">
+	      <option value="BMTcomplete.of">BMTcomplete</option>
+	      <option value="bmt.of">bmt</option>
+	      <option value="fraktur.of">fraktur</option>
+	      <option value="garamont.of">garamont</option>
+	      <option value="geringcicero.of">geringcicero</option>
+	      <option value="verard.of">verard</option>
+	      <option value="vesale.of">vesale</option>
+	    </select>
+	    <br>
+	    Background:
+	    <select id="createDocumentBackground" >
+	      <option value="bg_PR6.png">bg_PR6</option>
+	      <option value="bg_PR7.png">bg_PR7</option>
+	      <option value="carro.png">carro</option>
+	      <option value="newBackGround0.png">newBackGround0</option>
+	      <option value="newBackGround1.png">newBackGround1</option>
+	      <option value="paper2origdy4.png">paper2origdy4</option>
+	      <option value="parchemin_vierge.png">parchemin_vierge</option>
+	      <option value="Topogra.png">Topogra</option>
+	      <option value="vesale_0002.png">vesale_0002</option>
+	      <option value="vesale_0011.png">vesale_0011</option>
+	    </select>
+	    <br>
+	    <a name="createDocumentDownload" id="createDocumentDownloadXML" href="#">
+	      <span class="glyphicon glyphicon-download"></span>
+	    </a>Download XML
+	    <a name="createDocumentDownload" id="createDocumentDownloadPNG" href="#">
+	      <span class="glyphicon glyphicon-download"></span>
+	    </a>Download PNG
+	  </div>
+	  <div class="col-md-8 section_portion">
+	    <input type="text" id="createDocumentText" value="lorem ipsum et dolor">
+	  </div>
+	</div>
+      </div>
+    </section>
 
     
     <!-- MOD// CREDITS  -->
