@@ -34,7 +34,7 @@ Session.prototype.startSession = function(typeOfSession, file, callback)
     	    if(response.error == null)
     	    {
     		this.token = response.token;
-    		callback(typeOfSession, response.fileName);
+    		callback(typeOfSession, response.filename);
     	    }
 	    $('.overlay').hide();
 	    $('.loader').hide();
@@ -88,7 +88,7 @@ Session.prototype.uploadImage = function(file, callback)
     	    var response = JSON.parse(responseJson);
     	    if(response.error == null)
     	    {
-    		callback(response.fileName);
+    		callback(response.filename);
     	    }
 	    $('.overlay').hide();
 	    $('.loader').hide();
@@ -284,8 +284,14 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
-            callback.replaceImage(data);
-
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
+	    
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -310,8 +316,14 @@ Session.prototype.shadowBinding = function(border, width, intensity, angle, call
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
-            callback.replaceImage(data);
-
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
+	    
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -336,8 +348,14 @@ Session.prototype.phantomCharacter = function(frequency, callback)
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
-            callback.replaceImage(data);
-
+	    var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
+	    
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -363,7 +381,13 @@ Session.prototype.bleedThrough = function(nbIterations, imgVerso, callback)
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
-            callback.replaceImage(data);
+	    var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
 
             $('.overlay').hide();
             $('.loader').hide();
@@ -388,8 +412,13 @@ Session.prototype.blurFilter = function(method, typeIntensity, intensity, callba
         context: callback,
         success : function(data, textStatus, jqXHR)
         {
-            callback.replaceImage(data);
-
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
             $('.overlay').hide();
             $('.loader').hide();
         },

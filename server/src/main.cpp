@@ -87,9 +87,9 @@ void exitFunction( int dummy )
  * \return a bool
  */
 static inline
-bool isFormatSupported( const std::string &fileName)
+bool isFormatSupported( const std::string &filename)
 {
-  std::string extension = fileName.substr(fileName.find(".") + 1);
+  std::string extension = filename.substr(filename.find(".") + 1);
   std::transform(extension.begin(), extension.end(), extension.begin(), ::toupper);
   std::unordered_set<std::string> format ={"JPG","JPEG","PNG","TIFF","TIF"};
   std::unordered_set<std::string>::const_iterator got = format.find(extension);
@@ -259,18 +259,18 @@ std::string gen_random(std::string extension) {
  * \return a string JSON
  */
 static
-std::string InitiateSession(std::string fileName, HttpRequest* request)
+std::string InitiateSession(std::string filename, HttpRequest* request)
 {
   int cptExample = 0;
-  Session* mySession = new Session((UPLOAD_DIR) + fileName);
+  Session* mySession = new Session((UPLOAD_DIR) + filename);
   
   srand(time(NULL));
   cptExample = rand();
   mySession->setToken(cptExample);
-  mySession->setOriginalFileName(fileName);   
+  mySession->setOriginalFileName(filename);   
   activeSessions.push_back(mySession);
   mySession->getImage()->ComputeMask();
-  return "{\"fileName\":\"" + fileName + "\",\"token\":" + std::to_string(mySession->getToken()) + "}";
+  return "{\"filename\":\"" + filename + "\",\"token\":" + std::to_string(mySession->getToken()) + "}";
 }
 
 
@@ -431,7 +431,7 @@ class MyDynamicRepository : public DynamicRepository
         dst.close();
         myUploadRepo->reload();
         
-        std::string json_Session = "{\"fileName\":\"" + newFileName + "\"}";
+        std::string json_Session = "{\"filename\":\"" + newFileName + "\"}";
         NVJ_LOG->append(NVJ_ERROR, "Upload Image : " + json_Session);
         return fromString(json_Session, response); 
       }
@@ -732,6 +732,7 @@ class MyDynamicRepository : public DynamicRepository
 
   } updateBaseline;  
 
+  
   class grayScaleCharsDegradation: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
@@ -750,13 +751,14 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
         NVJ_LOG->append(NVJ_ERROR, "Degradation - GrayScale Character : level = " + levelParam + ";");
-        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+        
+        std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+        return fromString(json_response, response); 
       }
       else
       {
-        return fromString("Error : this session doesn't exist", response);
+        return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
-
     }
   } grayScaleCharsDegradation;
 
@@ -804,13 +806,14 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
         NVJ_LOG->append(NVJ_ERROR, "Degradation - Shadow Binding : border = " + borderParam + "; width = " + widthParam + "; intensity = " + intensityParam + "; angle = " + angleParam + ";");
-        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+        
+        std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+        return fromString(json_response, response); 
       }
       else
       {
-        return fromString("Error : this session doesn't exist", response);
+        return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
-
     }
   } shadowBindingDegradation;
 
@@ -836,11 +839,13 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
         NVJ_LOG->append(NVJ_ERROR, "Degradation - Phantom Character : frequency = " + frequencyParam + ";");
-        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+        
+        std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+        return fromString(json_response, response); 
       }
       else
       {
-        return fromString("Error : this session doesn't exist", response);
+        return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
     }
   } phantomCharacterDegradation;
@@ -849,7 +854,8 @@ class MyDynamicRepository : public DynamicRepository
   class BleedThroughDegradation: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
-    {      
+    {
+
       std::string tokenParam;
       std::string nbIterationsParam;
       std::string imgVersoParam;
@@ -859,7 +865,7 @@ class MyDynamicRepository : public DynamicRepository
       request->getParameter("imgVerso", imgVersoParam);
 
       int nbIterations = stoi(nbIterationsParam);
-      
+
       int token = stoi(tokenParam);
       int sessionIndex = getActiveSessionFromToken(token);
       if(sessionIndex != -1)
@@ -868,10 +874,18 @@ class MyDynamicRepository : public DynamicRepository
         QString versoFilename((UPLOAD_DIR + imgVersoParam).c_str());
         QImage img_verso(versoFilename);
 
-        if (! QFileInfo(versoFilename).exists()) {
-          std::cerr<<"ERROR: fverso filename does not exist: "<<versoFilename.toStdString()<<"\n";
+        // Si l'image n'a pas bien chargé
+        if (img_verso.width() == 0 || img_verso.height() == 0){
+          return fromString("{\"error\":\"Error : The image could not be loaded.\"}", response);
         }
+
         
+        QFileInfo fi(versoFilename);
+        if (! fi.exists()) {
+          std::cerr<<"ERROR: fverso filename does not exist: "<<versoFilename.toStdString()<<"\n";
+          assert(fi.exists());
+        }
+        std::cerr<<"verso="<<fi.absoluteFilePath().toStdString()<<" isReadable="<<fi.isReadable()<<"\n";
         if (img_verso.width() == 0 || img_verso.height() == 0)
           std::cerr<<"ERROR: verso image not loaded correctly !!!\n";
         assert(img_verso.width() != 0 && img_verso.height() != 0);
@@ -888,11 +902,13 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
         NVJ_LOG->append(NVJ_ERROR, "Degradation - Bleed Through : number iterations = " + nbIterationsParam + "; image verso = " + UPLOAD_DIR + imgVersoParam + ";");
-        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+        
+        std::string json_response = "{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+        return fromString(json_response, response); 
       }
       else
       {
-        return fromString("Error : this session doesn't exist", response);
+        return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
 
     }
@@ -940,13 +956,14 @@ class MyDynamicRepository : public DynamicRepository
         activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
         myUploadRepo->reload();
         NVJ_LOG->append(NVJ_ERROR, "Degradation - Blur Filter : typeIntensity = " + typeIntensityParam + "; image/value = " + (BLUR_IMG_DIR + intensityParam) + "; intensity = " +  std::to_string(intensity) + "; method = " + methodParam + ";");
-        return fromString(activeSessions.at(sessionIndex)->getDisplayedFileName(), response);
+        
+        std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+        return fromString(json_response, response); 
       }
       else
       {
-        return fromString("Error : this session doesn't exist", response);
+        return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
-
     }
   } blurFilterDegradation;
 

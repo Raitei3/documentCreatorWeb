@@ -30,10 +30,4 @@ Partie Server :
 ===============
   - La baseline doit être compris entre le line "up" et la line "down" afin d'éviter que l'utilisateur ai à cliquer plus de 200 fois lorsque la baseline a mal était placé.
   - Shadow Binding fait planter le serveur lorsque l'image est trop petite (lorsqu'elle est inférieur à la taille de la dégradation)
-  - BleedThrough fait planter le serveur par moment (2 erreurs différentes trouvés):
-    1. main: src/BleedThrough.cpp:48: void convertToAtLeast8Bit(QImage&): Assertion `src.depth() >= 8' failed.
-       Abandon (core dumped)
-    2. main: src/BleedThrough.cpp:387: void copyImagePart(QImage&, int, int, const QImage&, int, int, int, int): Assertion `src.format() == QImage::Format_Indexed8' failed.
-       Abandon (core dumped)
-  - BlurFilter ne marche pas lorsque l'on essaye de l'appliquer avec des images. (Mais il fonctionne parfaitement si l'on sélectionne l'intensité avec une valeur).
-  
+  - BlurFilter fonctionne mal lorsque l'on essaye de l'appliquer avec des images. (Mais il fonctionne parfaitement si l'on sélectionne l'intensité avec une valeur).

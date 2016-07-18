@@ -525,7 +525,7 @@ static
 QString
 getPhantomPatternsPath()
 {
-  return "Image/phantomPatterns/";
+  return "data/image/phantomPatterns/";
 }
 
 /**

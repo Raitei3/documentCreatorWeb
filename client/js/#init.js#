@@ -1,3 +1,0 @@
-var session = new Session();
-
-document.getElementById('createDocumentStart').addEventListener('click', function(){
