@@ -6,6 +6,10 @@
 #include <string.h> 
 #include <unordered_set>
 
+//manipulation des répertoires
+#include <dirent.h>
+#include <sys/stat.h>
+
 #include "../headers/Image.hpp"
 #include "../headers/Font.hpp"
 #include "../headers/Session.hpp"
@@ -989,6 +993,48 @@ class MyDynamicRepository : public DynamicRepository
     }
   } downloadCreateDocument;
 
+  /*
+    ======================================================
+    ======================================================
+    ======================================================
+    ======================================================
+    ======================================================
+    ======================================================
+    ======================================================
+  */
+  class GetElemsDirectory: public MyDynamicPage
+  {
+    bool getPage(HttpRequest* request, HttpResponse *response)
+    {
+      std::string directoryName;
+      request->getParameter("directory", directoryName);
+      
+      const char* directoryPath = ("data/" + directoryName).c_str();
+      DIR* directory = opendir(directoryPath);
+      struct dirent* file = NULL;
+      
+      std::string messageConsole = "getElemsDirectory - directory = data/" + directoryName + "/;\n";
+;
+      std::string listFiles;
+      int nbFiles = 0;
+      while ((file = readdir(directory)) != NULL){
+        if(file->d_type != DT_DIR){
+          listFiles.append(file->d_name);
+          listFiles.append(";");
+          nbFiles++;
+          messageConsole.append("  - " + std::string(file->d_name) + "\n");
+        }
+      }
+      
+      listFiles.insert(0, ";");
+      listFiles.insert(0, std::to_string(nbFiles));
+
+      NVJ_LOG->append(NVJ_ERROR, messageConsole);
+
+      return fromString(listFiles, response); 
+    }
+  } getElemsDirectory;
+
   
   class Controller: public MyDynamicPage
   {
@@ -1022,6 +1068,7 @@ class MyDynamicRepository : public DynamicRepository
     add("blurFilter.txt", &blurFilterDegradation);
 
     add("downloadCreateDocument.txt", &downloadCreateDocument);
+    add("getElemsDirectory.txt", &getElemsDirectory);
   }
 };
 

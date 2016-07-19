@@ -5,7 +5,10 @@ function ControllerCreateDocument() {
     // Init
     $('#createDocument').hide();
     $('#createDocumentPractice').show();
-
+    
+    session.getElemsDirectory("font", controllerCreateDocument);
+    session.getElemsDirectory("background", controllerCreateDocument);
+    
     var downloads = document.getElementsByName("createDocumentDownload");
     for (var i = 0; i < downloads.length; i++){
 	document.getElementById(downloads[i].id).addEventListener('click', function(event){
@@ -28,6 +31,21 @@ function ControllerCreateDocument() {
 	}, true);
     }
 }
+
+ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, elems){
+    var tabElems = elems.split(';');
+    var nbElems = tabElems[0];
+    
+    var idSelect = "#createDocument" + directory.charAt(0).toUpperCase() + directory.substring(1).toLowerCase()
+    var selectHTML = $(idSelect);
+    selectHTML.empty();
+    
+    for (var i = 1; i <= nbElems; i++){
+	selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
+    }
+}
+
+
 
 ControllerCreateDocument.prototype.changeDownload = function(filename){
     document.getElementById("createDocumentDownloadXML").setAttribute('href','background/' + filename);

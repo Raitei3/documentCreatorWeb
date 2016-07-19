@@ -660,10 +660,10 @@ ListCharacter.prototype.removeToCharacter = function(character){
  * \memberof ListCharacter
  */
 ListCharacter.prototype.draw = function(){
-    var listHTMl = $("#letter-list");
-    listHTMl.empty();
+    var listHTML = $("#letter-list");
+    listHTML.empty();
     for (var [key, value] of this.list)
-      listHTMl.append( "<li class=\"col-sm-3 listItem\" data-character=\"" + key + "\">" + key + "<span class=\"pull-right letter-number\">" + value + "</span></li>");
+      listHTML.append( "<li class=\"col-sm-3 listItem\" data-character=\"" + key + "\">" + key + "<span class=\"pull-right letter-number\">" + value + "</span></li>");
 }
 
 /*!

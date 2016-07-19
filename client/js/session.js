@@ -455,3 +455,30 @@ Session.prototype.downloadCreateDocument = function(typeDownload, font, backgrou
     });
 }
 
+
+Session.prototype.getElemsDirectory = function(directory, callback)
+{
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'getElemsDirectory.txt',
+        type: 'POST',
+        data: 'directory=' + directory,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+	    callback.updateElemsDirectory(directory, data);
+	    
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+

@@ -49,7 +49,7 @@
             <div id="navigation" class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-default">
 		<li>
-		  <a href="home-test-online.html">Home</a>
+		  <a href="test-online.html">Home</a>
 		</li>
 		<li>
 		  <a href="font-creator.html">Font Creator</a>
@@ -96,42 +96,22 @@
 
     <section id="createDocumentPractice">
       <div class="container">
-	<div class="row">
-	  <div class="col-md-3 section_portion">
-	    Font:
-	    <select id="createDocumentFont">
-	      <option value="BMTcomplete.of">BMTcomplete</option>
-	      <option value="bmt.of">bmt</option>
-	      <option value="fraktur.of">fraktur</option>
-	      <option value="garamont.of">garamont</option>
-	      <option value="geringcicero.of">geringcicero</option>
-	      <option value="verard.of">verard</option>
-	      <option value="vesale.of">vesale</option>
-	    </select>
+	<div class="row section_portion">
+	  <div class="col-md-4">
+	    Font: <select id="createDocumentFont"></select>
 	    <br>
-	    Background:
-	    <select id="createDocumentBackground" >
-	      <option value="bg_PR6.png">bg_PR6</option>
-	      <option value="bg_PR7.png">bg_PR7</option>
-	      <option value="carro.png">carro</option>
-	      <option value="newBackGround0.png">newBackGround0</option>
-	      <option value="newBackGround1.png">newBackGround1</option>
-	      <option value="paper2origdy4.png">paper2origdy4</option>
-	      <option value="parchemin_vierge.png">parchemin_vierge</option>
-	      <option value="Topogra.png">Topogra</option>
-	      <option value="vesale_0002.png">vesale_0002</option>
-	      <option value="vesale_0011.png">vesale_0011</option>
-	    </select>
+	    Background: <select id="createDocumentBackground"></select>
 	    <br>
 	    <a name="createDocumentDownload" id="createDocumentDownloadXML" href="#">
 	      <span class="glyphicon glyphicon-download"></span>
 	    </a>Download XML
+	    <br>
 	    <a name="createDocumentDownload" id="createDocumentDownloadPNG" href="#">
 	      <span class="glyphicon glyphicon-download"></span>
 	    </a>Download PNG
 	  </div>
-	  <div class="col-md-8 section_portion">
-	    <input type="text" id="createDocumentText" value="lorem ipsum et dolor">
+	  <div class="col-md-8">
+	    <textarea id="createDocumentText" rows="6" cols="75">lorem ipsum et dolor</textarea>
 	  </div>
 	</div>
       </div>
