@@ -271,6 +271,7 @@ Session.prototype.merge = function(activeId, activeLine, jsonId, callback)
     });
 }
 
+// Envois les informations nécessaire pour faire la GrayScale Characters Degradations, et récupère le path de l'image dégradé.
 Session.prototype.grayScaleCharsDegradation = function(level, callback)
 {
     // Loading panel
@@ -302,7 +303,7 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
     });
 }
 
-
+// Envois les informations nécessaire pour faire Shadow Binding, et récupère le path de l'image dégradé.
 Session.prototype.shadowBinding = function(border, width, intensity, angle, callback)
 {    
     // Loading panel
@@ -334,7 +335,7 @@ Session.prototype.shadowBinding = function(border, width, intensity, angle, call
     });
 }
 
-
+// Envois les informations nécessaire pour faire Phantom Character, et récupère le path de l'image dégradé.
 Session.prototype.phantomCharacter = function(frequency, callback)
 {
     // Loading panel
@@ -366,6 +367,7 @@ Session.prototype.phantomCharacter = function(frequency, callback)
     });
 }
 
+// Envois les informations nécessaires pour faire Bleed Through, et récupère le path de l'image dégradé.
 Session.prototype.bleedThrough = function(nbIterations, imgVerso, callback)
 {
     // Loading panel
@@ -399,6 +401,7 @@ Session.prototype.bleedThrough = function(nbIterations, imgVerso, callback)
     });
 }
 
+// Envois les informations nécessaires pour faire BlurFilter, et récupère le path de l'image dégradé.
 Session.prototype.blurFilter = function(method, typeIntensity, intensity, callback)
 {
     // Loading panel
@@ -429,7 +432,7 @@ Session.prototype.blurFilter = function(method, typeIntensity, intensity, callba
     });
 }
 
-
+// Envois les informations nécessaires pour créer un document, et récupère le path du document créer.
 Session.prototype.downloadCreateDocument = function(typeDownload, font, background, text, callback)
 {
     // Loading panel
@@ -455,7 +458,9 @@ Session.prototype.downloadCreateDocument = function(typeDownload, font, backgrou
     });
 }
 
-
+// Envois le nom du répertoire situé dans server/data/ duquel on veut récupèrer tous les fichiers,
+// et récupère la liste des fichiers espacés par un ";" et possédant au tout début de la chaîne de caractère,
+// le nombre de fichiers.
 Session.prototype.getElemsDirectory = function(directory, callback)
 {
     // Loading panel

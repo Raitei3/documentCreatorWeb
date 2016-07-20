@@ -692,7 +692,7 @@ function init(src, boundingBox, baseline, typeOfController) {
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, baseline, boundingBox, "font-creator");
 	var previewCanvas = new PreviewCanvas(document.getElementById('small_canvas'), imagePreview);
 	var listCharacter = new ListCharacter();
-	var controller = new Controller(normalCanvas, previewCanvas, listCharacter);
+	var controller = new ControllerFontCreator(normalCanvas, previewCanvas, listCharacter);
     } else if (typeOfController == "degradation"){
 	var image = new ProcessingImage(src);
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "degradation");

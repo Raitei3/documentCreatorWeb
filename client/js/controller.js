@@ -1,63 +1,16 @@
-function ControllerCreateDocument() {
-    
-    var controllerCreateDocument = this;
-    
-    // Init
-    $('#createDocument').hide();
-    $('#createDocumentPractice').show();
-    
-    session.getElemsDirectory("font", controllerCreateDocument);
-    session.getElemsDirectory("background", controllerCreateDocument);
-    
-    var downloads = document.getElementsByName("createDocumentDownload");
-    for (var i = 0; i < downloads.length; i++){
-	document.getElementById(downloads[i].id).addEventListener('click', function(event){
-	    var fonts = document.getElementById("createDocumentFont");
-	    var font = fonts.options[fonts.selectedIndex].value;
-
-	    var backgrounds = document.getElementById("createDocumentBackground");
-	    var background = backgrounds.options[backgrounds.selectedIndex].value;
-
-	    var text = document.getElementById("createDocumentText").value;
-	    
-	    var type;
-	    if (this.id == "createDocumentDownloadXML"){
-		type = "xml";
-	    } else { // this.id == "createDocumentDownloadPNG"
-		type = "png";
-	    }
-	    	    
-	    session.downloadCreateDocument(type, font, background, text, controllerCreateDocument);
-	}, true);
-    }
-}
-
-ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, elems){
-    var tabElems = elems.split(';');
-    var nbElems = tabElems[0];
-    
-    var idSelect = "#createDocument" + directory.charAt(0).toUpperCase() + directory.substring(1).toLowerCase()
-    var selectHTML = $(idSelect);
-    selectHTML.empty();
-    
-    for (var i = 1; i <= nbElems; i++){
-	selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
-    }
-}
+/*
+  Ce fichier contient les controllers des différentes pages web (font-creator, degradations et create-your-document).
+  Chaque controller gère toutes les manipulations faites sur les différentes pages web.
+*/
 
 
+/* 
+   ===========================================
+   ======    CONTROLLER FONT CREATOR    ======
+   ===========================================
+*/
 
-ControllerCreateDocument.prototype.changeDownload = function(filename){
-    document.getElementById("createDocumentDownloadXML").setAttribute('href','background/' + filename);
-    document.getElementById("createDocumentDownloadXML").setAttribute('download', 'doc-online.xml');
-    
-    document.getElementById("createDocumentDownloadPNG").setAttribute('href','background/' + filename);
-    document.getElementById("createDocumentDownloadPNG").setAttribute('download', 'doc-online.png');
-}
-
-
-
-function Controller(canvas, previewCanvas, listCharacter) {
+function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
     this.canvas = canvas;
     this.previewCanvas = previewCanvas;
     this.listCharacter = listCharacter;
@@ -209,7 +162,7 @@ function Controller(canvas, previewCanvas, listCharacter) {
  * \memberof Controller
  * \param e event object 
  */
-Controller.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
+ControllerFontCreator.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
 {
     // get the coordinates of the click
     var mouse = this.canvas.getMouse(e);
@@ -282,7 +235,7 @@ Controller.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
  * \memberof Controller
  * \param e event object 
  */
-Controller.prototype.updateInfoOnObject = function(e)
+ControllerFontCreator.prototype.updateInfoOnObject = function(e)
 {
     if($("#letter").val() != "")
     {
@@ -342,7 +295,7 @@ Controller.prototype.updateInfoOnObject = function(e)
  * \param letter value of the letter
  * \param baseline value of the baseline
  */
-Controller.prototype.manipulateInfos = function manipulateInfos(id, left, right, up, down, letter, baseline){
+ControllerFontCreator.prototype.manipulateInfos = function manipulateInfos(id, left, right, up, down, letter, baseline){
 
     this.previewCanvas.zoomTo(this.canvas.boundingBox.rects[id], id);
     this.previewCanvas.visible = true;
@@ -375,7 +328,7 @@ Controller.prototype.manipulateInfos = function manipulateInfos(id, left, right,
     this.previewCanvas.draw();
 }
 
-Controller.prototype.merge = function merge(e)
+ControllerFontCreator.prototype.merge = function merge(e)
 {
     var ids = this.canvas.selectedCC;
     // Construct the json object containing all components ids
@@ -395,7 +348,7 @@ Controller.prototype.merge = function merge(e)
     session.merge(this.canvas.boundingBox.rects[this.previewCanvas.idElementSelected].idCC, this.canvas.boundingBox.rects[this.previewCanvas.idElementSelected].idLine,jsonId, this);
 }
 
-Controller.prototype.mergeComponent = function mergeComponent(id, idLine, left, right, up, down, jsonId)
+ControllerFontCreator.prototype.mergeComponent = function mergeComponent(id, idLine, left, right, up, down, jsonId)
 {
     for(var i in jsonId) { 
         if(jsonId[i].idCC == id && jsonId[i].idLine == idLine)
@@ -423,34 +376,17 @@ Controller.prototype.mergeComponent = function mergeComponent(id, idLine, left, 
 }
 
 
-Controller.prototype.replaceImage = function replaceImage(imagePath)
+ControllerFontCreator.prototype.replaceImage = function replaceImage(imagePath)
 {
     this.canvas.changeImage("data/" + imagePath);
     this.previewCanvas.changeImage("data/" + imagePath);
 }
 
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-// ====================================================================================================================
-
-
+/* 
+   ==========================================
+   ======    CONTROLLER DEGRADATION    ======
+   ==========================================
+ */
 
 function ControllerDegradation(canvas) {
     this.canvas = canvas;
@@ -525,7 +461,7 @@ function ControllerDegradation(canvas) {
 	session.blurFilter(method, typeIntensity, intensity, controller);
     }, true);
 
-    // Blur Filter - change image blur
+    // Blur Filter - change l'image du blur
     document.getElementById('changeImgBlurFilter').addEventListener('click', function(event){
 	if(event.target.nodeName == "BUTTON") {
 	    var src = document.getElementById('blurFilterIntensityImage').src;
@@ -610,3 +546,72 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 {
     this.canvas.changeImage("data/" + imagePath);
 }
+
+
+/* 
+   =============================================
+   ===    CONTROLLER CREATE YOUR DOCUMENT    ===
+   =============================================
+*/
+
+function ControllerCreateDocument() {
+    var controller = this;
+    
+    // Init
+    $('#createDocument').hide();
+    $('#createDocumentPractice').show();
+
+    // Récupère les fonts situés dans le dossier server/data/font/
+    session.getElemsDirectory("font", controller);
+    // Récupère les backgrounds situés dans le dossier server/data/background/
+    session.getElemsDirectory("background", controller);
+
+    // Envois les informations nécessaire pour télécharger le document à créé (font, background, texte, format XML/PNG)
+    var downloads = document.getElementsByName("createDocumentDownload");
+    for (var i = 0; i < downloads.length; i++){
+	document.getElementById(downloads[i].id).addEventListener('click', function(event){	    
+	    var fonts = document.getElementById("createDocumentFont");
+	    var font = fonts.options[fonts.selectedIndex].value;
+
+	    var backgrounds = document.getElementById("createDocumentBackground");
+	    var background = backgrounds.options[backgrounds.selectedIndex].value;
+
+	    var text = document.getElementById("createDocumentText").value;
+	    
+	    var type;
+	    if (this.id == "createDocumentDownloadXML"){
+		type = "xml";
+	    } else { // this.id == "createDocumentDownloadPNG"
+		type = "png";
+	    }
+	    	    
+	    session.downloadCreateDocument(type, font, background, text, controller);
+	}, true);
+    }
+}
+
+// Mets à jour les selects "Font" et "Background" à partir des données renvoyées par le serveur.
+ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, elems){
+    var tabElems = elems.split(';');
+    var nbElems = tabElems[0];
+    
+    var idSelect = "#createDocument" + directory.charAt(0).toUpperCase() + directory.substring(1).toLowerCase()
+    var selectHTML = $(idSelect);
+    selectHTML.empty();
+    
+    for (var i = 1; i <= nbElems; i++){
+	selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
+    }
+}
+
+// Modifie les liens de téléchargement de "Download XML" et "DownloadPNG"
+ControllerCreateDocument.prototype.changeDownload = function(filename){
+    var downloadXML = document.getElementById("createDocumentDownloadXML");
+    downloadXML.setAttribute('href','background/' + filename);
+    downloadXML.setAttribute('download', 'doc-online.xml');
+
+    var downloadPNG = document.getElementById("createDocumentDownloadPNG");
+    downloadPNG.setAttribute('href','background/' + filename);
+    downloadPNG.setAttribute('download', 'doc-online.png');
+}
+

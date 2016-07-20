@@ -883,17 +883,6 @@ class MyDynamicRepository : public DynamicRepository
           return fromString("{\"error\":\"Error : The image could not be loaded.\"}", response);
         }
 
-        
-        QFileInfo fi(versoFilename);
-        if (! fi.exists()) {
-          std::cerr<<"ERROR: fverso filename does not exist: "<<versoFilename.toStdString()<<"\n";
-          assert(fi.exists());
-        }
-        std::cerr<<"verso="<<fi.absoluteFilePath().toStdString()<<" isReadable="<<fi.isReadable()<<"\n";
-        if (img_verso.width() == 0 || img_verso.height() == 0)
-          std::cerr<<"ERROR: verso image not loaded correctly !!!\n";
-        assert(img_verso.width() != 0 && img_verso.height() != 0);
-        
         img_verso = img_verso.mirrored(true, false);
         
         QImage img_bleed_through = bleedThrough(img_recto, img_verso, nbIterations);
@@ -993,15 +982,7 @@ class MyDynamicRepository : public DynamicRepository
     }
   } downloadCreateDocument;
 
-  /*
-    ======================================================
-    ======================================================
-    ======================================================
-    ======================================================
-    ======================================================
-    ======================================================
-    ======================================================
-  */
+
   class GetElemsDirectory: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
