@@ -114,12 +114,9 @@ int getDistanceBorder(const cv::Mat &pattern, int xOrigin, int yOrigin)
 
   const cv::Vec3b BLACK(0, 0, 0);
 
-  const cv::Vec3b *p = nullptr;
-  int d = 0;
-
   //search toward right
-  p = pattern.ptr<cv::Vec3b>(yOrigin);
-  d = 0;
+  const cv::Vec3b *p = pattern.ptr<cv::Vec3b>(yOrigin);
+  int d = 0;
   for (int x=xOrigin; x<pattern.cols; ++x) {
     if (p[x] != BLACK)
       break;
