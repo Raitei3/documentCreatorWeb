@@ -5,7 +5,10 @@
 ##############################
 
 OUTPUTFILENAME = PrecompiledRepository.cc
-NAVAJO_PRECOMPILER_EXEC = ../bin/navajoPrecompiler
+
+NAVAJO_PREFIX=/usr
+NAVAJO_INCLUDE_DIR=${NAVAJO_PREFIX}/include
+NAVAJO_PRECOMPILER_EXEC=${NAVAJO_PREFIX}/bin/navajoPrecompiler
 
 
 UNAME := $(shell uname)
@@ -23,21 +26,41 @@ LIB_DIR      = lib
 CXX 	=  g++ -std=c++11 -Wall -Wextra -g
 
 
-#Paths found on Ubuntu
+#TODO: Use a proper build system !!!...
 #TODO: Check that it is the same paths on Debian (OS of the IUT server).
 #      BUT IT WILL NOT BUILD ON MACOSX !!!
-#TODO: Use a proper build system...
-QT_CXXFLAGS=-isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtXmlPatterns
+ifeq ($(OS),LINUX)
 
-QT_LIBS=/usr/lib/x86_64-linux-gnu/libQt5Xml.so /usr/lib/x86_64-linux-gnu/libQt5XmlPatterns.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so
+#General case (works on Fedora)
+QT_SUFFIX=
+QT_LIB_PREFIX=/usr/lib64
+
+ifeq ($(wildcard /etc/ubuntu-release),"") #Ubuntu case
+QT_SUFFIX=x86_64-linux-gnu/
+QT_LIB_PREFIX=/usr/lib/x86_64-linux-gnu
+endif
+
+QT_CXXFLAGS=-isystem /usr/include/$(QT_SUFFIX)qt5 -isystem /usr/include/$(QT_SUFFIX)qt5/QtWidgets -isystem /usr/include/$(QT_SUFFIX)qt5/QtGui -isystem /usr/include/$(QT_SUFFIX)qt5/QtCore -isystem $(QT_LIB_PREFIX)/qt5/mkspecs/linux-g++-64 -isystem /usr/include/$(QT_SUFFIX)qt5/QtXml -isystem /usr/include/$(QT_SUFFIX)qt5/QtXmlPatterns
+
+QT_LIBS=$(QT_LIB_PREFIX)/libQt5Xml.so $(QT_LIB_PREFIX)/libQt5XmlPatterns.so $(QT_LIB_PREFIX)/libQt5Widgets.so $(QT_LIB_PREFIX)/libQt5Gui.so $(QT_LIB_PREFIX)/libQt5Core.so
+
+endif
 
 
 ifeq ($(OS),MACOSX)
+
+#TODO: set path for Qt
+QT_CXXFLAGS=
+QT_LIBS=
+
 LIBSSL_DIR = /usr/local/Cellar/openssl/1.0.1j
 LIBS       = -lnavajo -L../../$(LIB_DIR) -lz  -L$(LIBSSL_DIR)/lib -lssl -lcrypto  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy $(QT_LIBS)
 DEFS            =   -D__darwin__ -D__x86__ -fPIC -fno-common -D_REENTRANT
 CXXFLAGS        =  -O3  -Wdeprecated-declarations $(QT_CXXFLAGS)
+
 else
+#Linux
+
 ifeq ($(LBITS),64)
   LIB_DIR=lib64
 endif
@@ -51,7 +74,7 @@ CPPFLAGS	= -I. \
             -I$(LIBSSL_DIR)/include \
 		  	-Iheaders \
 		  	-I../../include \
-			-I/usr/include/opencv -I/usr/include/opencv2
+			-I/usr/include/opencv -I/usr/include/opencv2 -I$(NAVAJO_INCLUDE_DIR)
 LD		=  g++ 
 
 LDFLAGS        = -Wall -Wno-unused -O3   
