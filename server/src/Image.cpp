@@ -1,5 +1,5 @@
 #include "../headers/Image.hpp"
-#include "../headers/Binarization.hpp"
+#include "../headers/binarization.hpp"
 
 Image::Image(const std::string &path){
   m_img = cv::imread(path, CV_LOAD_IMAGE_COLOR);
@@ -48,7 +48,7 @@ ConnectedComponent Image::getConnectedComponnentAt(int index, int line) const{
 cv::Mat Image::binarizeImage() const
 {
   cv::Mat m_img_bin (m_img.rows, m_img.cols, CV_8U);
-  NiblackSauvolaWolfJolion (m_img, m_img_bin, WOLFJOLION);
+  Binarization::NiblackSauvolaWolfJolion(m_img, m_img_bin, Binarization::WOLFJOLION);
   return m_img_bin;
 }
 
