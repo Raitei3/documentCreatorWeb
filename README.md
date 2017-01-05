@@ -2,11 +2,17 @@
 
 Semi-automatic extraction of characters from an image into a font for the generation of images and old documents.
 
-This application can be tested online, or installed locally. To 
-install it two solutions are provided : manually or from a docker 
-image.
+This application can be tested online, or installed locally.
+
+
 ## Manual installation
 ```
+There are two dependencies: Qt5 and OpenCV
+
+// Qt installation
+#Ubuntu
+$ sudo apt-get install libqtbase5-dev
+
 // Opencv installation
 #Ubuntu Linux distribution
 $ sudo apt-get install libopencv-dev
@@ -31,17 +37,13 @@ $ sudo make install
 // Font-extractor installation
 $ git clone https://github.com/BorisMansencal/Pdp.git
 $ cd Pdp/server
-$ make
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_MODULE_PATH=<libnavajo sources path>
+ where <libnavajo sources path> must be replaced with root directory of libanvajo sources (where there is the file FindLibnavajo.cmake
+ $ make
 ```
 
-## Docker installation
-First install docker https://docs.docker.com/engine/installation/
-```    
-$ docker run -dti -p  80:8080 rtisne/font-extractor
-```
-
-This may take some times.
-After the installation just go to your docker ip address 
 
 ## How to use
 To lauch the server, go into the server folder and make:
@@ -58,6 +60,7 @@ If you are in local, you can access to the server throught: http://localhost:808
 ## Demo
 The application is host online :
 https://intranet.iut.u-bordeaux.fr/navajo/
+
 
 ## Building and running unit tests
 Tests are available to test the algorithm part that retrieves components in the image.
