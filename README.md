@@ -16,7 +16,10 @@ $ brew install opencv
 
 // Libnavajo installation
 // You may need to first install OpenSSL & PAM
+// On Ubuntu:
 // sudo apt-get install libssl-dev libpam0g-dev
+// On Fedora:
+// dnf install openssl-devel pam-devel
 $ git clone https://github.com/titi38/libnavajo.git
 $ cd libnavajo
 $ mkdir build
@@ -26,7 +29,7 @@ $ make
 $ sudo make install
     
 // Font-extractor installation
-$ git clone https://github.com/rtisne/Pdp.git
+$ git clone https://github.com/BorisMansencal/Pdp.git
 $ cd Pdp/server
 $ make
 ```
@@ -71,6 +74,11 @@ Developed by:
 * [Anthony Boschet](https://github.com/aboschet)
 * [Thomas Labrousse](https://github.com/Shqrk)
 * [Romain Tisné](https://github.com/rtisne)
+* [Jimmy Gouraud]
+* [Felix Bruneau]
+* [Nicolas Vidal]
+* [Boris Mansencal]
+* [Nicholas Journet]
 
 [Report link]()
 
