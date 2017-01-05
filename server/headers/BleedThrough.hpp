@@ -27,7 +27,7 @@ class BleedThrough
 
 public:
 
-  explicit BleedThrough(int nbIterations, QObject *parent = 0) :
+  explicit BleedThrough(int nbIterations) :
     _nbIter(nbIterations)
   {}
 

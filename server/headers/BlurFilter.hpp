@@ -27,7 +27,7 @@ public :
    explicit BlurFilter(QImage original, Method method, int intensity,  
 Mode mode=Mode::COMPLETE, Function function=Function::LINEAR, Area  
 area=Area::UP, float coeff=1, int vertical=0, int horizontal=0, int  
-radius=0, QImage pattern = QImage(), QObject *parent =0) :
+radius=0, QImage pattern = QImage()) :
      _intensity(intensity), _method(method), _mode(mode),  
 _function(function), _area(area), _coeff(coeff), _vertical(vertical),  
 _horizontal(horizontal), _radius(radius), _original(original),  
