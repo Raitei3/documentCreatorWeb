@@ -1,7 +1,6 @@
 #ifndef PHANTOMCHARACTER_HPP
 #define PHANTOMCHARACTER_HPP
 
-#include <QImage>
 #include <opencv2/core/core.hpp>
 
 /*
@@ -11,7 +10,6 @@
   1 is 40%
   2 is 70%
 */
-extern QImage phantomCharacter(const QImage &imgOriginal, int frequency);
 extern cv::Mat phantomCharacter(const cv::Mat &imgOriginal, int frequency);
 
 

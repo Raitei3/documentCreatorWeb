@@ -8,11 +8,13 @@ static const int COEFF_PARABOLA = 4;
 static const cv::Vec3b WHITE_PIXEL = cv::Vec3b(255, 255, 255);
 static const cv::Vec3b BLACK_PIXEL = cv::Vec3b(0, 0, 0);
 
-void BlurFilter::calcSolutions(float a, float b, float discr, float &y1, float &y2)
+
+void calcSolutions(float a, float b, float discr, float &y1, float &y2)
 {
   y1 = (-b+sqrt(discr))/(2*a);
   y2 = (-b-sqrt(discr))/(2*a);
 }
+
 
 static int fctLinear(int x, int rows, int coeff, int vertical)
 {
@@ -44,7 +46,7 @@ static void fctEllipse(int x, int horizontal, int vertical, float coeff, float &
   const float discr = b*b - (4*a*c);
 
   if (discr > 0) {
-    BlurFilter::calcSolutions(a, b, discr, y1, y2);
+    calcSolutions(a, b, discr, y1, y2);
     y1 += vertical;
     y2 += vertical;
   }
@@ -68,7 +70,7 @@ static void fctHyperbola(int x, int rows, int horizontal, int vertical, float co
   const float c = (81903.06188 + (coeff * 206.34517)) + ((0.00801 - (coeff * 0.00012))*(x+horizontal)*(x+horizontal)) - ((123.95975 + (coeff * 0.17438)) *(x+horizontal));
   const float discr = b*b - (4*a*c);
   if (discr > 0) {
-    BlurFilter::calcSolutions(a, b, discr, y1, y2);
+    calcSolutions(a, b, discr, y1, y2);
     y1 = rows - (y1+vertical);
     y2 = rows - (y2+vertical);
   }
@@ -79,7 +81,7 @@ static void fctHyperbola(int x, int rows, int horizontal, int vertical, float co
   }
 }
 
-void BlurFilter::calculFunction(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff, int &yFunction, int &y2Function)
+void calculFunction(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff, int &yFunction, int &y2Function)
 { 
   
   switch (fct)
@@ -123,7 +125,7 @@ void BlurFilter::calculFunction(Function fct, int rows, int x, int y, int vertic
     }
 }
 
-bool BlurFilter::isNearFunction(int x, int y, int rows, Function fct, int horizontal, int vertical, float coeff, int radius)
+bool isNearFunction(int x, int y, int rows, Function fct, int horizontal, int vertical, float coeff, int radius)
 {
   int yFunction, y2Function=-1;
 
@@ -152,7 +154,7 @@ static cv::Mat degradateCenter(const  cv::Mat &blurredMat, cv::Mat &resultMat, F
     const cv::Vec3b *b = blurredMat.ptr<cv::Vec3b>(y);
     cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
     for (int x = 0; x < cols; ++x) {
-      if (BlurFilter::isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
+      if (isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
 	r[x] = b[x];
       //else
       //r[x] = o[x];
@@ -162,7 +164,7 @@ static cv::Mat degradateCenter(const  cv::Mat &blurredMat, cv::Mat &resultMat, F
   return resultMat;  
 }
 
-bool BlurFilter::upperThan(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff)
+bool upperThan(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff)
 {
   int yFunction, y2Function = -1; 
   calculFunction(fct, rows, x, y, vertical, horizontal, coeff, yFunction, y2Function);
@@ -199,7 +201,7 @@ static cv::Mat degradateBorder(const cv::Mat &blurredMat, cv::Mat &resultMat, Fu
       const cv::Vec3b *b = blurredMat.ptr<cv::Vec3b>(y);
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
       for (int x = 0; x < cols; ++x) {
-	if (BlurFilter::upperThan(function, rows, x, y, vertical, horizontal, coeff))
+	if (upperThan(function, rows, x, y, vertical, horizontal, coeff))
 	  r[x] = b[x];
       }
     }
@@ -209,7 +211,7 @@ static cv::Mat degradateBorder(const cv::Mat &blurredMat, cv::Mat &resultMat, Fu
       const cv::Vec3b *b = blurredMat.ptr<cv::Vec3b>(y);
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
       for (int x = 0; x < cols; ++x) {
-	if (! BlurFilter::upperThan(function, rows, x, y, vertical, horizontal, coeff))
+	if (! upperThan(function, rows, x, y, vertical, horizontal, coeff))
 	  r[x] = b[x];
       }
     }
@@ -263,7 +265,7 @@ cv::Mat applyPattern(const cv::Mat &originalMat, const cv::Mat &patternMat, Meth
   return resultMat;
 }
 
-
+/*
 QImage applyPattern(const QImage &original, const QImage &pattern, Method method, int intensity)
 {
   cv::Mat originalMat = Convertor::getCvMat(original);
@@ -273,7 +275,7 @@ QImage applyPattern(const QImage &original, const QImage &pattern, Method method
   
   return Convertor::getQImage(resultMat);
 }
-
+*/
 
 cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
@@ -288,7 +290,7 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
     for (int y = 0; y < rows; ++y) {
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
       for (int x = 0; x < cols; ++x) {	      
-	if (! BlurFilter::isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
+	if (! isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
 	  r[x] = WHITE_PIXEL;	      
       }
     }
@@ -297,7 +299,7 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
     for (int y = 0; y < rows; ++y) {
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
       for (int x = 0; x < cols; ++x) {
-	if (! BlurFilter::upperThan(function, rows, x, y, vertical, horizontal, coeff))
+	if (! upperThan(function, rows, x, y, vertical, horizontal, coeff))
 	  r[x] = WHITE_PIXEL;
       }
     }
@@ -307,7 +309,7 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
     for (int y = 0; y < rows; ++y) {
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
       for (int x = 0; x < cols; ++x) {
-	if (BlurFilter::upperThan(function, rows, x, y, vertical, horizontal, coeff))
+	if (upperThan(function, rows, x, y, vertical, horizontal, coeff))
 	  r[x] = WHITE_PIXEL;
       }
     }
@@ -316,6 +318,7 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
   return resultMat;
 }
 
+/*
 QImage makePattern(const QImage &original, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
   cv::Mat originalMat = Convertor::getCvMat(original);
@@ -324,6 +327,7 @@ QImage makePattern(const QImage &original, Function function, Area area, float c
 
   return Convertor::getQImage(resultMat);
 }
+*/
 
 static cv::Mat degradateArea(cv::Mat originalMat, cv::Mat blurredMat, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
@@ -349,6 +353,7 @@ static QImage degradateArea(QImage original, QImage blurred, Function function, 
 }
 */
 
+/*
 QImage BlurFilter::apply()
 {
  QImage finalImg;
@@ -360,7 +365,7 @@ QImage BlurFilter::apply()
      
   return finalImg;
 }
-
+*/
 
 cv::Mat blurFilter(const cv::Mat &matIn, Method method, int intensity, Mode mode, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
@@ -388,6 +393,7 @@ cv::Mat blurFilter(const cv::Mat &matIn, Method method, int intensity, Mode mode
 
 } 
 
+/*
 QImage blurFilter(const QImage &imgOriginal, Method method, int intensity, Mode mode, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
   cv::Mat matIn = Convertor::getCvMat(imgOriginal);
@@ -398,6 +404,7 @@ QImage blurFilter(const QImage &imgOriginal, Method method, int intensity, Mode 
 
   return res;
 }
+*/
 
 
 /*
@@ -461,9 +468,9 @@ static const float DEFAULT_COEFF_HYPERBOLA = 0;
   http://docs.opencv.org/doc/tutorials/core/discrete_fourier_transform/discrete_fourier_transform.html
   
 */
-float getRadiusFourier(QImage original)
+float getRadiusFourier(const cv::Mat &originalMatColor) //QImage &original)
 {
-  cv::Mat originalMatColor = Convertor::getCvMat(original);
+  //cv::Mat originalMatColor = Convertor::getCvMat(original);
   cv::Mat originalMat;
   cv::cvtColor(originalMatColor, originalMat, cv::COLOR_BGR2GRAY); //To get a grayscale image
 
@@ -528,10 +535,12 @@ float getRadiusFourier(QImage original)
   cv::dilate(magI, magI, element);
 
   // to compute the radius
-  QImage tmpImg = Convertor::getQImage(magI);  //To get a mat that can use cvtColor (not works if we clone directly the mat magI, [...]
-  cv::Mat calcRayon = Convertor::getCvMat(tmpImg); //  [...] the conversion function make the operation we need)
-  cv::cvtColor(calcRayon, calcRayon, cv::COLOR_BGR2GRAY);
-
+  //QImage tmpImg = Convertor::getQImage(magI);  //To get a mat that can use cvtColor (not works if we clone directly the mat magI, [...]
+  //cv::Mat calcRayon = Convertor::getCvMat(tmpImg); //  [...] the conversion function make the operation we need)
+  //cv::cvtColor(calcRayon, calcRayon, cv::COLOR_BGR2GRAY);
+  cv::Mat calcRayon;
+  magI.convertTo(calcRayon, CV_8U);
+  
   int pixelX = calcRayon.cols / 2;
   int pixelY = calcRayon.rows / 2;
   bool found = false;
@@ -557,7 +566,7 @@ float getRadiusFourier(QImage original)
   QImage orginal is the image on which we want to apply blur.
   radiusExample is the radius (computed by the fonction getRadiusFourier) of the exemple selected.
 */
-int searchFitFourier(QImage original, float radiusExample)
+int searchFitFourier(const cv::Mat &original, float radiusExample)
 {
   bool found = false;
   int intensity = 0;

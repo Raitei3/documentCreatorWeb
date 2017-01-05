@@ -652,9 +652,9 @@ static bool degradeComposant(cv::Mat &output, const CC &degradedCC, const CCs &c
 
       assert(patterns.size() > 0);
       int pattern = rand()%patterns.size(); //choice of pattern
-      patternImg = QImage(getPhantomPatternsPath() + patterns.at(pattern));
+      patternMat = cv::imread((getPhantomPatternsPath() + patterns.at(pattern)).toStdString());
 
-      assert(! patternImg.isNull());
+      assert(patternImg.row);
 
       int widthPattern, maxWidth, minWidth;
       int heightPattern, minHeight, maxHeight;
@@ -685,7 +685,6 @@ static bool degradeComposant(cv::Mat &output, const CC &degradedCC, const CCs &c
       if (widthPattern < MIN_WIDTH)
 	widthPattern = MIN_WIDTH;
 
-      patternMat = Convertor::getCvMat(patternImg);
       resize(patternMat, patternMat, cv::Size(widthPattern, heightPattern));
 
       origin = contains(outputBin, degradedCC, minX, maxX, minY, maxY, patternMat); 
@@ -813,10 +812,16 @@ static bool degradeComposant(cv::Mat &output, const CC &degradedCC, const CCs &c
 
 	cv::Mat boundingBox = cv::Mat(output, cv::Rect(xPattern, yPattern, widthPattern, heightPattern));
 
+#if 0
 	QImage imageBlur = Convertor::getQImage(boundingBox);
 	imageBlur = blurFilter(imageBlur, Method::GAUSSIAN, 3);
 	copyTo(Convertor::getCvMat(imageBlur), output, xPattern, yPattern);
-
+#else
+	cv::Mat imageBlur = blurFilter(boundingBox, Method::GAUSSIAN, 3);
+	copyTo(imageBlur, output, xPattern, yPattern);
+	
+#endif
+	
       }
     }      
   }  
