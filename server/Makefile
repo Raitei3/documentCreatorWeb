@@ -40,9 +40,9 @@ QT_SUFFIX=x86_64-linux-gnu/
 QT_LIB_PREFIX=/usr/lib/x86_64-linux-gnu
 endif
 
-QT_CXXFLAGS=-isystem /usr/include/$(QT_SUFFIX)qt5 -isystem /usr/include/$(QT_SUFFIX)qt5/QtWidgets -isystem /usr/include/$(QT_SUFFIX)qt5/QtGui -isystem /usr/include/$(QT_SUFFIX)qt5/QtCore -isystem $(QT_LIB_PREFIX)/qt5/mkspecs/linux-g++-64 -isystem /usr/include/$(QT_SUFFIX)qt5/QtXml -isystem /usr/include/$(QT_SUFFIX)qt5/QtXmlPatterns
+QT_CXXFLAGS=-isystem /usr/include/$(QT_SUFFIX)qt5 -isystem /usr/include/$(QT_SUFFIX)qt5/QtWidgets -isystem /usr/include/$(QT_SUFFIX)qt5/QtGui -isystem /usr/include/$(QT_SUFFIX)qt5/QtCore -isystem $(QT_LIB_PREFIX)/qt5/mkspecs/linux-g++-64 
 
-QT_LIBS=$(QT_LIB_PREFIX)/libQt5Xml.so $(QT_LIB_PREFIX)/libQt5XmlPatterns.so $(QT_LIB_PREFIX)/libQt5Widgets.so $(QT_LIB_PREFIX)/libQt5Gui.so $(QT_LIB_PREFIX)/libQt5Core.so
+QT_LIBS=$(QT_LIB_PREFIX)/libQt5Widgets.so $(QT_LIB_PREFIX)/libQt5Gui.so $(QT_LIB_PREFIX)/libQt5Core.so
 
 endif
 
@@ -90,7 +90,7 @@ MAIN_OBJS = \
 		  Line.o \
 		  Image.o \
 		  Session.o \
-		  Binarization.o \
+		  binarization.o \
 		  GrayscaleCharsDegradationModel.o \
 		  ShadowBinding.o \
 		  PhantomCharacter.o \
@@ -112,7 +112,7 @@ IMAGE= Image
 
 SESSION= Session
 
-BINARIZATION= Binarization
+BINARIZATION= binarization
 
 GRAYSCALECHARSDEGRADATIONMODEL= GrayscaleCharsDegradationModel
 
