@@ -47,7 +47,7 @@ struct Pixel
 
 struct Seedpoint
 {
-  Seedpoint(Pixel p = Pixel(),
+  Seedpoint(const Pixel &p = Pixel(),
 	    float sz = 0.f,
 	    float tache = -1.f,
 	    float cheval = -1.f,
