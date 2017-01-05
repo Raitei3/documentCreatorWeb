@@ -1,14 +1,19 @@
+/*
+ * inspired from example from Thierry DESCOMBES, Creator of Libnavajo Server
+ */
+
 #include "libnavajo/libnavajo.hh"
 #include "libnavajo/LogStdOutput.hh"
 
-#include <time.h>
+#include <ctime>
 #include <signal.h> 
-#include <string.h> 
+#include <cstring> 
 #include <unordered_set>
 
 //manipulation des répertoires
 #include <dirent.h>
 #include <sys/stat.h>
+#include <cstdio> //remove
 
 #include "../headers/Image.hpp"
 #include "../headers/Font.hpp"
@@ -29,8 +34,8 @@ using json = nlohmann::json;
 static const char *CLIENT_DIR = "../client/";
 static const char *UPLOAD_DIR = "../client/data/";
 static const char *BLUR_IMG_DIR = "data/image/blurImages/blurExamples/";
-static const char *FONT_DIR = "data/font/";
-static const char *BACKGROUND_DIR = "data/background/";
+//static const char *FONT_DIR = "data/font/";
+//static const char *BACKGROUND_DIR = "data/background/";
 
 
 
@@ -45,23 +50,25 @@ std::vector<Session*> activeSessions;
 
 
 
-/* split the string "chaine" */
-int split(std::vector<std::string>& vecteur, std::string chaine, char separateur)
+/* split the string @a s */
+int split(std::vector<std::string>& v, const std::string &s, char separateur)
 {
-  vecteur.clear();
+  v.clear();
 
-  std::string::size_type stTemp = chaine.find(separateur);
+  std::string ss = s;
+  
+  std::string::size_type stTemp = ss.find(separateur);
 	
   while(stTemp != std::string::npos)
   {
-    vecteur.push_back(chaine.substr(0, stTemp));
-    chaine = chaine.substr(stTemp + 1);
-    stTemp = chaine.find(separateur);
+    v.push_back(ss.substr(0, stTemp));
+    ss = ss.substr(stTemp + 1);
+    stTemp = ss.find(separateur);
   }
 	
-  vecteur.push_back(chaine);
+  v.push_back(ss);
 
-  return vecteur.size();
+  return v.size();
 }
 
 
@@ -71,7 +78,7 @@ int split(std::vector<std::string>& vecteur, std::string chaine, char separateur
  * \param dummy : the dummy as integer 
  */
 
-void exitFunction( int dummy )
+void exitFunction( int /*dummy*/ )
 {
   for (unsigned i=0; i<activeSessions.size(); i++)
   {
@@ -239,12 +246,12 @@ std::string extractFontInOf(int sessionIndex, const std::string &fontName)
  * \return a string
  */
 static
-std::string gen_random(std::string extension) {
+std::string gen_random(const std::string &extension)
+{
   static const char letter[] =
       "0123456789"
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       "abcdefghijklmnopqrstuvwxyz";
-  srand(time(NULL));
   
   std::string random;
   for (int i = 0; i < rng; ++i) {
@@ -263,12 +270,11 @@ std::string gen_random(std::string extension) {
  * \return a string JSON
  */
 static
-std::string InitiateSession(std::string filename, HttpRequest* request)
+std::string InitiateSession(const std::string &filename, HttpRequest* /*request*/)
 {
   int cptExample = 0;
   Session* mySession = new Session((UPLOAD_DIR) + filename);
   
-  srand(time(NULL));
   cptExample = rand();
   mySession->setToken(cptExample);
   mySession->setOriginalFileName(filename);   
@@ -366,7 +372,7 @@ class MyDynamicRepository : public DynamicRepository
       }
       
       std::string originalFileName = activeSessions.at(sessionIndex)->getOriginalFileName();
-      if (remove((UPLOAD_DIR + originalFileName).c_str()) != 0)
+      if (std::remove((UPLOAD_DIR + originalFileName).c_str()) != 0)
       {
         NVJ_LOG->append(NVJ_ERROR, "Error Deleted - Original Image");
         return fromString("{\"error\":\"An error append when deleting the image\"}", response);
@@ -382,7 +388,7 @@ class MyDynamicRepository : public DynamicRepository
         for (int i = 0; i <= numImage; i++){
           fileDisplayedPath = UPLOAD_DIR + splitStr[0] + "_" + std::to_string(i) + "_" + splitStr[2];
 
-          if(remove(fileDisplayedPath.c_str()) != 0)
+          if(std::remove(fileDisplayedPath.c_str()) != 0)
           {
             NVJ_LOG->append(NVJ_ERROR, "Error Deleted - Degraded Images");
             return fromString("{\"error\":\"An error append when deleting the image\"}", response);
@@ -1019,7 +1025,7 @@ class MyDynamicRepository : public DynamicRepository
   
   class Controller: public MyDynamicPage
   {
-    bool getPage(HttpRequest* request, HttpResponse *response)
+    bool getPage(HttpRequest* /*request*/, HttpResponse *response)
     {
       response->forwardTo("index.php");
       return true;
@@ -1055,11 +1061,10 @@ class MyDynamicRepository : public DynamicRepository
 
 /***********************************************************************/
 
-/*
- * \author Provided by Thierry DESCOMBES, Creator of Libnavajo Server
- */
-int main(int argc, char** argv )
+int main(int /*argc*/, char** /*argv*/ )
 {
+  srand(time(NULL));
+  
   signal( SIGTERM, exitFunction );
   signal( SIGINT, exitFunction );
 
