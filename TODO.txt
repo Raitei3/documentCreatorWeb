@@ -26,12 +26,12 @@ Partie Client :
 
   create-your-document:
     - il faut cliquer 2 fois sur le bouton "Download XML" et "DownloadPNG", avant que le téléchargement se lance, à corriger.
-    - le site web n'est pas finis.
+    - le site web n'est pas fini.
 
 ===============
 Partie Server :
 ===============
-  - La baseline doit être compris entre le line "up" et la line "down" afin d'éviter que l'utilisateur ai à cliquer plus de 200 fois lorsque la baseline a mal était placé.
+  - La baseline doit être compris entre le line "up" et la line "down" afin d'éviter que l'utilisateur ait à cliquer plus de 200 fois lorsque la baseline a mal était placé.
   - Shadow Binding fait planter le serveur lorsque l'image est trop petite (lorsqu'elle est inférieur à la taille de la dégradation)
   - BlurFilter fonctionne mal lorsque l'on essaye de l'appliquer avec des images. (Mais il fonctionne parfaitement si l'on sélectionne l'intensité avec une valeur).
   - Toutes les images stoquées dans client/data/ ne sont pas supprimées.
