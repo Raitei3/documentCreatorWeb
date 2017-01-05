@@ -35,3 +35,7 @@ Partie Server :
   - Shadow Binding fait planter le serveur lorsque l'image est trop petite (lorsqu'elle est inférieur à la taille de la dégradation)
   - BlurFilter fonctionne mal lorsque l'on essaye de l'appliquer avec des images. (Mais il fonctionne parfaitement si l'on sélectionne l'intensité avec une valeur).
   - Toutes les images stoquées dans client/data/ ne sont pas supprimées.
+
+ - Remove dependency on Qt
+   - recode BleeThrough to not use QThread & QImage
+   - change PhantomCharacter to not use QDir
