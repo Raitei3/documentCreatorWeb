@@ -19,19 +19,19 @@
       $(function() {
       $('#degradation').show();
       $('#degradationPractice').hide();
-      $('.loader').hide();   
+      $('.loader').hide();
       });
     </script>
     <link rel="shortcut icon" href="img/favicon.png">
   </head>
-  
-  
+
+
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
     <div class="overlay">
       <div class="loader">
       </div>
     </div>
-    
+
     <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
     <header class="header">
       <div class="sticky-wrapper">
@@ -95,7 +95,7 @@
           </div>
 	</div>
       </div>
-    </section>   
+    </section>
 
     <section id="degradationPractice">
       <div class="container">
@@ -109,16 +109,16 @@
 		<div class="row">
 		  <div class="col-md-5">
 		    <a href="#">
-		      <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>  
+		      <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>
 		    </a>Zoom in<br>
 		    <a href="#">
 		      <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
 		    </a>Zoom out<br>
-		    <a href="#">  
+		    <a href="#">
 		      <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
 		    </a>Reset zoom<br>
 		    <!--
-		    <a href="#">  
+		    <a href="#">
 		      <span class="glyphicon glyphicon-refresh"></span>
 		    </a>Reset image
 		    -->
@@ -162,11 +162,19 @@
 			Bleed Through
 		      </a>
 		    </li>
-		    <li style="margin-bottom:0px">
+		   <li style="margin-bottom:0px">
 		      <a href="#" data-toggle="modal" data-target="#BlurFilterModal">
 			Blur Filter
 		      </a>
 		    </li>
+
+        <!-- Section de test blurEffect 2 ______________________________________________________________________________________________________________________________________-->
+
+        <li style="margin-bototm:0px">
+          <a href="#" data-toggle="modal" data-target="#BlurFilterModal2"> Blur Filter 2
+
+        <!-- Fin Section de test blurEffect 2 __________________________________________________________________________________________________________________________________-->
+
 		  </ul>
 		</div>
 	      </div>
@@ -179,9 +187,9 @@
       </div>
     </section>
 
-    <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->	
+    <!-- Modals section  --><!-- Modals section  --><!-- Modals section  -->
 
-    
+
     <!-- MOD// GRAYSCALE CHARACTER DEGRADATION  -->
     <div class="modal fade" id="GrayScaleCharacterDegradationModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -219,7 +227,7 @@
 	    </button>
 	    <h4 class="modal-title">Shadow Binding</h4>
 	  </div>
-	  
+
 	  <div class="modal-body">
 	    Border : <br/>
 	    <input type="radio" name="ShadowBindingBorder" value="left" checked> Left <br>
@@ -239,7 +247,7 @@
 	    Angle :
 	    <input id="ShadowBindingAngle" type="range" value="45" max="90" min="0" step="1">
 	  </div>
-	  
+
 	  <div class="modal-footer">
 	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
 	    <button type="button" data-dismiss="modal" id="ShadowBindingExec" class="btn btn-primary">Ok</button>
@@ -247,7 +255,7 @@
 	</div>
       </div>
     </div>
-    
+
     <!-- MOD// PHANTOM CHARACTER  -->
     <div class="modal fade" id="PhantomCharacterModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -258,14 +266,14 @@
 	    </button>
 	    <h4 class="modal-title">Phantom Character</h4>
 	  </div>
-	  
+
 	  <div class="modal-body">
 	    Frequency : <br/>
 	    <input type="radio" name="PhantomCharacterFrequency" value="0" checked> low amount<br>
 	    <input type="radio" name="PhantomCharacterFrequency" value="1"> medium amount<br>
 	    <input type="radio" name="PhantomCharacterFrequency" value="2"> high amount <br>
 	  </div>
-	  
+
 	  <div class="modal-footer">
 	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
 	    <button type="button" data-dismiss="modal" id="PhantomCharacterExec" class="btn btn-primary">Ok</button>
@@ -273,7 +281,7 @@
 	</div>
       </div>
     </div>
-    
+
     <!-- MOD// BLEED THROUGH  -->
     <div class="modal fade" id="BleedThroughModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -284,12 +292,12 @@
 	    </button>
 	    <h4 class="modal-title">Bleed Through</h4>
 	  </div>
-	  
+
 	  <div class="modal-body">
 	    Number of iteration : <br/>
 	    <input id="BleedThroughNbIteration" type="range" value="50" max="100" min="1" step="1">
 	  </div>
-	  
+
 	  <div class="modal-body">
 	    Choose Image Verso
 	    <input id="BleedThroughImageVersoInput" text="" type="file" accept="image/*"/>
@@ -315,14 +323,14 @@
 	    </button>
 	    <h4 class="modal-title">Blur Filter</h4>
 	  </div>
-	  
+
 	  <div class="modal-body">
 	    Choose the blur that you want to apply on your document : <br>
 	    <input type="radio" name="blurFilterTypeIntensity" value="value" checked><br>
 	    <span style="float:left">Lowest</span>
 	    <span style="float:right">Highest</span>
 	    <input id="blurFilterIntensityValue" type="range" value="25" max="51" min="1" step="2">
-	    
+
 	    <br>
 	    <input type="radio" name="blurFilterTypeIntensity" value="image">
 
@@ -330,12 +338,12 @@
 	      <div class="col-md-5">
 		<img src="img/blurExamples/blurGenerated0.png" width="200" height="200" data-girar="0"></img>
 	      </div>
-	      
+
 	      <div class="col-md-1 text-center">
 		<br><br><br><br>
 		<span style="margin-top:12px" class="glyphicon glyphicon-arrow-right"></span>
 	      </div>
-	      
+
 	      <div class="col-md-6" style="padding:0px">
 		<div id="changeImgBlurFilter" class="text-center">
 		  <button class="btn btn-default" data-id="changeImgLeft" style="border:none; padding:5px;">
@@ -355,7 +363,7 @@
 	    <input type="radio" name="blurFilterMethod" value="normal"> Normal
 
 	  </div>
-	  
+
 	  <div class="modal-footer">
 	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
 	    <button type="button" data-dismiss="modal" id="blurFilterExec" class="btn btn-primary">Ok</button>
@@ -363,6 +371,72 @@
 	</div>
       </div>
     </div>
+
+    <!-- Section de test blurEffect 2 ______________________________________________________________________________________________________________________________________-->
+
+
+    <!-- MOD// BLUR FILTER 2 -->
+    <div class="modal fade" id="BlurFilterModal2" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        ×
+      </button>
+      <h4 class="modal-title">Blur Filter 2 test</h4>
+    </div>
+
+    <div class="modal-body">
+      Choose the blur that you want to apply on your document test : <br>
+      <input type="radio" name="blurFilterTypeIntensity" value="value" checked><br>
+      <span style="float:left">Lowest</span>
+      <span style="float:right">Highest</span>
+      <input id="blurFilterIntensityValue" type="range" value="25" max="51" min="1" step="2">
+
+      <br>
+      <input type="radio" name="blurFilterTypeIntensity" value="image">
+
+      <div class="row">
+        <div class="col-md-5">
+    <img src="img/blurExamples/blurGenerated0.png" width="200" height="200" data-girar="0"></img>
+        </div>
+
+        <div class="col-md-1 text-center">
+    <br><br><br><br>
+    <span style="margin-top:12px" class="glyphicon glyphicon-arrow-right"></span>
+        </div>
+
+        <div class="col-md-6" style="padding:0px">
+    <div id="changeImgBlurFilter" class="text-center">
+      <button class="btn btn-default" data-id="changeImgLeft" style="border:none; padding:5px;">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </button>
+      <img id="blurFilterIntensityImage" src="img/blurExamples/blurGenerated1.png" width="200" height="200" data-girar="0"></img>
+      <button class="btn btn-default" data-id="changeImgRight" style="border:none; padding:5px;">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </button>
+    </div>
+        </div>
+      </div>
+      <br>
+      Choose blur method :
+      <input type="radio" name="blurFilterMethod" value="gaussian" checked> Gaussian
+      <input type="radio" name="blurFilterMethod" value="median"> Median
+      <input type="radio" name="blurFilterMethod" value="normal"> Normal
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+      <button type="button" data-dismiss="modal" id="blurFilterExec" class="btn btn-primary">Ok</button>
+    </div>
+  </div>
+      </div>
+    </div>
+
+
+    <!--fin Section de test blurEffect 2 ______________________________________________________________________________________________________________________________________-->
+
 
      <!-- MOD// HELP  -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -378,7 +452,7 @@
 	    <p>
 	      <b>Step by step guide:</b>
 	    </p>
-	    
+
 	    <b>I - </b> <b style=color:#5091da;>Upload </b> an image (supported formats are <b>JPEG</b>, <b>JPG</b>, <b>PNG</b>, <b>TIFF</b> and <b>TIF</b>).
 	    <br><br>
 	    <b>II - </b> Choose your <b style=color:#5091da;>degradation </b>:
@@ -409,7 +483,7 @@
       </div>
     </div>
 
-    
+
     <!-- MOD// CREDITS  -->
     <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm">
@@ -446,20 +520,20 @@
     </div>
 
     <!-- FOOTER  -->
-    <footer>  
+    <footer>
       <div class="row copyright">
 	<p class="text-center">
 	  <a data-toggle="modal" href="#" data-target="#creditModal">
 	    <span class="glyphicon glyphicon-info-sign"></span>
 	  </a>Credits<br>
-	  
+
 	  <a href="https://github.com/titi38/libnavajo">
 	    <span class="glyphicon glyphicon-education" id="git"></span>
 	  </a>
 	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
 	</p>
       </div>
-    </footer>  
+    </footer>
 
 
     <script type="text/javascript" src="js/Blob.js"></script>
