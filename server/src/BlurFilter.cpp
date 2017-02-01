@@ -8,13 +8,11 @@ static const int COEFF_PARABOLA = 4;
 static const cv::Vec3b WHITE_PIXEL = cv::Vec3b(255, 255, 255);
 static const cv::Vec3b BLACK_PIXEL = cv::Vec3b(0, 0, 0);
 
-
 void calcSolutions(float a, float b, float discr, float &y1, float &y2)
 {
   y1 = (-b+sqrt(discr))/(2*a);
   y2 = (-b-sqrt(discr))/(2*a);
 }
-
 
 static int fctLinear(int x, int rows, int coeff, int vertical)
 {
@@ -38,7 +36,7 @@ static int fctSinus(int x, int rows, int coeff, int vertical, int horizontal)
 
 static void fctEllipse(int x, int horizontal, int vertical, float coeff, float &y1, float &y2)
 {
-  //Pattern : 0.2*x*x + 0.5*y*y + 0.27*x*y - 330.71*x - 554.29*y = -170351.99 
+  //Pattern : 0.2*x*x + 0.5*y*y + 0.27*x*y - 330.71*x - 554.29*y = -170351.99
   //others numbers are here to ajust the coefficient chosen to Resize the ellipse. (For exemple, the variable y is multiplied by 0.1 when the size is increased by one). These coefficients were computed for this pattern thanks to Geogebra
   const float a = 0.5;
   const float b = (-554.29 - (coeff * 0.1)) + (0.27*(x+horizontal));
@@ -59,11 +57,11 @@ static void fctEllipse(int x, int horizontal, int vertical, float coeff, float &
     y1 = -FLT_MAX;
   }
 
-} 
+}
 
 static void fctHyperbola(int x, int rows, int horizontal, int vertical, float coeff, float &y1, float &y2)
 {
-  //Pattern : 0.00801*x*x - 0.03214*y*y + 0.1146*x*y - 123.95975*x - 17.44726*y = -81903.06188 
+  //Pattern : 0.00801*x*x - 0.03214*y*y + 0.1146*x*y - 123.95975*x - 17.44726*y = -81903.06188
   //others numbers are here to ajust the coefficient chosen to Resize the hyperbola. (For exemple, the variable x*x is multiplied by 0.00012 when the size is increase by one). These coefficient were computed for this pattern thanks to Geogebra
   const float a = -0.03214 - (coeff * 0.00013);
   const float b = (0.1146 * (x+horizontal)) + (-17.44726 + (coeff * 0.24361)) ;
@@ -82,8 +80,8 @@ static void fctHyperbola(int x, int rows, int horizontal, int vertical, float co
 }
 
 void calculFunction(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff, int &yFunction, int &y2Function)
-{ 
-  
+{
+
   switch (fct)
     {
     case Function::LINEAR:
@@ -108,7 +106,7 @@ void calculFunction(Function fct, int rows, int x, int y, int vertical, int hori
 	fctEllipse(x, horizontal, vertical, coeff, y1, y2);
 	yFunction = (y != -FLT_MAX ? static_cast<int>(y1) : -1); //To be sure we are in ellipse
 	y2Function = (y2 != -FLT_MAX ? static_cast<int>(y2) : -1); //To know if their are just one solution
-	
+
 	if (yFunction < 0 || yFunction > rows)
 	  y2Function = -1;
       }
@@ -137,7 +135,7 @@ bool isNearFunction(int x, int y, int rows, Function fct, int horizontal, int ve
     if (y2Function != -1 && y2Function-radius <= y && y <= y2Function+radius)
       return true;
   }
-  
+
   return false;
 }
 
@@ -154,19 +152,19 @@ static cv::Mat degradateCenter(const  cv::Mat &blurredMat, cv::Mat &resultMat, F
     const cv::Vec3b *b = blurredMat.ptr<cv::Vec3b>(y);
     cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
     for (int x = 0; x < cols; ++x) {
-      if (isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
+      if (isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center
 	r[x] = b[x];
       //else
       //r[x] = o[x];
     }
   }
 
-  return resultMat;  
+  return resultMat;
 }
 
 bool upperThan(Function fct, int rows, int x, int y, int vertical, int horizontal, float coeff)
 {
-  int yFunction, y2Function = -1; 
+  int yFunction, y2Function = -1;
   calculFunction(fct, rows, x, y, vertical, horizontal, coeff, yFunction, y2Function);
 
   if (fct == Function::ELLIPSE || fct == Function::HYPERBOLA) {
@@ -187,7 +185,7 @@ bool upperThan(Function fct, int rows, int x, int y, int vertical, int horizonta
 }
 
 static cv::Mat degradateBorder(const cv::Mat &blurredMat, cv::Mat &resultMat, Function function, Area area, int vertical, float coeff, int horizontal)
-{ 
+{
   //TODO : Make it work with grayscale image too ?
   assert(blurredMat.type() == CV_8UC3);
   assert(resultMat.type() == CV_8UC3);
@@ -236,7 +234,7 @@ cv::Mat applyPattern(const cv::Mat &originalMat, const cv::Mat &patternMat, Meth
   //resize pattern to the size of original
   resize(patternMat, patternMat, cv::Size(originalMat.cols, originalMat.rows));
 
-  
+
   assert(patternMat.type() == CV_8UC3);
   assert(resultMat.type() == CV_8UC3);
   assert(blurredMat.type() == CV_8UC3);
@@ -250,7 +248,7 @@ cv::Mat applyPattern(const cv::Mat &originalMat, const cv::Mat &patternMat, Meth
     cols *= rows;
     rows = 1;
   }
-  
+
   for (int y = 0; y < rows; ++y) {
     const cv::Vec3b *p = patternMat.ptr<cv::Vec3b>(y);
     const cv::Vec3b *b = blurredMat.ptr<cv::Vec3b>(y);
@@ -261,7 +259,7 @@ cv::Mat applyPattern(const cv::Mat &originalMat, const cv::Mat &patternMat, Meth
 	r[x] = b[x];
     }
   }
-  
+
   return resultMat;
 }
 
@@ -272,7 +270,7 @@ QImage applyPattern(const QImage &original, const QImage &pattern, Method method
   cv::Mat patternMat = Convertor::getCvMat(pattern);
 
   cv::Mat resultMat = applyPattern(originalMat, patternMat, method, intensity);
-  
+
   return Convertor::getQImage(resultMat);
 }
 */
@@ -286,12 +284,12 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
 
   assert(resultMat.type() == CV_8UC3);
 
-  if (area == Area::CENTERED) {      
+  if (area == Area::CENTERED) {
     for (int y = 0; y < rows; ++y) {
       cv::Vec3b *r = resultMat.ptr<cv::Vec3b>(y);
-      for (int x = 0; x < cols; ++x) {	      
-	if (! isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center	  
-	  r[x] = WHITE_PIXEL;	      
+      for (int x = 0; x < cols; ++x) {
+	if (! isNearFunction(x, y, rows, function, horizontal, vertical, coeff, radius)) //Center
+	  r[x] = WHITE_PIXEL;
       }
     }
   }
@@ -322,7 +320,7 @@ cv::Mat makePattern(const cv::Mat &originalMat, Function function, Area area, fl
 QImage makePattern(const QImage &original, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
   cv::Mat originalMat = Convertor::getCvMat(original);
-  
+
   cv::Mat resultMat = makePattern(originalMat, function, area, coeff, vertical, horizontal, radius);
 
   return Convertor::getQImage(resultMat);
@@ -336,7 +334,7 @@ static cv::Mat degradateArea(cv::Mat originalMat, cv::Mat blurredMat, Function f
   if (area == Area::CENTERED)
     degradateCenter(blurredMat, resultMat, function, horizontal, vertical, coeff, radius);
   else
-    degradateBorder(blurredMat, resultMat, function, area, vertical, coeff, horizontal); 
+    degradateBorder(blurredMat, resultMat, function, area, vertical, coeff, horizontal);
 
   return resultMat;
 }
@@ -362,7 +360,7 @@ QImage BlurFilter::apply()
    finalImg  = blurFilter(_original, _method, _intensity, _mode, _function, _area, _coeff, _vertical, _horizontal, _radius);
  else
    finalImg = applyPattern(_original, _pattern, _method, _intensity);
-     
+
   return finalImg;
 }
 */
@@ -370,17 +368,17 @@ QImage BlurFilter::apply()
 cv::Mat blurFilter(const cv::Mat &matIn, Method method, int intensity, Mode mode, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
 {
    cv::Mat matOut;
-  
+
   switch (method)
     {
     case Method::GAUSSIAN:
       GaussianBlur(matIn, matOut, cv::Size(intensity, intensity), 0, 0);
       break;
-      
+
     case Method::MEDIAN:
       medianBlur(matIn, matOut, intensity);
       break;
-      
+
     case Method::NORMAL:
       blur(matIn, matOut, cv::Size(intensity, intensity));
       break;
@@ -391,7 +389,7 @@ cv::Mat blurFilter(const cv::Mat &matIn, Method method, int intensity, Mode mode
   else //Area
     return degradateArea(matIn, matOut, function, area, coeff, vertical, horizontal, radius);
 
-} 
+}
 
 /*
 QImage blurFilter(const QImage &imgOriginal, Method method, int intensity, Mode mode, Function function, Area area, float coeff, int vertical, int horizontal, int radius)
@@ -464,9 +462,9 @@ static const float DEFAULT_COEFF_HYPERBOLA = 0;
   Method taken from Emile Vinsonneau's thesis, section 3.4.2 (descriptor D5).
   Thesis here : http://www.theses.fr/s131479
 
-  Method to get Fourier transform in OpenCV documentation : 
+  Method to get Fourier transform in OpenCV documentation :
   http://docs.opencv.org/doc/tutorials/core/discrete_fourier_transform/discrete_fourier_transform.html
-  
+
 */
 float getRadiusFourier(const cv::Mat &originalMatColor) //QImage &original)
 {
@@ -478,7 +476,7 @@ float getRadiusFourier(const cv::Mat &originalMatColor) //QImage &original)
   int m = cv::getOptimalDFTSize( originalMat.rows );
   int n = cv::getOptimalDFTSize( originalMat.cols );
   copyMakeBorder(originalMat, padded, 0, m - originalMat.rows, 0, n - originalMat.cols, cv::BORDER_CONSTANT, cv::Scalar::all(0));
-  
+
   cv::Mat planes[] = {cv::Mat_<float>(padded), cv::Mat::zeros(padded.size(), CV_32F)};
   cv::Mat complexI;
   cv::Mat_<float> tmpT = cv::Mat_<float>(padded);
@@ -488,31 +486,31 @@ float getRadiusFourier(const cv::Mat &originalMatColor) //QImage &original)
 
   cv::split(complexI, planes);                   // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
   cv::magnitude(planes[0], planes[1], planes[0]);// planes[0] = magnitude
-  cv::Mat magI = planes[0]; 
+  cv::Mat magI = planes[0];
 
   magI += cv::Scalar::all(1);                    // switch to logarithmic scale
   cv::log(magI, magI);
-  
+
   magI = magI(cv::Rect(0, 0, magI.cols & -2, magI.rows & -2));
   int cx = magI.cols/2;
   int cy = magI.rows/2;
-  
+
   cv::Mat q0(magI, cv::Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
   cv::Mat q1(magI, cv::Rect(cx, 0, cx, cy));  // Top-Right
   cv::Mat q2(magI, cv::Rect(0, cy, cx, cy));  // Bottom-Left
   cv::Mat q3(magI, cv::Rect(cx, cy, cx, cy)); // Bottom-Right
-  
+
   cv::Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
   q0.copyTo(tmp);
   q3.copyTo(q0);
   tmp.copyTo(q3);
-  
+
   q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
   q2.copyTo(q1);
   tmp.copyTo(q2);
 
   cv::normalize(magI, magI, 0, 255, cv::NORM_MINMAX); // Transform the matrix with float values into a viewable image form (float between values 0 and 1).
-  cv::threshold(magI, magI, 127, 255, cv::THRESH_BINARY);  
+  cv::threshold(magI, magI, 127, 255, cv::THRESH_BINARY);
   int erosion_size = 1;
   cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size( 2*erosion_size + 1, 2*erosion_size+1 ), cv::Point(erosion_size, erosion_size ) ); //http://docs.opencv.org/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html
 
@@ -540,7 +538,7 @@ float getRadiusFourier(const cv::Mat &originalMatColor) //QImage &original)
   //cv::cvtColor(calcRayon, calcRayon, cv::COLOR_BGR2GRAY);
   cv::Mat calcRayon;
   magI.convertTo(calcRayon, CV_8U);
-  
+
   int pixelX = calcRayon.cols / 2;
   int pixelY = calcRayon.rows / 2;
   bool found = false;

@@ -171,8 +171,10 @@
         <!-- Section de test blurEffect 2 ______________________________________________________________________________________________________________________________________-->
 
         <li style="margin-bototm:0px">
-          <a href="#" data-toggle="modal" data-target="#BlurFilterModal2"> Blur Filter 2
-
+          <a href="#" data-toggle="modal" data-target="#BlurFilterModal2">
+            Blur Filter 3
+          </a>
+        </li>
         <!-- Fin Section de test blurEffect 2 __________________________________________________________________________________________________________________________________-->
 
 		  </ul>
@@ -373,64 +375,61 @@
     </div>
 
     <!-- Section de test blurEffect 2 ______________________________________________________________________________________________________________________________________-->
-
-
-    <!-- MOD// BLUR FILTER 2 -->
     <div class="modal fade" id="BlurFilterModal2" tabindex="-1" role="dialog">
       <div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        ×
-      </button>
-      <h4 class="modal-title">Blur Filter 2 test</h4>
-    </div>
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Blur Filter</h4>
+	  </div>
 
-    <div class="modal-body">
-      Choose the blur that you want to apply on your document test : <br>
-      <input type="radio" name="blurFilterTypeIntensity" value="value" checked><br>
-      <span style="float:left">Lowest</span>
-      <span style="float:right">Highest</span>
-      <input id="blurFilterIntensityValue" type="range" value="25" max="51" min="1" step="2">
+	  <div class="modal-body">
+	    Choose the blur that you want to apply on your document : <br>
+	    <input type="radio" name="blurFilterTypeIntensity2" value="value" checked><br>
+	    <span style="float:left">Lowest</span>
+	    <span style="float:right">Highest</span>
+	    <input id="blurFilterIntensityValue2" type="range" value="25" max="51" min="1" step="2">
 
-      <br>
-      <input type="radio" name="blurFilterTypeIntensity" value="image">
+	    <br>
+	    <input type="radio" name="blurFilterTypeIntensity2" value="image">
 
-      <div class="row">
-        <div class="col-md-5">
-    <img src="img/blurExamples/blurGenerated0.png" width="200" height="200" data-girar="0"></img>
-        </div>
+	    <div class="row">
+	      <div class="col-md-5">
+		<img src="img/blurExamples/blurGenerated0.png" width="200" height="200" data-girar="0"></img>
+	      </div>
 
-        <div class="col-md-1 text-center">
-    <br><br><br><br>
-    <span style="margin-top:12px" class="glyphicon glyphicon-arrow-right"></span>
-        </div>
+	      <div class="col-md-1 text-center">
+		<br><br><br><br>
+		<span style="margin-top:12px" class="glyphicon glyphicon-arrow-right"></span>
+	      </div>
 
-        <div class="col-md-6" style="padding:0px">
-    <div id="changeImgBlurFilter" class="text-center">
-      <button class="btn btn-default" data-id="changeImgLeft" style="border:none; padding:5px;">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-      </button>
-      <img id="blurFilterIntensityImage" src="img/blurExamples/blurGenerated1.png" width="200" height="200" data-girar="0"></img>
-      <button class="btn btn-default" data-id="changeImgRight" style="border:none; padding:5px;">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </button>
-    </div>
-        </div>
-      </div>
-      <br>
-      Choose blur method :
-      <input type="radio" name="blurFilterMethod" value="gaussian" checked> Gaussian
-      <input type="radio" name="blurFilterMethod" value="median"> Median
-      <input type="radio" name="blurFilterMethod" value="normal"> Normal
+	      <div class="col-md-6" style="padding:0px">
+		<div id="changeImgBlurFilter2" class="text-center">
+		  <button class="btn btn-default" data-id="changeImgLeft" style="border:none; padding:5px;">
+		    <span class="glyphicon glyphicon-chevron-left"></span>
+		  </button>
+		  <img id="blurFilterIntensityImage2" src="img/blurExamples/blurGenerated1.png" width="200" height="200" data-girar="0"></img>
+		  <button class="btn btn-default" data-id="changeImgRight" style="border:none; padding:5px;">
+		    <span class="glyphicon glyphicon-chevron-right"></span>
+		  </button>
+		</div>
+	      </div>
+	    </div>
+	    <br>
+	    Choose blur method :
+	    <input type="radio" name="blurFilterMethod2" value="gaussian" checked> Gaussian
+	    <input type="radio" name="blurFilterMethod2" value="median"> Median
+	    <input type="radio" name="blurFilterMethod2" value="normal"> Normal
 
-    </div>
+	  </div>
 
-    <div class="modal-footer">
-      <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-      <button type="button" data-dismiss="modal" id="blurFilterExec" class="btn btn-primary">Ok</button>
-    </div>
-  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="blurFilterExec2" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
       </div>
     </div>
 

@@ -4,7 +4,7 @@
 */
 
 
-/* 
+/*
    ===========================================
    ======    CONTROLLER FONT CREATOR    ======
    ===========================================
@@ -38,7 +38,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
     canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
     canvas.canvas.addEventListener('mousemove', function(e) { canvas.onMouseMove(e);}, true);
     canvas.canvas.addEventListener('mouseup', function(e) { canvas.onMouseUp(e);}, true);
-    
+
     // Dectection of zoom
     document.getElementById('zoom-in').addEventListener('click', function(e){ canvas.zoomIn();}, true);
     document.getElementById('zoom-out').addEventListener('click', function(e){ canvas.zoomOut();}, true);
@@ -51,7 +51,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
         }
         else{
             controller.canvas.baseline.visible = false;
-        }     
+        }
         controller.canvas.draw();
     }, true);
 
@@ -83,12 +83,12 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
     $( "#baselineCC" ).change(function() {
         controller.previewCanvas.position_baseline = parseFloat($(this).val());
         controller.previewCanvas.draw();
-    }); 
+    });
 
     $( "#baselineValue" ).change(function() {
         controller.previewCanvas.position_baseline = parseFloat($(this).val());
         controller.previewCanvas.draw();
-    }); 
+    });
 
     // Click on the save button for Component
     document.getElementById('save').addEventListener('click', function(e){ controller.updateInfoOnObject(e); }, true);
@@ -101,24 +101,24 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
         var key = e.which;
         if(key == 13)  // the enter key code
         {
-           $("#save").click(); 
+           $("#save").click();
         }
     });
 
     // Click on the trash button
     document.getElementById('resetImage').addEventListener('click', function(e){
-        session.removeSession(true);	
+        session.removeSession(true);
         location.reload();
-    }, true); 
+    }, true);
 
-    
+
     // Click on the export button
     document.getElementById('exportFont').addEventListener('click', function(e){
         var fontname = $("#fontName").val();
         session.extractFont(fontname);
     }, true);
 
-    
+
     // Highlight labelised Component when we hover the letter in the letter list
     $("#letter-list").on({
         mouseenter: function(){
@@ -138,7 +138,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
             controller.canvas.draw();
         }
     }, '.listItem');
-    
+
     // Increment and Decrement the input values
     (function ($) {
       $('.spinner .btn:first-of-type').on('click', function() {
@@ -152,7 +152,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
     })(jQuery);
 
     // When the user quit the application
-    window.onunload = function() { 
+    window.onunload = function() {
 	session.removeSession(false);
     };
 }
@@ -160,7 +160,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
 /*!
  * Ask the informations about selected objects
  * \memberof Controller
- * \param e event object 
+ * \param e event object
  */
 ControllerFontCreator.prototype.getInfoOnClickedObject = function getInfoOnClickedObject(e)
 {
@@ -172,10 +172,10 @@ ControllerFontCreator.prototype.getInfoOnClickedObject = function getInfoOnClick
     // Check if we clic on a BoundingBox
     var id = this.canvas.boundingBox.contains(mx, my, this.canvas.image);
     if(id != 'false')
-    {   
+    {
         this.canvas.baseline.select("false");
 
-        // If its a ctrl/cmd click 
+        // If its a ctrl/cmd click
         if(e.metaKey || e.ctrlKey)
         {
             var i = this.canvas.selectedCC.indexOf(id);
@@ -212,11 +212,11 @@ ControllerFontCreator.prototype.getInfoOnClickedObject = function getInfoOnClick
             this.canvas.boundingBox.select(id);
             this.canvas.selectedCC = [id];
             session.getInfoOnCC(id,this.canvas.boundingBox.rects[id].idCC, this.canvas.boundingBox.rects[id].idLine, this);
-        } 
+        }
         this.canvas.draw();
-        return;  
+        return;
     }
-    
+
     // Check if we clic on a Baseline
     var id = this.canvas.baseline.contains(mx, my, this.canvas.image);
     if(id != 'false')
@@ -227,13 +227,13 @@ ControllerFontCreator.prototype.getInfoOnClickedObject = function getInfoOnClick
         this.previewCanvas.visible = true;
         $("#baselineValue").val(this.canvas.baseline.lines[id].y);
         this.canvas.draw();
-    }  
+    }
 }
 
 /*!
  * Update the informations on the server
  * \memberof Controller
- * \param e event object 
+ * \param e event object
  */
 ControllerFontCreator.prototype.updateInfoOnObject = function(e)
 {
@@ -262,14 +262,14 @@ ControllerFontCreator.prototype.updateInfoOnObject = function(e)
 
     // Construct the json object containing all components ids
     var jsonId = "{";
-    for (index = 0; index < ids.length; index++) 
+    for (index = 0; index < ids.length; index++)
     {
         jsonId += "\"" + index + "\"\:{";
         jsonId += "\"idCC\"\:" + this.canvas.boundingBox.rects[ids[index]].idCC + ",";
         jsonId += "\"idLine\"\:" + this.canvas.boundingBox.rects[ids[index]].idLine;
         jsonId += "}";
         if(index < ids.length-1)
-            jsonId += ",";    
+            jsonId += ",";
     }
     jsonId += "}";
 
@@ -333,7 +333,7 @@ ControllerFontCreator.prototype.merge = function merge(e)
     var ids = this.canvas.selectedCC;
     // Construct the json object containing all components ids
     var jsonId = "{";
-    for (index = 0; index < ids.length; index++) 
+    for (index = 0; index < ids.length; index++)
     {
         jsonId += "\"" + index + "\"\:{";
         jsonId += "\"idCC\"\:" + this.canvas.boundingBox.rects[ids[index]].idCC + ",";
@@ -341,7 +341,7 @@ ControllerFontCreator.prototype.merge = function merge(e)
         jsonId += "\"id\"\:" + ids[index];
         jsonId += "}";
         if(index < ids.length-1)
-            jsonId += ",";    
+            jsonId += ",";
     }
     jsonId += "}";
 
@@ -350,7 +350,7 @@ ControllerFontCreator.prototype.merge = function merge(e)
 
 ControllerFontCreator.prototype.mergeComponent = function mergeComponent(id, idLine, left, right, up, down, jsonId)
 {
-    for(var i in jsonId) { 
+    for(var i in jsonId) {
         if(jsonId[i].idCC == id && jsonId[i].idLine == idLine)
         {
             this.canvas.boundingBox.rects[jsonId[i].id].rect.x = left;
@@ -382,7 +382,7 @@ ControllerFontCreator.prototype.replaceImage = function replaceImage(imagePath)
     this.previewCanvas.changeImage("data/" + imagePath);
 }
 
-/* 
+/*
    ==========================================
    ======    CONTROLLER DEGRADATION    ======
    ==========================================
@@ -392,7 +392,7 @@ function ControllerDegradation(canvas) {
     this.canvas = canvas;
 
     var controller = this;
-    
+
     // Init
     $('#degradation').hide();
     $('#degradationPractice').show();
@@ -401,7 +401,7 @@ function ControllerDegradation(canvas) {
     canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
     canvas.canvas.addEventListener('mousemove', function(e) { canvas.onMouseMove(e);}, true);
     canvas.canvas.addEventListener('mouseup', function(e) { canvas.onMouseUp(e);}, true);
-    
+
     // Dectection of zoom
     document.getElementById('zoom-in').addEventListener('click', function(e){ canvas.zoomIn();}, true);
     document.getElementById('zoom-out').addEventListener('click', function(e){ canvas.zoomOut();}, true);
@@ -412,7 +412,7 @@ function ControllerDegradation(canvas) {
         session.removeSession(true);
         location.reload();
     }, true);
-    
+
     // Click to download image
     document.getElementById('downloadImage').addEventListener('click', function(){
 	var img = controller.canvas.image.img.src;
@@ -428,7 +428,7 @@ function ControllerDegradation(canvas) {
     /* =======================
        === DEGRADATIONS 2D ===
        ======================= */
-    
+
     // Blur Filter
     document.getElementById('blurFilterExec').addEventListener('click', function(){
 	var tabTypeIntensity = document.getElementsByName("blurFilterTypeIntensity");
@@ -482,6 +482,63 @@ function ControllerDegradation(canvas) {
 	}
     });
 
+    //blur filter effect 2 -------------------------------------------------------------------------------------------------------------------------
+
+    document.getElementById('blurFilterExec2').addEventListener('click', function(){
+  var tabTypeIntensity = document.getElementsByName("blurFilterTypeIntensity2");
+  var typeIntensity;
+  for (var i = 0; i < tabTypeIntensity.length; i++) {
+      if (tabTypeIntensity[i].checked) {
+    typeIntensity = tabTypeIntensity[i].value;
+    break;
+      }
+  }
+
+  var intensity;
+  if (typeIntensity == "value"){
+      intensity = document.getElementById('blurFilterIntensityValue2').value;
+  } else { // typeIntensity == "image"
+      intensity = document.getElementById('blurFilterIntensityImage2').src;
+      intensity = intensity.split('/');
+      intensity = intensity[intensity.length - 1];
+  }
+
+  var tabMethod = document.getElementsByName("blurFilterMethod2");
+  var method;
+  for (var i = 0; i < tabMethod.length; i++) {
+      if (tabMethod[i].checked) {
+    method = tabMethod[i].value;
+    break;
+      }
+  }
+
+  session.blurFilter2(method, typeIntensity, intensity, controller);
+    }, true);
+
+    // Blur Filter - change l'image du blur
+    document.getElementById('changeImgBlurFilter2').addEventListener('click', function(event){
+  if(event.target.nodeName == "BUTTON") {
+      var src = document.getElementById('blurFilterIntensityImage2').src;
+      numImg = src.charAt(src.length - 5);
+      if ($(event.target).data("id") == "changeImgLeft2") {
+    numImg = parseInt(numImg) - 1;
+    if (numImg < 1){
+        numImg = 7;
+    }
+  } else if ($(event.target).data("id") == "changeImgRight2") {
+    numImg = parseInt(numImg) + 1;
+    if (numImg > 7){
+        numImg = 1;
+    }
+      }
+      var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
+      document.getElementById('blurFilterIntensityImage2').setAttribute('src', new_src);
+  }
+    });
+
+
+    // fin blur filter effect 2------------------------------------------------------------------------------------------------------------------------------------------------
+
     // Bleed Through
     document.getElementById('BleedThroughExec').addEventListener('click', function(){
         session.bleedThrough(
@@ -490,7 +547,7 @@ function ControllerDegradation(canvas) {
 	    controller);
     }, true);
 
-    
+
     // Shadow Binding
     document.getElementById('ShadowBindingExec').addEventListener('click', function(){
 	var all_border = document.getElementsByName("ShadowBindingBorder");
@@ -501,7 +558,7 @@ function ControllerDegradation(canvas) {
 		break;
 	    }
 	}
-	
+
         session.shadowBinding(
 	    border,
 	    document.getElementById('ShadowBindingWidth').value,
@@ -509,7 +566,7 @@ function ControllerDegradation(canvas) {
 	    document.getElementById('ShadowBindingAngle').value,
 	    controller);
     }, true);
-    
+
 
     // Phantom Character
     document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
@@ -521,12 +578,12 @@ function ControllerDegradation(canvas) {
 		break;
 	    }
 	}
-	
+
         session.phantomCharacter(
 	    frequency,
 	    controller);
     }, true);
-    
+
     // GrayScale Character Degradation
     document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
         session.grayScaleCharsDegradation(
@@ -536,7 +593,7 @@ function ControllerDegradation(canvas) {
 
 
     // When the user quit the application
-    window.onunload = function() { 
+    window.onunload = function() {
 	session.removeSession(false);
     };
 }
@@ -548,7 +605,7 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 }
 
 
-/* 
+/*
    =============================================
    ===    CONTROLLER CREATE YOUR DOCUMENT    ===
    =============================================
@@ -556,7 +613,7 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 
 function ControllerCreateDocument() {
     var controller = this;
-    
+
     // Init
     $('#createDocument').hide();
     $('#createDocumentPractice').show();
@@ -569,7 +626,7 @@ function ControllerCreateDocument() {
     // Envois les informations nécessaire pour télécharger le document à créé (font, background, texte, format XML/PNG)
     var downloads = document.getElementsByName("createDocumentDownload");
     for (var i = 0; i < downloads.length; i++){
-	document.getElementById(downloads[i].id).addEventListener('click', function(event){	    
+	document.getElementById(downloads[i].id).addEventListener('click', function(event){
 	    var fonts = document.getElementById("createDocumentFont");
 	    var font = fonts.options[fonts.selectedIndex].value;
 
@@ -577,14 +634,14 @@ function ControllerCreateDocument() {
 	    var background = backgrounds.options[backgrounds.selectedIndex].value;
 
 	    var text = document.getElementById("createDocumentText").value;
-	    
+
 	    var type;
 	    if (this.id == "createDocumentDownloadXML"){
 		type = "xml";
 	    } else { // this.id == "createDocumentDownloadPNG"
 		type = "png";
 	    }
-	    	    
+
 	    session.downloadCreateDocument(type, font, background, text, controller);
 	}, true);
     }
@@ -594,11 +651,11 @@ function ControllerCreateDocument() {
 ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, elems){
     var tabElems = elems.split(';');
     var nbElems = tabElems[0];
-    
+
     var idSelect = "#createDocument" + directory.charAt(0).toUpperCase() + directory.substring(1).toLowerCase()
     var selectHTML = $(idSelect);
     selectHTML.empty();
-    
+
     for (var i = 1; i <= nbElems; i++){
 	selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
     }
@@ -614,4 +671,3 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
     downloadPNG.setAttribute('href','background/' + filename);
     downloadPNG.setAttribute('download', 'doc-online.png');
 }
-

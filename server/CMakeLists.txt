@@ -15,7 +15,7 @@ ENDIF()
 IF(CMAKE_COMPILER_IS_GNUCC) #may be GCC or clang
   # With GCC, always set flags to have most warnings
   ADD_DEFINITIONS(-Wall -Wextra) # -ansi -pedantic
-  
+
   ADD_DEFINITIONS(-D_REENTRANT) #was in original makefile
 ENDIF()
 
@@ -70,6 +70,7 @@ SET(SRVR_SRCS
   src/ShadowBinding.cpp
   src/Session.cpp
   src/main.cpp
+  src/BlurFilter2.cpp
   )
 
 SET(SRVR_HDRS
@@ -89,7 +90,8 @@ SET(SRVR_HDRS
   headers/PhantomCharacter.hpp
   headers/ShadowBinding.hpp
   headers/Session.hpp
-)  
+  headers/BlurFilter2.hpp
+)
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
 TARGET_LINK_LIBRARIES(main ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
