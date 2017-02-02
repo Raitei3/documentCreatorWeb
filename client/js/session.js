@@ -440,7 +440,7 @@ Session.prototype.blurFilter2 = function(method, typeIntensity, intensity, callb
     $('.loader').show();
 
     $.ajax({
-        url: 'blurFilter2.txt',
+        url: 'blurFilter.txt',
         type: 'POST',
         data: 'token=' + this.token + '&method=' + method + '&typeIntensity=' + typeIntensity + '&intensity=' + intensity,
         context: callback,

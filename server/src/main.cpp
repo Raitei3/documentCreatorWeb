@@ -938,6 +938,7 @@ class MyDynamicRepository : public DynamicRepository
   } bleedThroughDegradation;
 
 
+  #if 0
   class BlurFilterDegradation: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
@@ -990,10 +991,12 @@ class MyDynamicRepository : public DynamicRepository
       }
     }
   } blurFilterDegradation;
+  # endif
 
 
   // blurFilter 2 test --------------------------------------------------------------------------------------------------------------
-  class BlurFilterDegradation2: public MyDynamicPage
+
+  class BlurFilterDegradation: public MyDynamicPage
   {
     bool getPage(HttpRequest* request, HttpResponse *response)
     {
@@ -1011,8 +1014,8 @@ class MyDynamicRepository : public DynamicRepository
       if (typeIntensityParam == "value"){
         intensity = stoi(intensityParam);
       } else { // typeIntensityParam == "image"
-  cv::Mat img_blur = cv::imread(BLUR_IMG_DIR + intensityParam);
-        const float dstRadius = getRadiusFourier(img_blur);
+  QImage img_blur((BLUR_IMG_DIR+intensityParam).c_str());
+        float dstRadius = getRadiusFourier(img_blur);
         intensity = searchFitFourier(img_blur, dstRadius);
       }
 
@@ -1044,7 +1047,7 @@ class MyDynamicRepository : public DynamicRepository
         return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
       }
     }
-  } blurFilterDegradation2;
+  } blurFilterDegradation;
 
 
   //---------- fin blur filter 2 test ----------------------------------------------------------------------------------------------------------
@@ -1140,9 +1143,6 @@ class MyDynamicRepository : public DynamicRepository
     add("bleedThrough.txt", &bleedThroughDegradation);
     add("blurFilter.txt", &blurFilterDegradation);
 
-    //------------ test blur filter2
-    add("blurFilter2.txt", &blurFilterDegradation2);
-    //------------ fin test blur filter 2
 
     add("downloadCreateDocument.txt", &downloadCreateDocument);
     add("getElemsDirectory.txt", &getElemsDirectory);

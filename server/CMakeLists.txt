@@ -70,7 +70,6 @@ SET(SRVR_SRCS
   src/ShadowBinding.cpp
   src/Session.cpp
   src/main.cpp
-  src/BlurFilter2.cpp
   )
 
 SET(SRVR_HDRS
@@ -90,7 +89,6 @@ SET(SRVR_HDRS
   headers/PhantomCharacter.hpp
   headers/ShadowBinding.hpp
   headers/Session.hpp
-  headers/BlurFilter2.hpp
 )
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
