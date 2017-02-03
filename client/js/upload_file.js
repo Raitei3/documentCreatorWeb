@@ -26,6 +26,8 @@ function prepareUpload(event)
 	session.startSession("font-creator", data, askForInfo);
     } else if (event.target.id == "BleedThroughImageVersoInput"){
 	session.uploadImage(data, updateImgVerso);
+    } else if (event.target.id == "startSynthetize"){
+	session.uploadImage("synthetize", data, askForInfo);
     } 
 }
 
