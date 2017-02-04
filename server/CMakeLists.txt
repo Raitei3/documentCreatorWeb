@@ -74,6 +74,7 @@ SET(SRVR_SRCS
   src/BackgroundReconstruction.cpp
   src/textinpainting.cpp
   src/baseline.cpp
+  src/StructureDetection.cpp
   )
 
 SET(SRVR_HDRS
@@ -97,6 +98,7 @@ SET(SRVR_HDRS
   headers/BackgroundReconstruction.hpp
   headers/textinpainting.hpp
   headers/baseline.hpp
+  headers/StructureDetection.hpp
 )
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
