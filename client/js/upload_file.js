@@ -28,7 +28,10 @@ function prepareUpload(event)
 	session.uploadImage(data, updateImgVerso);
     } else if (event.target.id == "startSynthetize"){
 	session.uploadImage("synthetize", data, askForInfo);
-    } 
+    }
+     else if(event.target.id == startSynthetize){
+		  session.startSession("synthetize",data,askForInfo)
+    }	
 }
 
 function updateImgVerso(filename)
