@@ -71,6 +71,10 @@ SET(SRVR_SRCS
   src/Session.cpp
   src/main.cpp
   src/LineDetection.cpp
+  src/BackgroundReconstruction.cpp
+  src/textinpainting.cpp
+  src/baseline.cpp
+  src/StructureDetection.cpp
   )
 
 SET(SRVR_HDRS
@@ -91,6 +95,10 @@ SET(SRVR_HDRS
   headers/ShadowBinding.hpp
   headers/Session.hpp
   headers/LineDetection.hpp
+  headers/BackgroundReconstruction.hpp
+  headers/textinpainting.hpp
+  headers/baseline.hpp
+  headers/StructureDetection.hpp
 )
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
