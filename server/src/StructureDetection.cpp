@@ -41,7 +41,6 @@ std::vector<cv::Rect> structureDetection::getBlocks(const cv::Mat &distanceMap, 
     return blocks;
 }
 
-#if 0
 
 std::vector<cv::Rect> structureDetection::getWordBlocks(const cv::Mat &img_bin)
 {
@@ -64,7 +63,6 @@ assert(iter);
     return blocks;
 }
 
-#endif
 
 int structureDetection::getCharacterHeight(const cv::Mat &img)
 {
