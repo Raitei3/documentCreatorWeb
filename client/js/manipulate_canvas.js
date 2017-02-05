@@ -697,10 +697,6 @@ function init(src, boundingBox, baseline, typeOfController) {
 	var image = new ProcessingImage(src);
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "degradation");
 	var controller = new ControllerDegradation(normalCanvas);
-    } else if(typeOfController == "synthetize"){
-	var image = new ProcessingImage(src);
-	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "synthetize");
-	var controller = new ControllerSynthetize(normalCanvas);
     } else { // typeOfController == "createDocument"
 	var controller = new ControllerCreateDocument();
     }
