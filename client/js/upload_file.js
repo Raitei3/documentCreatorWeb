@@ -30,10 +30,9 @@ function prepareUpload(event)
 	session.uploadImage("synthetize", data, askForInfo);
     }
      else if(event.target.id == startSynthetize){
-		  session.startSession("synthetize",data,askForInfo)
+       session.startSession("synthetize",data,askForInfo)
     }	
 }
-
 function updateImgVerso(filename)
 {
     $("#BleedThroughImgVerso").attr('src','data/' + filename);
