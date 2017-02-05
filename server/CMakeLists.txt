@@ -36,12 +36,16 @@ ELSEIF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 ENDIF()
 
 
+SET(CMAKE_MODULE_PATH  "${CMAKE_SOURCE_DIR}/cmake/Modules;${CMAKE_MODULE_PATH}" )
+
+
 FIND_PACKAGE(Libnavajo REQUIRED)
 FIND_PACKAGE(Threads) #For Libnavajo
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5Gui REQUIRED)
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 FIND_PACKAGE(OpenCV REQUIRED)
+FIND_PACKAGE(Tesseract REQUIRED)
 
 #FIND_PACKAGE(OpenSSL REQUIRED)
 
@@ -75,6 +79,7 @@ SET(SRVR_SRCS
   src/textinpainting.cpp
   src/baseline.cpp
   src/StructureDetection.cpp
+  src/OCR.cpp
   )
 
 SET(SRVR_HDRS
@@ -99,7 +104,8 @@ SET(SRVR_HDRS
   headers/textinpainting.hpp
   headers/baseline.hpp
   headers/StructureDetection.hpp
+  headers/OCR.hpp
 )
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
-TARGET_LINK_LIBRARIES(main ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
+TARGET_LINK_LIBRARIES(main  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
