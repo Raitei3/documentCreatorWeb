@@ -27,6 +27,7 @@
 #include "../headers/BleedThrough.hpp"
 #include "../headers/BackgroundReconstruction.hpp"
 #include "../headers/binarization.hpp"
+#include "../headers/convertor.h"
 
 using json = nlohmann::json;
 
@@ -1076,8 +1077,23 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+
+        cv::Mat input=cv::imread("data/test.png");
+        cv::Mat output;
+        Binarization::binarize(input,output);
+
+        QImage binarized = Convertor::getQImage(output);
+        QImage origin = Convertor::getQImage(input);
+
+        BackgroundReconstruction back;
+        back.setOriginalImage(origin);
+        back.setBinarizedImage(binarized);
+        back.process();
+        QImage backgroundResult = back.getResultImage();
+        backgroundResult.save("data/backgroundResult.png");
+        return true;
         //QImage imgDocument = _docController->toQImage(WithTextBlocks | WithImageBlocks);
-        QImage img_recto(UPLOAD_DIR);
+        /*QImage img_recto(UPLOAD_DIR);
         Binarization binadialog(this);
 
         binadialog.setOriginalImage(imgDocument);
@@ -1092,9 +1108,9 @@ class MyDynamicRepository : public DynamicRepository
               BackGroundChanger changer;
               changer.changeBackGroundImage(dialog.getResultImage());
     	  //QGuiApplication::restoreOverrideCursor();
-            }
+      }
 
-        }
+    }*/
       }
     } backgroundReconstruction;
 
@@ -1123,6 +1139,7 @@ class MyDynamicRepository : public DynamicRepository
     add("getElemsDirectory.txt", &getElemsDirectory);
 
     add("testBinarization.txt", &testBinarization);
+    add("backgroundReconstruction.txt", &backgroundReconstruction);
   }
 };
 
