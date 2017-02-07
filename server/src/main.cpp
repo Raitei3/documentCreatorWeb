@@ -26,6 +26,7 @@
 #include "../headers/BlurFilter.hpp"
 #include "../headers/BleedThrough.hpp"
 #include "../headers/BackgroundReconstruction.hpp"
+#include "../headers/binarization.hpp"
 
 using json = nlohmann::json;
 
@@ -1048,6 +1049,17 @@ class MyDynamicRepository : public DynamicRepository
     }
   } getElemsDirectory;
 
+    class testBinarization: public MyDynamicPage
+    {
+	bool getPage(HttpRequest* request, HttpResponse *response)
+	{
+	    cv::Mat input=cv::imread("data/test.png");
+	    cv::Mat output;
+	    Binarization::binarize(input,output);
+	    cv::imwrite("data/result.png",output);
+	}
+    } testBinarization;
+
 
   class Controller: public MyDynamicPage
   {
@@ -1109,6 +1121,8 @@ class MyDynamicRepository : public DynamicRepository
 
     add("downloadCreateDocument.txt", &downloadCreateDocument);
     add("getElemsDirectory.txt", &getElemsDirectory);
+
+    add("testBinarization.txt", &testBinarization);
   }
 };
 
