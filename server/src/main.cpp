@@ -28,6 +28,7 @@
 #include "../headers/BackgroundReconstruction.hpp"
 #include "../headers/binarization.hpp"
 #include "../headers/convertor.h"
+#include "../headers/StructureDetection.hpp"
 
 using json = nlohmann::json;
 
@@ -1092,27 +1093,58 @@ class MyDynamicRepository : public DynamicRepository
         QImage backgroundResult = back.getResultImage();
         backgroundResult.save("data/backgroundResult.png");
         return true;
-        //QImage imgDocument = _docController->toQImage(WithTextBlocks | WithImageBlocks);
-        /*QImage img_recto(UPLOAD_DIR);
-        Binarization binadialog(this);
-
-        binadialog.setOriginalImage(imgDocument);
-
-        if (binadialog.exec()) {
-            BackgroundReconstructionDialog dialog(this);
-            dialog.setOriginalImage(imgDocument);
-            dialog.setBinarizedImage(binadialog.getResultImage());
-            if (dialog.exec()) {
-    	  //QGuiApplication::setOverrideCursor(Qt::BusyCursor);
-              dialog.process();
-              BackGroundChanger changer;
-              changer.changeBackGroundImage(dialog.getResultImage());
-    	  //QGuiApplication::restoreOverrideCursor();
       }
 
-    }*/
+
+      public: static QImage getBackgroundMain(cv::Mat input){
+        cv::Mat output;
+        Binarization::binarize(input,output);
+
+        QImage binarized = Convertor::getQImage(output);
+        QImage origin = Convertor::getQImage(input);
+
+        BackgroundReconstruction back;
+        back.setOriginalImage(origin);
+        back.setBinarizedImage(binarized);
+        back.process();
+        QImage backgroundResult = back.getResultImage();
+        return backgroundResult;
       }
     } backgroundReconstruction;
+
+
+
+
+    class StructureDetectionTest: public MyDynamicPage
+    {
+      bool getPage(HttpRequest* request, HttpResponse *response)
+      {
+        cv::Mat origin = cv::imread("data/test.png");
+        cv::Mat binarize;
+  	    Binarization::binarize(origin,binarize);
+
+        int characterHeight = structureDetection::getCharacterHeight(binarize);
+        cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
+        std::vector<cv::Rect> block = structureDetection::getBlocks(distanceMap,characterHeight);
+        return true;
+      }
+
+
+    } structureDetectionTest;
+
+
+
+    class FontExtractionTest: public MyDynamicPage
+    {
+      bool getPage(HttpRequest* request, HttpResponse *response)
+      {
+        return true;
+      }
+    } fontExtractionTest;
+
+
+
+
 
  public:
   MyDynamicRepository() : DynamicRepository()
@@ -1140,6 +1172,7 @@ class MyDynamicRepository : public DynamicRepository
 
     add("testBinarization.txt", &testBinarization);
     add("backgroundReconstruction.txt", &backgroundReconstruction);
+    add("structureDetectionTest.txt", &structureDetectionTest);
   }
 };
 
