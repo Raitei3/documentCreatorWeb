@@ -1143,6 +1143,20 @@ class MyDynamicRepository : public DynamicRepository
     } fontExtractionTest;
 
 
+    class SynthetizeImage: public MyDynamicPage
+    {
+      bool getPage(HttpRequest* request, HttpResponse *response)
+      {
+        cv::Mat origin = cv::imread("data/test.png");
+        cv::Mat binarize;
+        Binarization::binarize(origin,binarize);
+        QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
+
+        return true;
+      }
+    }
+
+
 
 
 
