@@ -1154,7 +1154,7 @@ class MyDynamicRepository : public DynamicRepository
 
         return true;
       }
-    }
+    } synthetizeImage;
 
 
 
