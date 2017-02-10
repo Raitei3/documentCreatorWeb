@@ -15,6 +15,8 @@
 #include <sys/stat.h>
 #include <cstdio> //remove
 
+#include <iostream>
+
 #include "../headers/Image.hpp"
 #include "../headers/Font.hpp"
 #include "../headers/Session.hpp"
@@ -29,6 +31,7 @@
 #include "../headers/binarization.hpp"
 #include "../headers/convertor.h"
 #include "../headers/StructureDetection.hpp"
+#include "../headers/Painter.hpp"
 
 using json = nlohmann::json;
 
@@ -1152,6 +1155,17 @@ class MyDynamicRepository : public DynamicRepository
         Binarization::binarize(origin,binarize);
         QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
 
+
+        int characterHeight = structureDetection::getCharacterHeight(binarize);
+        cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
+        std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
+
+        std::cerr << blocks[0].x << " " << blocks[0].y<<" "<<blocks[0].width <<" "<< blocks[0].height <<std::endl;
+
+        Painter painter(background,blocks);
+        QImage result = painter.painting();
+        result.save("data/result.png");
+
         return true;
       }
     } synthetizeImage;
@@ -1187,6 +1201,7 @@ class MyDynamicRepository : public DynamicRepository
     add("testBinarization.txt", &testBinarization);
     add("backgroundReconstruction.txt", &backgroundReconstruction);
     add("structureDetectionTest.txt", &structureDetectionTest);
+    add("synthetizeImage.txt",&synthetizeImage);
   }
 };
 
