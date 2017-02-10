@@ -80,6 +80,7 @@ SET(SRVR_SRCS
   src/baseline.cpp
   src/StructureDetection.cpp
   src/OCR.cpp
+  src/Painter.cpp
   )
 
 SET(SRVR_HDRS
@@ -105,6 +106,7 @@ SET(SRVR_HDRS
   headers/baseline.hpp
   headers/StructureDetection.hpp
   headers/OCR.hpp
+  headers/Painter.hpp
 )
 
 ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
