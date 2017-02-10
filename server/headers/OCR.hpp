@@ -63,8 +63,8 @@ public:
     }
     */
 
-    void process();
 private:
+    void process();
 #if 0
     void on_tableLetters_clicked(const QModelIndex &index);
     void on_baselineSpinBox_valueChanged(int arg1);

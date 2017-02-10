@@ -1122,7 +1122,7 @@ class MyDynamicRepository : public DynamicRepository
       {
         cv::Mat origin = cv::imread("data/test.png");
         cv::Mat binarize;
-  	    Binarization::binarize(origin,binarize);
+	Binarization::binarize(origin,binarize);
 
         int characterHeight = structureDetection::getCharacterHeight(binarize);
         cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
@@ -1144,14 +1144,15 @@ class MyDynamicRepository : public DynamicRepository
 	cv::Mat originMat = cv::imread("data/test.png");
 	QImage originQImage= Convertor::getQImage(originMat);
 	
-	cv::Mat binarizedMat;
-	Binarization::binarize(originMat,binarizedMat);
+	cv::Mat binarizedMat=cv::imread("data/bin.png");
+	//Binarization::binarize(originMat,binarizedMat);
 	QImage binarizedQImage = Convertor::getQImage(binarizedMat);
-
+//	binarizedQImage.save("data/bin.png");
+	
 	OCRDialog ocr;
-	ocr.setParameters("/usr/share/tesseract-ocr","fra");
+	ocr.setParameters("/usr/share/tesseract-ocr/","fra");
 	ocr.init(originQImage,binarizedQImage);
-//	ocr.process();
+
 	ocr.saveFont("data/test.of");
         return true;
       }
