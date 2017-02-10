@@ -684,6 +684,11 @@ QString OCRDialog::saveFont()
   return filename;
 }
 
+void OCRDialog::saveFont(const QString &filename)
+{
+  writeFont(filename, getFinalFont());
+}
+
 void OCRDialog::writeFont(const QString &filename,
 			  const std::vector<fontLetter> &finalFont) const
 {

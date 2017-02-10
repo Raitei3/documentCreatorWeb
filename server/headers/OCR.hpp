@@ -49,6 +49,7 @@ public:
     const QImage getResultImage() {return m_originalImg;}
     //bool eventFilter(QObject *watched, QEvent *event);
     QString saveFont();
+    void saveFont(const QString &filename);
 
     std::vector<fontLetter> getFinalFont() const;
 
@@ -62,8 +63,8 @@ public:
     }
     */
 
-private:
     void process();
+private:
 #if 0
     void on_tableLetters_clicked(const QModelIndex &index);
     void on_baselineSpinBox_valueChanged(int arg1);
