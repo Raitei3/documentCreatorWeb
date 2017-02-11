@@ -75,7 +75,7 @@ void OCRDialog::init(const QImage &ori, const QImage &bin)
   setOriginalImage(ori);
   setBinarizedImage(bin);
   process();
-  //updateAlphabet();
+  updateAlphabet();
 }
 
 void OCRDialog::setOriginalImage(const QImage &img)
@@ -298,13 +298,15 @@ void OCRDialog::updateTable() {
   }
 
 }
-
+#endif
 void OCRDialog::updateAlphabet()
 {
+#if 0
   ui->tableAlphabet->clear();
   ui->tableAlphabet->setRowCount(0);
   ui->tableAlphabet->setColumnCount(3);
   ui->tableAlphabet->verticalHeader()->setVisible(false);
+#endif
   m_alphabet.clear();
 
   // We fill the alphabet
@@ -333,7 +335,7 @@ void OCRDialog::updateAlphabet()
   sort(m_alphabet.begin(), m_alphabet.end(), [](const std::pair<int, int>& c1, const std::pair<int, int>& c2) {
       return c1.second > c2.second;
     });
-
+#if 0
   // We fill the QTable
   for(int j=0; j<(int)m_alphabet.size(); ++j) {
     QTableWidgetItem *thumb = new QTableWidgetItem();
@@ -348,8 +350,9 @@ void OCRDialog::updateAlphabet()
   }
 
   ui->tableAlphabet->horizontalHeader()->adjustSize();
+#endif
 }
-
+#if 0
 void OCRDialog::updateView()
 {
   cv::Mat thumb = Convertor::getCvMat(m_originalImg);
@@ -682,6 +685,11 @@ QString OCRDialog::saveFont()
   writeFont(filename, getFinalFont());
 
   return filename;
+}
+
+void OCRDialog::saveFont(const QString &filename)
+{
+  writeFont(filename, getFinalFont());
 }
 
 void OCRDialog::writeFont(const QString &filename,
