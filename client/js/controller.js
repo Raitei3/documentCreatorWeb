@@ -633,6 +633,6 @@ function ControllerSynthetize(canvas) {
 ControllerSynthetize.prototype.replaceImage = function replaceImage(imagePath)
 {
     this.canvas.changeImage("data/" + imagePath);
-    this.previewCanvas.changeImage("data/" + imagePath);
+   
 }
 
