@@ -84,8 +84,8 @@ protected:
     #if 0
     void updateView();
     void updateTable();
-    void updateAlphabet();
     #endif
+    void updateAlphabet();
     void computeBaselines();
     void rebinarizeCurrentLetter();
     void writeFont(const QString &filename, const std::vector<fontLetter> &finalFont) const;
