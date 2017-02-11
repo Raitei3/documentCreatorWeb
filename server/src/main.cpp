@@ -1148,7 +1148,6 @@ class MyDynamicRepository : public DynamicRepository
 	cv::Mat binarizedMat(originMat.rows,originMat.cols, CV_8U);
 	Binarization::binarize(originMat,binarizedMat);
 	QImage binarizedQImage = Convertor::getQImage(binarizedMat);
-	binarizedQImage.save("data/bin.png");
 	
 	OCRDialog ocr;
 	ocr.setParameters("/usr/share/tesseract-ocr/","fra");
