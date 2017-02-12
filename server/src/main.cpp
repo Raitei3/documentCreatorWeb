@@ -1059,10 +1059,13 @@ class MyDynamicRepository : public DynamicRepository
     {
 	bool getPage(HttpRequest* request, HttpResponse *response)
 	{
+	    (void) request;
+	    (void) response;
 	    cv::Mat input=cv::imread("data/test.png");
 	    cv::Mat output;
 	    Binarization::binarize(input,output);
 	    cv::imwrite("data/result.png",output);
+	    return true;
 	}
     } testBinarization;
 
@@ -1070,6 +1073,7 @@ class MyDynamicRepository : public DynamicRepository
   {
     bool getPage(HttpRequest* /*request*/, HttpResponse *response)
     {
+	(void) response;
       response->forwardTo("index.php");
       return true;
     }
@@ -1081,6 +1085,8 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+	(void) request;
+	(void) response;
 
         cv::Mat input=cv::imread("data/test.png");
         cv::Mat output;
@@ -1122,6 +1128,8 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+	(void) request;
+	(void) response;
         cv::Mat origin = cv::imread("data/test.png");
         cv::Mat binarize;
   	    Binarization::binarize(origin,binarize);
