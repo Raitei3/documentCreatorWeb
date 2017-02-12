@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Doc Creator Online</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Google fonts - Roboto Condensed for headings, Open Sans for copy-->
+    <link rel="stylesheet" href="css/google_api.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <!-- scripts -->
+    <script type="text/javascript" src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+      $('#synthetize').show();
+      $('#synthetizePractice').hide();
+      $('.loader').hide();   
+      });
+    </script>
+    <link rel="shortcut icon" href="img/favicon.png">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
+    <div class="overlay">
+      <div class="loader">
+      </div>
+    </div>
+    
+    <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
+    <header class="header">
+      <div class="sticky-wrapper">
+	<div role="navigation" class="navbar navbar-default navbar-fixed-top">
+	  <div class="container">
+            <div class="navbar-header">
+              <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	      </button>
+            </div>
+            <div id="navigation" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-default">
+		<li>
+		  <a href="test-online.html">Home</a>
+		</li>
+		<li>
+		  <a href="font-creator.html">Font Creator</a>
+		</li>
+		<li>
+		  <a href="degradations.html">Degradations</a>
+		</li>
+		<li>
+		  <a href="create-your-document.html">Create your document</a>
+		</li>
+		<li>
+		<a href="synthetize.html">Synthetise image </a>
+		</li>
+	      </ul>
+            </div>
+	  </div>
+	</div>
+      </div>
+    </header>
+
+    
+   <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
+    <section id= "synthetize">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-12">
+            <h2 class="heading">SYNTHETIZE IMAGE</h2>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-12 text-center">
+            <p>
+	      <b>
+		Welcome to Synthetize image<br>
+		First, upload an image (supported formats are JPEG, JPG, PNG, TIF and TIFF)<br>
+		Then, synthetize it !
+	      </b>
+	      <br><br>
+	      (Works only on Firefox and Chrome.)
+	    </p>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="text-center">
+            <div class="fileUpload btn btn-primary">
+	      <span>Upload</span>
+              <input id="startSynthetize" type="file" class="upload" name="image" accept="image/*"/>
+            </div>
+          </div>
+	</div>
+      </div>
+    </section>
+
+    <section id="synthetizePractice">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-3">
+	    <div class="row">
+	      <div class="col-md-12 section_portion" style="padding:10px;"><!--OPTIONS-->
+		<div class="row text-center">
+		  <b>OPTIONS</b>
+		</div>
+		<div class="row">
+		  <div class="col-md-5">
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>
+		    </a>Zoom in<br>
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
+		    </a>Zoom out<br>
+		    <a href="#">
+		      <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
+		    </a>Reset zoom<br>
+		    <!--
+		    <a href="#">
+		      <span class="glyphicon glyphicon-refresh"></span>
+		    </a>Reset image
+		    -->
+		  </div>
+		  <div class="col-md-7">
+		    <a href="#" title="Start with a new Image">
+		      <span class="glyphicon glyphicon-remove" id="resetImage"></span>
+		    </a>Start from scratch<br>
+		    <a id="downloadImage" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download Image<br>
+		    <a data-toggle="modal" href="#" data-target="#helpModal">
+		      <span class="glyphicon glyphicon-question-sign"></span>
+		    </a>Help
+		  </div>
+		</div>
+	      </div>
+	      <div class="col-md-12 section_portion"><!--OPTIONS -->
+		<!-- <div class="row text-center">
+		  <b>DEGRADATIONS</b>
+		</div> -->
+		</div>
+		 <div class="col-md-8 text-center" style="margin: 5px 0px;">
+	    <canvas id="canvas" width="900" height="680" data-girar="0"></canvas>
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+	    <button type="button" data-dismiss="modal" id="synthetizeExec" class="btn btn-primary">Ok</button>
+	  </div>
+	</div>
+      </div>
+      </div>
+    
+
+
+
+    <!-- MOD// CREDITS  -->
+    <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	      ×
+	    </button>
+	    <h4 class="modal-title">Credits</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p class="text-justify">
+	      Document Creator is a software developed by
+	      Journet Nicholas (<a href="mailto:journet@labri.fr">journet [at] labri.fr</a>) and
+	      Boris Mansencal (<a href="mailto:boris.mansencal@labri.fr">boris.mansencal [at] labri.fr</a>).
+	      <br><br>
+	      Font creator has been developed by
+	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T. Autret</a>,
+	      <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A. Boschet</a>,
+	      <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T. Labrousse</a>,
+	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a> and
+	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>.
+	      Design by <a href="http://www.whitebeears.com">F. Bruneau </a>
+	    </p>
+	    <p>
+	      Made with <a href="https://github.com/titi38/libnavajo/">libnavajo</a> and <a href="http://opencv.org">OpenCV</a>
+	    </p>
+	    <p class="credit roboto">
+	      <a href="http://bootstrapious.com/portfolio-themes">Bootstrap Portfolio Themes</a>
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <!-- FOOTER  -->
+    <footer>
+      <div class="row copyright">
+	<p class="text-center">
+	  <a data-toggle="modal" href="#" data-target="#creditModal">
+	    <span class="glyphicon glyphicon-info-sign"></span>
+	  </a>Credits<br>
+
+	  <a href="https://github.com/titi38/libnavajo">
+	    <span class="glyphicon glyphicon-education" id="git"></span>
+	  </a>
+	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
+	</p>
+      </div>
+    </footer>
+
+
+    <script type="text/javascript" src="js/Blob.js"></script>
+    <script type="text/javascript" src="js/FileSaver.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/session.js"></script>
+    <script type="text/javascript" src="js/init.js" ></script>
+    <script type="text/javascript" src="js/manipulate_canvas.js" ></script>
+    <script type="text/javascript" src="js/controller.js" ></script>
+    <script type="text/javascript" src="js/upload_file.js" ></script>
+  </body>
+</html>
