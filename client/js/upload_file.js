@@ -27,11 +27,8 @@ function prepareUpload(event)
     } else if (event.target.id == "BleedThroughImageVersoInput"){
 	session.uploadImage(data, updateImgVerso);
     } else if (event.target.id == "startSynthetize"){
-	session.uploadImage("synthetize", data, askForInfo);
+	session.startSession("synthetize", data, askForInfo);
     }
-     else if(event.target.id == startSynthetize){
-       session.startSession("synthetize",data,askForInfo)
-    }	
 }
 function updateImgVerso(filename)
 {
