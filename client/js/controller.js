@@ -483,7 +483,7 @@ function ControllerDegradation(canvas) {
     });
 
     // Bleed Through
-    document.getElementById('BleedThroughExec').addEventListener('click', function(){
+    document.getElementById('BleedThroughExecf').addEventListener('click', function(){
         session.bleedThrough(
 	    document.getElementById('BleedThroughNbIteration').value,
 	    document.getElementById('BleedThroughImgVerso').src,
@@ -541,11 +541,12 @@ function ControllerDegradation(canvas) {
     };
 }
 
-
 ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 {
     this.canvas.changeImage("data/" + imagePath);
 }
+
+
 
 
 /* 
@@ -629,6 +630,10 @@ function ControllerSynthetize(canvas) {
     $('#synthetize').hide();
     $('#synthetizePractice').show();
 
+var el = document.getElementById("synthetizeExec");
+if (el.addEventListener)
+    //el.addEventListener("click", function(){alert("button detected");},true);
+
 }
 ControllerSynthetize.prototype.replaceImage = function replaceImage(imagePath)
 {    
@@ -636,3 +641,5 @@ ControllerSynthetize.prototype.replaceImage = function replaceImage(imagePath)
    
 }
 
+/* 
+} */
