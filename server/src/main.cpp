@@ -1165,7 +1165,6 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
-        std::cerr << "tamere la pute"<< std::endl;
         std::string tokenParam;
         request->getParameter("token", tokenParam);
         int token = stoi(tokenParam);
@@ -1182,7 +1181,6 @@ class MyDynamicRepository : public DynamicRepository
           cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
           std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
 
-          std::cerr << blocks[0].x << " " << blocks[0].y<<" "<<blocks[0].width <<" "<< blocks[0].height <<std::endl;
 
           Painter painter(background,blocks);
           QImage result = painter.painting();
