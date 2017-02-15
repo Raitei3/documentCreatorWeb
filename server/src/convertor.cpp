@@ -17,12 +17,12 @@ cv::Mat Convertor::getCvMat(const QImage &src)
   if (src.format() != QImage::Format_ARGB32 && src.format() != QImage::Format_RGB32)
     qimage = src.convertToFormat(QImage::Format_ARGB32);
 
- 
+
   cv::Mat mat = cv::Mat(qimage.height(), qimage.width(), CV_8UC4, (void *)qimage.constBits(), qimage.bytesPerLine() );
   cv::Mat mat2 = cv::Mat(mat.rows, mat.cols, CV_8UC3 );
   int from_to[] = { 0, 0,  1, 1,  2, 2 };
   cv::mixChannels(&mat, 1, &mat2, 1, from_to, 3);
-  
+
   return mat2;
 }
 
@@ -31,7 +31,7 @@ cv::Mat Convertor::binarizeOTSU(const cv::Mat &src)
   assert(src.type() == CV_8UC1);
 
   cv::Mat img_binarization;
-  cv::threshold(src, img_binarization, 0, 255, cv::THRESH_OTSU); //B  
+  cv::threshold(src, img_binarization, 0, 255, cv::THRESH_OTSU); //B
   return img_binarization;
 }
 
@@ -89,11 +89,11 @@ QImage Convertor::getQImage(const cv::Mat &image){
 	++dst;
       }
     }
-    
+
   }
   else if (rgb.type() == CV_8UC4) //For transparency
     {
-      
+
       QImage alphaImg = qimg.alphaChannel();
 
       for (int i=0; i<h; ++i) {
@@ -110,12 +110,12 @@ QImage Convertor::getQImage(const cv::Mat &image){
 	  uchar a = *src;
 	  ++src;
 	  //shoud we cv::saturate_cast() ???
-	  
+
 	  *dst = qRgba(r, g, b, a);
 	  ++dst;
 	}
       }
-         
+
     }
   else {
     std::cerr<<"ERROR: Convertor::getQImage() : unknown type \n";
@@ -124,4 +124,9 @@ QImage Convertor::getQImage(const cv::Mat &image){
 
 
   return qimg;
+}
+
+QRect Convertor::getQRect(cv::Rect block){
+  QRect rect(block.x,block.y,block.width,block.height);
+  return rect;
 }

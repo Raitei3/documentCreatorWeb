@@ -17,23 +17,21 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function() {
-        $('.loader').hide();
-        $('#createDocumentPractice').hide();
-        document.getElementById('createDocumentStart').addEventListener('click', function(){
-          init(null, null, null, "createDocument");
-        });
+      $('#synthetize').show();
+      $('#synthetizePractice').hide();
+      $('.loader').hide();
       });
     </script>
     <link rel="shortcut icon" href="img/favicon.png">
   </head>
-  
-  
+
+
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
     <div class="overlay">
       <div class="loader">
       </div>
     </div>
-    
+
     <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
     <header class="header">
       <div class="sticky-wrapper">
@@ -61,7 +59,7 @@
 		  <a href="create-your-document.html">Create your document</a>
 		</li>
 		<li>
-		  <a href="synthetise.html">Syntetise</a>
+		<a href="synthetise.html">Synthetise image </a>
 		</li>
 	      </ul>
             </div>
@@ -70,57 +68,98 @@
       </div>
     </header>
 
-    
-    <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
-    <section id="createDocument">
+
+   <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
+    <section id= "synthetize">
       <div class="container">
 	<div class="row">
 	  <div class="col-md-12">
-            <h2 class="heading">CREATE YOUR DOCUMENT</h2>
+            <h2 class="heading">SYNTHETIZE IMAGE</h2>
 	  </div>
 	</div>
 	<div class="row">
 	  <div class="col-md-12 text-center">
             <p>
 	      <b>
-		<h4>Work in progress</h4>
-		We are sorry, this part of Document Creator Online is still in development.
+		Welcome to Synthetize image<br>
+		First, upload an image (supported formats are JPEG, JPG, PNG, TIF and TIFF)<br>
+		Then, synthetize it !
 	      </b>
-	    </p>
-	  </div>
-	  <div class="col-md-12 text-center">
-	    <p class="text-center">
-	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>  
+	      <br><br>
+	      (Works only on Firefox and Chrome.)
 	    </p>
 	  </div>
 	</div>
-      </div>
-    </section>   
-
-    <section id="createDocumentPractice">
-      <div class="container">
-	<div class="row section_portion">
-	  <div class="col-md-4">
-	    Font: <select id="createDocumentFont"></select>
-	    <br>
-	    Background: <select id="createDocumentBackground"></select>
-	    <br>
-	    <a name="createDocumentDownload" id="createDocumentDownloadXML" href="#">
-	      <span class="glyphicon glyphicon-download"></span>
-	    </a>Download XML
-	    <br>
-	    <a name="createDocumentDownload" id="createDocumentDownloadPNG" href="#">
-	      <span class="glyphicon glyphicon-download"></span>
-	    </a>Download PNG
-	  </div>
-	  <div class="col-md-8">
-	    <textarea id="createDocumentText" rows="6" cols="75">lorem ipsum et dolor</textarea>
-	  </div>
+	<div class="row">
+	  <div class="text-center">
+            <div class="fileUpload btn btn-primary">
+	      <span>Upload</span>
+              <input id="startSynthetize" type="file" class="upload" name="image" accept="image/*"/>
+            </div>
+          </div>
 	</div>
       </div>
     </section>
 
-    
+    <section id="synthetizePractice">
+      <div class="container">
+	<div class="row">
+	  <div class="col-md-3">
+	    <div class="row">
+	      <div class="col-md-12 section_portion" style="padding:10px;"><!--OPTIONS-->
+		<div class="row text-center">
+		  <b>OPTIONS</b>
+		</div>
+		<div class="row">
+		  <div class="col-md-5">
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>
+		    </a>Zoom in<br>
+		    <a href="#">
+		      <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
+		    </a>Zoom out<br>
+		    <a href="#">
+		      <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
+		    </a>Reset zoom<br>
+		    <!--
+		    <a href="#">
+		      <span class="glyphicon glyphicon-refresh"></span>
+		    </a>Reset image
+		    -->
+		  </div>
+		  <div class="col-md-7">
+		    <a href="#" title="Start with a new Image">
+		      <span class="glyphicon glyphicon-remove" id="resetImage"></span>
+		    </a>Start from scratch<br>
+		    <a id="downloadImage" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download Image<br>
+		    <a data-toggle="modal" href="#" data-target="#helpModal">
+		      <span class="glyphicon glyphicon-question-sign"></span>
+		    </a>Help
+		  </div>
+		</div>
+	      </div>
+	     </div>
+	     </div>
+		 <div class="col-md-8 text-center" width="150" height="600" style="margin: 5px 0px;">
+
+	    		<canvas id="canvas" width="980" height="700" data-girar="0"></canvas>
+
+	  <!--<div class="modal-footer">-->
+	    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="history.go(-1)"> Close</button>
+	    <button type="button" data-dismiss="modal" id="synthetizeExec" class="btn btn-primary">Ok</button>
+	  <!-- </div> -->
+	  </div>
+	</div>
+</div>
+</section>
+
+
+
+
+
+
     <!-- MOD// CREDITS  -->
     <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm">
@@ -157,20 +196,20 @@
     </div>
 
     <!-- FOOTER  -->
-    <footer>  
+    <footer>
       <div class="row copyright">
 	<p class="text-center">
 	  <a data-toggle="modal" href="#" data-target="#creditModal">
 	    <span class="glyphicon glyphicon-info-sign"></span>
 	  </a>Credits<br>
-	  
+
 	  <a href="https://github.com/titi38/libnavajo">
 	    <span class="glyphicon glyphicon-education" id="git"></span>
 	  </a>
 	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
 	</p>
       </div>
-    </footer>  
+    </footer>
 
 
     <script type="text/javascript" src="js/Blob.js"></script>

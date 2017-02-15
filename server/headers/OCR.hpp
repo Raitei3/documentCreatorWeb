@@ -49,6 +49,7 @@ public:
     const QImage getResultImage() {return m_originalImg;}
     //bool eventFilter(QObject *watched, QEvent *event);
     QString saveFont();
+    void saveFont(const QString &filename);
 
     std::vector<fontLetter> getFinalFont() const;
 
@@ -83,8 +84,8 @@ protected:
     #if 0
     void updateView();
     void updateTable();
-    void updateAlphabet();
     #endif
+    void updateAlphabet();
     void computeBaselines();
     void rebinarizeCurrentLetter();
     void writeFont(const QString &filename, const std::vector<fontLetter> &finalFont) const;

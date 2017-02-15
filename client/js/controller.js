@@ -615,4 +615,30 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
     downloadPNG.setAttribute('download', 'doc-online.png');
 }
 
+/*
+   =============================================
+   ===    CONTROLLER SYNTHETIZE_IMAGE        ===
+   =============================================
+*/
+function ControllerSynthetize(canvas) {
+    this.canvas = canvas;
 
+    var controller = this;
+
+    // Init
+    $('#synthetize').hide();
+    $('#synthetizePractice').show();
+
+    // sinthetise Image
+    document.getElementById('synthetizeExec').addEventListener('click', function(){
+      session.synthetizeImage(controller);
+
+    }, true);
+    //el.addEventListener("click", function(){alert("button detected");},true);
+
+}
+ControllerSynthetize.prototype.replaceImage = function replaceImage(imagePath)
+{
+    this.canvas.changeImage("data/" + imagePath);
+
+}

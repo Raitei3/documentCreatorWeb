@@ -15,6 +15,8 @@
 #include <sys/stat.h>
 #include <cstdio> //remove
 
+#include <iostream>
+
 #include "../headers/Image.hpp"
 #include "../headers/Font.hpp"
 #include "../headers/Session.hpp"
@@ -29,6 +31,8 @@
 #include "../headers/binarization.hpp"
 #include "../headers/convertor.h"
 #include "../headers/StructureDetection.hpp"
+#include "../headers/Painter.hpp"
+#include "../headers/OCR.hpp"
 
 using json = nlohmann::json;
 
@@ -1055,18 +1059,21 @@ class MyDynamicRepository : public DynamicRepository
     {
 	bool getPage(HttpRequest* request, HttpResponse *response)
 	{
+	    (void) request;
+	    (void) response;
 	    cv::Mat input=cv::imread("data/test.png");
 	    cv::Mat output;
 	    Binarization::binarize(input,output);
 	    cv::imwrite("data/result.png",output);
+	    return true;
 	}
     } testBinarization;
-
 
   class Controller: public MyDynamicPage
   {
     bool getPage(HttpRequest* /*request*/, HttpResponse *response)
     {
+	(void) response;
       response->forwardTo("index.php");
       return true;
     }
@@ -1078,6 +1085,8 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+	(void) request;
+	(void) response;
 
         cv::Mat input=cv::imread("data/test.png");
         cv::Mat output;
@@ -1119,6 +1128,8 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+	(void) request;
+	(void) response;
         cv::Mat origin = cv::imread("data/test.png");
         cv::Mat binarize;
   	    Binarization::binarize(origin,binarize);
@@ -1138,9 +1149,64 @@ class MyDynamicRepository : public DynamicRepository
     {
       bool getPage(HttpRequest* request, HttpResponse *response)
       {
+	(void) request;
+	(void) response;
+	cv::Mat originMat = cv::imread("data/test.png");
+	QImage originQImage= Convertor::getQImage(originMat);
+
+
+	cv::Mat binarizedMat(originMat.rows,originMat.cols, CV_8U);
+	Binarization::binarize(originMat,binarizedMat);
+	QImage binarizedQImage = Convertor::getQImage(binarizedMat);
+
+	OCRDialog ocr;
+	ocr.setParameters("/usr/share/tesseract-ocr/","fra");
+	ocr.init(originQImage,binarizedQImage);
+
+	ocr.saveFont("data/test.of");
         return true;
       }
     } fontExtractionTest;
+
+
+    class SynthetizeImage: public MyDynamicPage
+    {
+      bool getPage(HttpRequest* request, HttpResponse *response)
+      {
+        std::string tokenParam;
+        request->getParameter("token", tokenParam);
+        int token = stoi(tokenParam);
+        int sessionIndex = getActiveSessionFromToken(token);
+        if(sessionIndex != -1)
+        {
+          cv::Mat origin = activeSessions.at(sessionIndex)->getImage()->getMat();
+          cv::Mat binarize;
+          Binarization::binarize(origin,binarize);
+          QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
+
+
+          int characterHeight = structureDetection::getCharacterHeight(binarize);
+          cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
+          std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
+
+
+          Painter painter(background,blocks);
+          QImage result = painter.painting();
+          cv::Mat cvResult = Convertor::getCvMat(result);
+
+          activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
+          activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+          myUploadRepo->reload();
+
+          std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+          return fromString(json_response, response);
+        }
+        else
+        {
+          return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
+        }
+      }
+    }synthetizeImage;
 
 
 
@@ -1173,6 +1239,8 @@ class MyDynamicRepository : public DynamicRepository
     add("testBinarization.txt", &testBinarization);
     add("backgroundReconstruction.txt", &backgroundReconstruction);
     add("structureDetectionTest.txt", &structureDetectionTest);
+    add("fontExtractionTest.txt", &fontExtractionTest);
+    add("synthetizeImage.txt",&synthetizeImage);
   }
 };
 
