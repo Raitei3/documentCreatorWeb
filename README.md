@@ -11,29 +11,33 @@ There are two dependencies: Qt5 and OpenCV
 
 // Qt installation
 #Ubuntu
-$ sudo apt-get install libqtbase5-dev
+$ sudo apt-get install libopencv-dev qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev cmake
+
+//tesseract
+sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
+
 
 // Opencv installation
 #Ubuntu Linux distribution
 $ sudo apt-get install libopencv-dev
-    
+
 #MAC distribution (with Homebrew)
 $ brew install opencv
 
 // Libnavajo installation
 // You may need to first install OpenSSL & PAM
 // On Ubuntu:
-// sudo apt-get install libssl-dev libpam0g-dev
+// sudo apt-get install libssl-dev libpam0g-dev qtbase5-dev
 // On Fedora:
 // dnf install openssl-devel pam-devel
 $ git clone https://github.com/titi38/libnavajo.git
 $ cd libnavajo
 $ mkdir build
-$ cd build 
+$ cd build
 $ cmake ..
 $ make
 $ sudo make install
-    
+
 // Font-extractor installation
 $ git clone https://github.com/BorisMansencal/Pdp.git
 $ cd Pdp/server
@@ -84,9 +88,3 @@ Developed by:
 * [Nicholas Journet]
 
 [Report link]()
-
-
-
-
-
-
