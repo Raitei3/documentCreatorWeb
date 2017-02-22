@@ -1137,6 +1137,7 @@ class MyDynamicRepository : public DynamicRepository
         int characterHeight = structureDetection::getCharacterHeight(binarize);
         cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
         std::vector<cv::Rect> block = structureDetection::getBlocks(distanceMap,characterHeight);
+
         return true;
       }
 
@@ -1191,12 +1192,13 @@ class MyDynamicRepository : public DynamicRepository
 
 
           Painter painter(background,blocks);
-          QImage result = painter.painting();
-          cv::Mat cvResult = Convertor::getCvMat(result);
+          painter.extractFont();
+          //QImage result = painter.painting();
+          //cv::Mat cvResult = Convertor::getCvMat(result);
 
-          activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
-          activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-          myUploadRepo->reload();
+          //activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
+        //activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+          //myUploadRepo->reload();
 
           std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
           return fromString(json_response, response);
