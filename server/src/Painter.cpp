@@ -97,8 +97,10 @@ void Painter::extractFont(){
       //  str = (const char *)malloc(sizeof(char)*100000);
       //  str = data.toStdString().c_str();
         //printf("%s\n",str );
-      unsigned  long * array = QextractImage(data,width*height);
-      cv::Mat mat(height,width,CV_32FC4, &array);
+	//unsigned  long * array = extractImage(data,width*height);
+	QImage im=extractImage(data,width,height);
+	//cv::Mat mat(height,width,CV_32FC4, &array);
+	cv::Mat mat=Convertor::getCvMat(im);
       cv::imwrite("data/charactere.png",mat);
         //std::cerr<<"char ="<<data.toStdString()<<".\n";
         return;
@@ -126,12 +128,25 @@ int* Painter::extractImage(char * str, int size){
   return array;
 }
 
-unsigned long * Painter::QextractImage(QString str,int size){
-  unsigned long* array = (unsigned long*)malloc(sizeof(unsigned long)*size);
-  QStringList list = str.split(',');
-  for (int i =0 ; i<size;i++){
-    array[i]=atol(list.at(i).toLocal8Bit().constData());
-    printf("%lu\n",array[i] );
-  }
-  return array;
+// unsigned long * Painter::extractImage(QString str,int size){
+//   unsigned long* array = (unsigned long*)malloc(sizeof(unsigned long)*size);
+//   QStringList list = str.split(',');
+//   for (int i =0 ; i<size;i++){
+//     array[i]=atol(list.at(i).toLocal8Bit().constData());
+//     printf("%lu\n",array[i] );
+//   }
+//   return array;
+// }
+
+QImage Painter::extractImage(QString str, int width, int heigth){
+    QImage ret=QImage(width,heigth,QImage::Format_ARGB32);
+    QStringList list=str.split(',');
+    auto it=list.begin();
+    for(int j=0; j<heigth; j++){
+	QRgb* d=(QRgb*)ret.scanLine(j);
+	for(int i=0; i<width; i++,it++){
+	    d[i]=it->toUInt();
+	}
+    }
+    return ret;
 }
