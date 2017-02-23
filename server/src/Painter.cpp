@@ -6,10 +6,15 @@
 //#include <QCoreApplication>
 //#include <QXml>
 //#include <QDomDocument>
+#include <QDebug>
 #include <QXmlStreamReader>
 #include <QFile>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <map>
+#include <utility>
 
+
+using namespace std;
 
 Painter::Painter(QImage background, std::vector<cv::Rect> blocks)
 {
@@ -45,26 +50,24 @@ Painter::~Painter()
 }
 */
 
-void Painter::extractFont(){
+std::multimap<char,cv::Mat> Painter::extractFont(){
 
+  std::multimap<char,cv::Mat> fontMap;
   QFile font("data/test.of");
   const bool ok = font.open( QFile::ReadOnly );
 
   if (! ok) {
     std::cerr<<"Warning: unable to open font file: \n";
-    return;
   }
 
   QXmlStreamReader reader(&font);
   int width=0;
   int height=0;
   QString s;
-  const char* c;
-  //const char* str;
+  char c[5];
 
   //while (!reader.atEnd())
-  int i =0;
-  while(i<200)
+  while(!reader.atEnd())
   {
     QXmlStreamReader::TokenType token = reader.readNext();
     if (token == QXmlStreamReader::StartElement) {
@@ -72,43 +75,43 @@ void Painter::extractFont(){
       {
         //std::cerr<<"name ="<<reader.name().toString().toStdString()<<"\n";
         s = reader.attributes().value("char").toString();
-        //std::cerr<<"char ="<<s.toStdString()<<".\n";
-        c= s.toStdString().c_str();
-
+        //std::cerr<<"char ="<<s.toUtf8()<<".\n";
+        //QDebug()<< s;
+        strcpy(c, s.toStdString().c_str());
+        //c2=(char*)c;
       }
-      s = reader.attributes().value("char").toString();
+      //s = reader.attributes().value("char").toString();
       //std::cerr<<"char ="<<s.toStdString()<<".\n";
 
       if (reader.name() == "width") {
-    	  reader.readNext();
-    	  width = reader.text().toString().toInt();
+        reader.readNext();
+        width = reader.text().toString().toInt();
         //printf("%d,%d\n",width,height );
-    	}
-    	if (reader.name() == "height") {
-    	  reader.readNext();
-    	  height = reader.text().toString().toInt();
-    	}
+      }
+      if (reader.name() == "height") {
+        reader.readNext();
+        height = reader.text().toString().toInt();
+      }
 
-      if (reader.name() == "data" && *c!=' ') {
+      if (reader.name() == "data") {
         reader.readNext();
 
-        printf("%d,%d ,%s\n",width,height,c );
+        //printf("%d,%d ,%s\n",width,height,c );
         QString data = reader.text().toString();
-      //  str = (const char *)malloc(sizeof(char)*100000);
-      //  str = data.toStdString().c_str();
-        //printf("%s\n",str );
-	//unsigned  long * array = extractImage(data,width*height);
-	QImage im=extractImage(data,width,height);
-	//cv::Mat mat(height,width,CV_32FC4, &array);
-	cv::Mat mat=Convertor::getCvMat(im);
-      cv::imwrite("data/charactere.png",mat);
-        //std::cerr<<"char ="<<data.toStdString()<<".\n";
-        return;
+
+        cv::Mat mat = extractImage(data,width,height);
+        //fontMap.insert(std::pair<char,int>(*c,mat));
+        //printf("%s\n",c );
+        fontMap.insert(multimap<char,cv::Mat>::value_type(c[0],mat));
+        //fontMap [*c] = mat;
+
       }
+    }
+    /*if (token == QXmlStreamReader::EndElement && reader.name()=="letter"){
+
+    }*/
   }
-    i++;
-    //return;
-  }
+  return fontMap;
 }
 
 int* Painter::extractImage(char * str, int size){
@@ -138,15 +141,16 @@ int* Painter::extractImage(char * str, int size){
 //   return array;
 // }
 
-QImage Painter::extractImage(QString str, int width, int heigth){
-    QImage ret=QImage(width,heigth,QImage::Format_ARGB32);
-    QStringList list=str.split(',');
-    auto it=list.begin();
-    for(int j=0; j<heigth; j++){
-	QRgb* d=(QRgb*)ret.scanLine(j);
-	for(int i=0; i<width; i++,it++){
-	    d[i]=it->toUInt();
-	}
+cv::Mat Painter::extractImage(QString str, int width, int heigth){
+  QImage ret=QImage(width,heigth,QImage::Format_ARGB32);
+  QStringList list=str.split(',');
+  auto it=list.begin();
+  for(int j=0; j<heigth; j++){
+    QRgb* d=(QRgb*)ret.scanLine(j);
+    for(int i=0; i<width; i++,it++){
+      d[i]=it->toUInt();
     }
-    return ret;
+  }
+  cv::Mat mat=Convertor::getCvMat(ret);
+  return mat;
 }
