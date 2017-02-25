@@ -30,22 +30,22 @@ static const int IMG_HEIGHT = 680;
 static const cv::Scalar SELECTED_BLUE = cv::Scalar(255, 0, 0);
 
 
-OCRDialog::OCRDialog(QObject *parent) :
+OCR::OCR(QObject *parent) :
   QObject(parent),
   m_table(nullptr),
   m_currentIndex(0)
 {}
 
-OCRDialog::~OCRDialog()
+OCR::~OCR()
 {}
 
-void OCRDialog::setParameters(const QString &tessdataParentDir, const QString &language)
+void OCR::setParameters(const QString &tessdataParentDir, const QString &language)
 {
   m_tessdataParentDir = tessdataParentDir;
   m_language = language;
 }
 #if 0
-bool OCRDialog::eventFilter(QObject *watched, QEvent *event)
+bool OCR::eventFilter(QObject *watched, QEvent *event)
 {
   // Add an event to detect the click on the image to update the preview area
   QLabel *label = qobject_cast<QLabel *>(watched);
@@ -70,7 +70,7 @@ bool OCRDialog::eventFilter(QObject *watched, QEvent *event)
   return QObject::eventFilter(watched, event);
 }
 #endif
-void OCRDialog::init(const QImage &ori, const QImage &bin)
+void OCR::init(const QImage &ori, const QImage &bin)
 {
   setOriginalImage(ori);
   setBinarizedImage(bin);
@@ -78,18 +78,18 @@ void OCRDialog::init(const QImage &ori, const QImage &bin)
   updateAlphabet();
 }
 
-void OCRDialog::setOriginalImage(const QImage &img)
+void OCR::setOriginalImage(const QImage &img)
 {
   // Initializa the image and launch the process
   m_originalImg = img;
 }
 
-void OCRDialog::setBinarizedImage(const QImage &img)
+void OCR::setBinarizedImage(const QImage &img)
 {
   m_binarizedImg = img;
 }
 
-cv::Mat OCRDialog::getLetterViewFromMask(const cv::Mat &original, const cv::Mat &mask) const
+cv::Mat OCR::getLetterViewFromMask(const cv::Mat &original, const cv::Mat &mask) const
 {
   // We extract the image
   cv::Mat mask_tmp;
@@ -104,7 +104,7 @@ cv::Mat OCRDialog::getLetterViewFromMask(const cv::Mat &original, const cv::Mat 
   return letter;
 }
 
-cv::Mat OCRDialog::getImageFromMask(const cv::Mat &original, const cv::Mat &mask, int background_value) const
+cv::Mat OCR::getImageFromMask(const cv::Mat &original, const cv::Mat &mask, int background_value) const
 {
   // We extract the image
   cv::Mat mask_tmp;
@@ -123,7 +123,7 @@ cv::Mat OCRDialog::getImageFromMask(const cv::Mat &original, const cv::Mat &mask
 
 #include <clocale>
 
-void OCRDialog::process()
+void OCR::process()
 {
   cv::Mat src(Convertor::getCvMat(m_binarizedImg)), original(Convertor::getCvMat(m_originalImg)), tmp;
   cvtColor(src, tmp, CV_RGB2GRAY);
@@ -271,7 +271,7 @@ void OCRDialog::process()
   }
 }
 #if 0
-void OCRDialog::updateTable() {
+void OCR::updateTable() {
 
   ui->tableLetters->clear();
   ui->tableLetters->setRowCount(0);    
@@ -299,7 +299,7 @@ void OCRDialog::updateTable() {
 
 }
 #endif
-void OCRDialog::updateAlphabet()
+void OCR::updateAlphabet()
 {
 #if 0
   ui->tableAlphabet->clear();
@@ -353,7 +353,7 @@ void OCRDialog::updateAlphabet()
 #endif
 }
 #if 0
-void OCRDialog::updateView()
+void OCR::updateView()
 {
   cv::Mat thumb = Convertor::getCvMat(m_originalImg);
 
@@ -428,7 +428,7 @@ void OCRDialog::updateView()
 
 }
 #endif
-QColor OCRDialog::getConfidenceColor(float conf) const
+QColor OCR::getConfidenceColor(float conf) const
 {
   // Returns a color from a confidence value (between 0-100)
   QColor color(230, 230, 230);
@@ -445,7 +445,7 @@ QColor OCRDialog::getConfidenceColor(float conf) const
 }
 
 
-std::vector<int> OCRDialog::getSimilarLetters(const fontLetter &fl) const
+std::vector<int> OCR::getSimilarLetters(const fontLetter &fl) const
 {
   /* Returns a sorted vector of the symbols with the same label than fl
    * Returns also the related index of each letter
@@ -477,7 +477,7 @@ std::vector<int> OCRDialog::getSimilarLetters(const fontLetter &fl) const
 }
 
 
-std::vector<fontLetter> OCRDialog::getFinalFont() const
+std::vector<fontLetter> OCR::getFinalFont() const
 {
   int spacing_w =0, spacing_h = 0;
   int sum = 0;
@@ -518,7 +518,7 @@ std::vector<fontLetter> OCRDialog::getFinalFont() const
   return finalFont;
 }
 #if 0
-void OCRDialog::on_tableLetters_clicked(const QModelIndex &index) {
+void OCR::on_tableLetters_clicked(const QModelIndex &index) {
   // Change the current letter
   if (index.isValid()) {
     m_currentIndex = m_similarList[index.row()];
@@ -529,7 +529,7 @@ void OCRDialog::on_tableLetters_clicked(const QModelIndex &index) {
 }
 #endif
 #if 0
-void OCRDialog::on_baselineSpinBox_valueChanged(int arg1)
+void OCR::on_baselineSpinBox_valueChanged(int arg1)
 {
   // update baseline value
   m_currentLetter.baseline = arg1;
@@ -537,7 +537,7 @@ void OCRDialog::on_baselineSpinBox_valueChanged(int arg1)
 }
 #endif 
 #if 0
-void OCRDialog::on_apply_clicked()
+void OCR::on_apply_clicked()
 {
   if (m_font.empty())
     return;
@@ -565,13 +565,13 @@ void OCRDialog::on_apply_clicked()
 }
 #endif
 #if 0
-void OCRDialog::on_letterLabel_textChanged() {
+void OCR::on_letterLabel_textChanged() {
   // Update the label
   m_currentLetter.label = ui->letterLabel->text().toUtf8().constData();
 }
 #endif
 #if 0
-void OCRDialog::on_deleteButton_clicked()
+void OCR::on_deleteButton_clicked()
 {
   if (m_font.empty())
     return;
@@ -594,7 +594,7 @@ void OCRDialog::on_deleteButton_clicked()
 }
 #endif
 #if 0
-void OCRDialog::on_tableAlphabet_cellClicked(int row, int column)
+void OCR::on_tableAlphabet_cellClicked(int row, int column)
 {
   // Get current label
   assert(row*3+column < m_alphabet.size());
@@ -615,13 +615,13 @@ void OCRDialog::on_tableAlphabet_cellClicked(int row, int column)
 }
 #endif
 #if 0
-void OCRDialog::on_maxSymbol_valueChanged(int arg1)
+void OCR::on_maxSymbol_valueChanged(int arg1)
 {
   m_maxNumberOfSymbols = arg1;
   updateView();
 }
 #endif
-void OCRDialog::rebinarizeCurrentLetter()
+void OCR::rebinarizeCurrentLetter()
 {
   // Re-binarize the image of the current symbol
   cv::Mat thumb = Convertor::getCvMat(m_originalImg);
@@ -640,14 +640,14 @@ void OCRDialog::rebinarizeCurrentLetter()
 
 }
 #if 0
-void OCRDialog::on_smoothed_toggled(bool checked)
+void OCR::on_smoothed_toggled(bool checked)
 {
   m_currentLetter.checked = checked;
   rebinarizeCurrentLetter();
 }
 #endif
 /*
-void OCRDialog::on_pushButton_3_clicked()
+void OCR::on_pushButton_3_clicked()
 {
   float error1 =0;
   float error2 =0;
@@ -663,14 +663,14 @@ void OCRDialog::on_pushButton_3_clicked()
 }
 */
 #if 0
-void OCRDialog::on_binarizationSpinBox_valueChanged(int arg1)
+void OCR::on_binarizationSpinBox_valueChanged(int arg1)
 {
   m_currentLetter.binarization_step = arg1;
   rebinarizeCurrentLetter();
 }
 #endif
 #if 0
-void OCRDialog::on_saveFont_clicked()
+void OCR::on_saveFont_clicked()
 {
   QString filters("font files (*.of)");
   QString filename = QFileDialog::getSaveFileName(nullptr, "Save Font", QDir::currentPath(), filters);
@@ -678,7 +678,7 @@ void OCRDialog::on_saveFont_clicked()
 
 }
 #endif
-QString OCRDialog::saveFont()
+QString OCR::saveFont()
 {
   QString filters("font files (*.of)");
   QString filename = QFileDialog::getSaveFileName(nullptr, "Save Font", QDir::currentPath(), filters);
@@ -687,12 +687,12 @@ QString OCRDialog::saveFont()
   return filename;
 }
 
-void OCRDialog::saveFont(const QString &filename)
+void OCR::saveFont(const QString &filename)
 {
   writeFont(filename, getFinalFont());
 }
 
-void OCRDialog::writeFont(const QString &filename,
+void OCR::writeFont(const QString &filename,
 			  const std::vector<fontLetter> &finalFont) const
 {
 

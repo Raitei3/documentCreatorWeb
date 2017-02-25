@@ -1160,7 +1160,7 @@ class MyDynamicRepository : public DynamicRepository
 	Binarization::binarize(originMat,binarizedMat);
 	QImage binarizedQImage = Convertor::getQImage(binarizedMat);
 
-	OCRDialog ocr;
+	OCR ocr;
 	ocr.setParameters("/usr/share/tesseract-ocr/","fra");
 	ocr.init(originQImage,binarizedQImage);
 
