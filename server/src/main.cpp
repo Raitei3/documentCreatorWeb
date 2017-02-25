@@ -1191,14 +1191,14 @@ class MyDynamicRepository : public DynamicRepository
           std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
 
 
-          Painter painter(background,blocks);
+          Painter painter(background,blocks,characterHeight);
           painter.extractFont();
-          //QImage result = painter.painting();
-          //cv::Mat cvResult = Convertor::getCvMat(result);
+          QImage result = painter.painting();
+          cv::Mat cvResult = Convertor::getCvMat(result);
 
-          //activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
-        //activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-          //myUploadRepo->reload();
+          activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
+        activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+          myUploadRepo->reload();
 
           std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
           return fromString(json_response, response);

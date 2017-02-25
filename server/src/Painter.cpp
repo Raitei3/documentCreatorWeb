@@ -16,41 +16,63 @@
 
 using namespace std;
 
-Painter::Painter(QImage background, std::vector<cv::Rect> blocks)
+Painter::Painter(QImage background, std::vector<cv::Rect> blocks, int characterHeight)
 {
-  _background=background;
-  for (size_t i = 0; i < blocks.size(); i++)
-  {
-    _blocks.append(Convertor::getQRect(blocks.at(i)));
-  }
+  _background=Convertor::getCvMat(background);
+  _blocks=blocks;
+  cerr<<"characterHeight : "<<characterHeight<<endl;
+  _characterHeight=55;//characterHeight;
+  // for (size_t i = 0; i < blocks.size(); i++)
+  // {
+  //   _blocks.append(Convertor::getQRect(blocks.at(i)));
+  // }
 }
 
 Painter::~Painter()
 {
 }
 
-/*QImage Painter::painting()
+QImage Painter::painting()
 {
-  int x = 1;
-  //QGuiApplication app(x,NULL);
-  //QGuiApplication app2(x,NULL);
+  
+  for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
+    //pour deboguer
+    //cv::rectangle(_background,*block,0,2);
+      
+    int line=block->y+_characterHeight;
+    int ofset=block->x;
+    auto it=_text.begin();
+    while(it!=_text.end() && line<block->height+block->y){
+      
+      
+      char c=*it;
+      auto fontIt=_font.find(c);
+      if(fontIt!=_font.end()){
+	cv::Mat pict=fontIt->second;
+	int hpict=pict.size().height;
+	int wpict=pict.size().width;
+	if(c!=' ')//pour éviter un carré gris
+	{
+	cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
+	
+	part=min(part,pict);//à améliorer
 
-  QPainter _painter(&_background);
-  //_painter.begin(&_background);
-  _painter.setPen(Qt::black);
-  _painter.setFont(QFont("Arial", 16));
-  for (int i = 0; i < _blocks.size(); i++) {
-    _painter.drawRect(_blocks[i]);
-    _painter.drawText(_blocks[i],Qt::TextWordWrap | Qt::TextJustificationForced,_text);
-    //_painter.drawEllipse ( _blocks[i] );
-
+	
+	}
+	ofset+=wpict;
+	if(ofset>block->x+block->width){
+	  line+=_characterHeight;
+	  ofset=block->x;
+	}
+	//return Convertor::getQImage(_background);
+      }
+      it++;
+    }
   }
-  //_painter.end();
-  return _background;
+  return Convertor::getQImage(_background);
 }
-*/
 
-std::multimap<char,cv::Mat> Painter::extractFont(){
+void Painter::extractFont(){
 
   std::multimap<char,cv::Mat> fontMap;
   QFile font("data/test.of");
@@ -111,7 +133,7 @@ std::multimap<char,cv::Mat> Painter::extractFont(){
 
     }*/
   }
-  return fontMap;
+  _font=fontMap;
 }
 
 int* Painter::extractImage(char * str, int size){
