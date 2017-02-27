@@ -1180,19 +1180,27 @@ class MyDynamicRepository : public DynamicRepository
         int sessionIndex = getActiveSessionFromToken(token);
         if(sessionIndex != -1)
         {
-          cv::Mat origin = activeSessions.at(sessionIndex)->getImage()->getMat();
-          cv::Mat binarize;
+	    cv::Mat origin = activeSessions.at(sessionIndex)->getImage()->getMat();
+	    //cv::Mat origin=cv::imread("data/image/Bmt_res2812_002.png");
+          cv::Mat binarize=cv::Mat(origin.rows,origin.cols, CV_8U);
           Binarization::binarize(origin,binarize);
-          QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
+
+	  OCR ocr;
+	  ocr.setParameters("/usr/share/tesseract-ocr/","eng");
+	  ocr.init(Convertor::getQImage(origin),Convertor::getQImage(binarize));
+	  ocr.saveFont("data/test2.of");
+
+	  QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
 
 
           int characterHeight = structureDetection::getCharacterHeight(binarize);
           cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
           std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
 
+	  
 
           Painter painter(background,blocks,characterHeight);
-          painter.extractFont();
+          painter.extractFont("data/test2.of");
           QImage result = painter.painting();
           cv::Mat cvResult = Convertor::getCvMat(result);
 

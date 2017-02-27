@@ -20,7 +20,6 @@ Painter::Painter(QImage background, std::vector<cv::Rect> blocks, int characterH
 {
   _background=Convertor::getCvMat(background);
   _blocks=blocks;
-  cerr<<"characterHeight : "<<characterHeight<<endl;
   _characterHeight=55;//characterHeight;
   // for (size_t i = 0; i < blocks.size(); i++)
   // {
@@ -72,10 +71,10 @@ QImage Painter::painting()
   return Convertor::getQImage(_background);
 }
 
-void Painter::extractFont(){
+void Painter::extractFont(string fontPath){
 
   std::multimap<char,cv::Mat> fontMap;
-  QFile font("data/test.of");
+  QFile font(QString::fromStdString(fontPath));
   const bool ok = font.open( QFile::ReadOnly );
 
   if (! ok) {
@@ -95,9 +94,7 @@ void Painter::extractFont(){
     if (token == QXmlStreamReader::StartElement) {
       if(reader.name()=="letter")
       {
-        //std::cerr<<"name ="<<reader.name().toString().toStdString()<<"\n";
         s = reader.attributes().value("char").toString();
-        //std::cerr<<"char ="<<s.toUtf8()<<".\n";
         //QDebug()<< s;
         strcpy(c, s.toStdString().c_str());
         //c2=(char*)c;
@@ -133,6 +130,8 @@ void Painter::extractFont(){
 
     }*/
   }
+  if(reader.hasError())
+      cerr<<"Erreur : "<<reader.errorString().toStdString()<<endl;
   _font=fontMap;
 }
 
