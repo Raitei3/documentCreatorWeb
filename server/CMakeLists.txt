@@ -76,8 +76,19 @@ SET(SRVR_SRCS
   src/StructureDetection.cpp
   src/OCR.cpp
   src/Painter.cpp
+  src/Config.cpp
   )
 
+
+# ADD_CUSTOM_COMMAND(OUTPUT config.ini
+#   COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}
+#   DEPENDS config.ini
+#   VERBATIM)
+
+# ADD_CUSTOM_TARGET(config ALL
+#   DEPENDS config.ini)
+
+CONFIGURE_FILE(config.ini config.ini)
 
 ADD_EXECUTABLE(main ${SRVR_SRCS})
 TARGET_LINK_LIBRARIES(main  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)

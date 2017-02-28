@@ -33,7 +33,7 @@
 #include "../headers/StructureDetection.hpp"
 #include "../headers/Painter.hpp"
 #include "../headers/OCR.hpp"
-
+#include "Config.hpp"
 using json = nlohmann::json;
 
 
@@ -1264,7 +1264,7 @@ int main(int /*argc*/, char** /*argv*/ )
   signal( SIGINT, exitFunction );
 
   NVJ_LOG->addLogOutput(new LogStdOutput);
-
+  Config conf;
   webServer = new WebServer;
 
   //webServer->setUseSSL(true, "../mycert.pem");
