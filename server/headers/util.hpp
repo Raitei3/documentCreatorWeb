@@ -1,9 +1,32 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <string>
+#include <vector>
+#include <ostream>
+#include <libnavajo/libnavajo.hh>
+
+#include <Session.hpp>
+
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+extern const char *CLIENT_DIR;
+extern const char *UPLOAD_DIR;
+extern const char *BLUR_IMG_DIR;
+//extern const char *FONT_DIR;
+//extern const char *BACKGROUND_DIR;
+
 class MyDynamicPage : public DynamicPage
 {
 };
+
+extern WebServer *webServer;
+
+extern LocalRepository *myUploadRepo;
+
+extern std::vector<Session*> activeSessions;
 
 /* split the string @a s */
 int split(std::vector<std::string>& v, const std::string &s, char separateur);
@@ -22,21 +45,18 @@ void exitFunction( int /*dummy*/ );
  *
  * \return a bool
  */
-inline
 bool isFormatSupported( const std::string &filename);
 
 /*
  * Auxialiry function to save one instance of character to XML file
  *
  */
-inline
 void
 saveInstanceToXml(std::ostream &xmlDocument, int id, int width, int height, const std::string &data);
 
 /*
  * Make data for space character (that is, transparent white square) as a string
  */
-inline
 std::string
 makeSpaceCharacterData(int width, int height);
 

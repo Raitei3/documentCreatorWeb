@@ -1,3 +1,12 @@
+#include <opencv2/core/core.hpp>
+#include <QImage>
+
+#include "synthetizeTest.hpp"
+#include "binarization.hpp"
+#include "StructureDetection.hpp"
+#include "OCR.hpp"
+#include "convertor.h"
+#include "BackgroundReconstruction.hpp"
 
 bool BinarizationTest::getPage(HttpRequest* request, HttpResponse *response)
 {
@@ -29,6 +38,21 @@ bool BackgroundReconstructionTest::getPage(HttpRequest* request, HttpResponse *r
   QImage backgroundResult = back.getResultImage();
   backgroundResult.save("data/backgroundResult.png");
   return true;
+}
+
+QImage BackgroundReconstructionTest::getBackgroundMain(cv::Mat input){
+        cv::Mat output;
+        Binarization::binarize(input,output);
+
+        QImage binarized = Convertor::getQImage(output);
+        QImage origin = Convertor::getQImage(input);
+
+        BackgroundReconstruction back;
+        back.setOriginalImage(origin);
+        back.setBinarizedImage(binarized);
+        back.process();
+        QImage backgroundResult = back.getResultImage();
+        return backgroundResult;
 }
 
 bool StructureDetectionTest::getPage(HttpRequest* request, HttpResponse *response)

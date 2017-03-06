@@ -35,27 +35,32 @@
 #include "../headers/OCR.hpp"
 #include "Config.hpp"
 
-
+#include "SynthetizeImage.hpp"
+#include "degradation.hpp"
+#include "gestionSession.hpp"
+#include "manualFontExtractor.hpp"
+#include "synthetizeTest.hpp"
+#include "util.hpp"
 
 
 class MyDynamicRepository : public DynamicRepository
 {
-  StartSession startSession;
-  StopSession stopSession;
-  UploadImage uploadImage;
+  StartSession _startSession;
+  StopSession _stopSession;
+  UploadImage _uploadImage;
 
-  getBoundingBox getbounding;
-  getInfoOnCC getInfoOnCC;
-  updateInfoOnCC updateInfoOnCC;
-  merge merge;
-  extractFont extractFont;
-  updateBaseline updateBaseline;
+  getBoundingBox _getBoundingBox;
+  getInfoOnCC _getInfoOnCC;
+  updateInfoOnCC _updateInfoOnCC;
+  merge _merge;
+  extractFont _extractFont;
+  updateBaseline _updateBaseline;
 
-  grayScaleCharsDegradation grayScaleCharsDegradation;
-  ShadowBindingDegradation shadowBindingDegradation;
-  PhantomCharacterDegradation phantomCharacterDegradation;
-  BleedThroughtDegradation bleedThroughtDegradation;
-  BlurPhilterDegradation blurPhilterDegradation;
+  grayScaleCharsDegradation _grayScaleCharsDegradation;
+  ShadowBindingDegradation _shadowBindingDegradation;
+  PhantomCharacterDegradation _phantomCharacterDegradation;
+  BleedThroughDegradation _bleedThroughDegradation;
+  BlurFilterDegradation _blurFilterDegradation;
 
   class DownloadCreateDocument: public MyDynamicPage
   {
@@ -126,12 +131,12 @@ class MyDynamicRepository : public DynamicRepository
   } controller;
 
 
-  BinarizationTest binarizationTest;
-  BackgroundReconstructionTest backgroundReconstructionTest;
-  StructureDetectionTest structureDetectionTest;
-  FontExtractionTest fontExtractionTest;
+  BinarizationTest _binarizationTest;
+  BackgroundReconstructionTest _backgroundReconstructionTest;
+  StructureDetectionTest _structureDetectionTest;
+  FontExtractionTest _fontExtractionTest;
 
-  SynthetizeImage synthetizeImage;
+  SynthetizeImage _synthetizeImage;
 
 
 
@@ -141,31 +146,31 @@ class MyDynamicRepository : public DynamicRepository
   MyDynamicRepository() : DynamicRepository()
   {
     add("index.html", &controller);
-    add("startSession.txt", &startSession);
-    add("stopSession.txt", &stopSession);
-    add("uploadImage.txt", &uploadImage);
+    add("startSession.txt", &_startSession);
+    add("stopSession.txt", &_stopSession);
+    add("uploadImage.txt", &_uploadImage);
 
-    add("getBoundingBox.txt", &getBoundingBox);
-    add("getInfoOnCC.txt", &getInfoOnCC);
-    add("updateInfoOnCC.txt", &updateInfoOnCC);
-    add("extractFont.txt", &extractFont);
-    add("updateBaseline.txt", &updateBaseline);
-    add("merge.txt", &merge);
+    add("getBoundingBox.txt", &_getBoundingBox);
+    add("getInfoOnCC.txt", &_getInfoOnCC);
+    add("updateInfoOnCC.txt", &_updateInfoOnCC);
+    add("extractFont.txt", &_extractFont);
+    add("updateBaseline.txt", &_updateBaseline);
+    add("merge.txt", &_merge);
 
-    add("grayScaleCharsDegradation.txt", &grayScaleCharsDegradation);
-    add("shadowBinding.txt", &shadowBindingDegradation);
-    add("phantomCharacter.txt", &phantomCharacterDegradation);
-    add("bleedThrough.txt", &bleedThroughDegradation);
-    add("blurFilter.txt", &blurFilterDegradation);
+    add("grayScaleCharsDegradation.txt", &_grayScaleCharsDegradation);
+    add("shadowBinding.txt", &_shadowBindingDegradation);
+    add("phantomCharacter.txt", &_phantomCharacterDegradation);
+    add("bleedThrough.txt", &_bleedThroughDegradation);
+    add("blurFilter.txt", &_blurFilterDegradation);
 
     add("downloadCreateDocument.txt", &downloadCreateDocument);
     add("getElemsDirectory.txt", &getElemsDirectory);
 
-    add("testBinarization.txt", &BinarizationTest);
-    add("backgroundReconstruction.txt", &backgroundReconstructionTest);
-    add("structureDetectionTest.txt", &structureDetectionTest);
-    add("fontExtractionTest.txt", &fontExtractionTest);
-    add("synthetizeImage.txt",&synthetizeImage);
+    add("testBinarization.txt", &_binarizationTest);
+    add("backgroundReconstruction.txt", &_backgroundReconstructionTest);
+    add("structureDetectionTest.txt", &_structureDetectionTest);
+    add("fontExtractionTest.txt", &_fontExtractionTest);
+    add("synthetizeImage.txt",&_synthetizeImage);
   }
 };
 

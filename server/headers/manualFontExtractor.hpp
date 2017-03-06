@@ -1,6 +1,10 @@
 #ifndef MANUALFONTEXTRACTOR_HPP
 #define MANUALFONTEXTRACTOR_HPP
 
+#include <libnavajo/libnavajo.hh>
+
+#include "util.hpp"
+
 class getBoundingBox: public MyDynamicPage
 {
   /*
@@ -11,7 +15,7 @@ class getBoundingBox: public MyDynamicPage
    *
    * \return a string in response and a bool
    */
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 class getInfoOnCC: public MyDynamicPage
@@ -24,7 +28,7 @@ class getInfoOnCC: public MyDynamicPage
    *
    * \return a string in response and a bool
    */
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 class updateInfoOnCC: public MyDynamicPage
@@ -37,7 +41,7 @@ class updateInfoOnCC: public MyDynamicPage
    *
    * \return a string in response and a bool
    */
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 
@@ -51,12 +55,12 @@ class merge: public MyDynamicPage
    *
    * \return a string in response and a bool
    */
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 class extractFont: public MyDynamicPage
 {
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 class updateBaseline: public MyDynamicPage
@@ -69,7 +73,7 @@ class updateBaseline: public MyDynamicPage
    *
    * \return a string in response and a bool
    */
-  bool GetPage(HttpRequest* request, HttpResponse *response);
+  bool getPage(HttpRequest* request, HttpResponse *response);
 };
 
 

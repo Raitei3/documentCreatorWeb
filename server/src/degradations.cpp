@@ -1,4 +1,9 @@
 #include "degradation.hpp"
+#include "GrayscaleCharsDegradationModel.hpp"
+#include "ShadowBinding.hpp"
+#include "PhantomCharacter.hpp"
+#include "BleedThrough.hpp"
+#include "BlurFilter.hpp"
 
 bool grayScaleCharsDegradation::getPage(HttpRequest* request, HttpResponse *response)
 {

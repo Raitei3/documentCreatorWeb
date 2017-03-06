@@ -1,13 +1,6 @@
-using json = nlohmann::json;
+#include <unordered_set>
 
-
-static const char *CLIENT_DIR = "../client/";
-static const char *UPLOAD_DIR = "../client/data/";
-static const char *BLUR_IMG_DIR = "data/image/blurImages/blurExamples/";
-//static const char *FONT_DIR = "data/font/";
-//static const char *BACKGROUND_DIR = "data/background/";
-
-
+#include "util.hpp"
 
 /* Const integer for random number of name file generation */
 const int rng = 10;
@@ -18,7 +11,11 @@ LocalRepository *myUploadRepo = NULL;
 
 std::vector<Session*> activeSessions;
 
-
+const char *CLIENT_DIR = "../client/";
+const char *UPLOAD_DIR = "../client/data/";
+const char *BLUR_IMG_DIR = "data/image/blurImages/blurExamples/";
+//const char *FONT_DIR = "data/font/";
+//const char *BACKGROUND_DIR = "data/background/";
 
 /* split the string @a s */
 int split(std::vector<std::string>& v, const std::string &s, char separateur)
@@ -53,7 +50,7 @@ void exitFunction( int /*dummy*/ )
   }
 }
 
-inline
+//inline
 bool isFormatSupported( const std::string &filename)
 {
   std::string extension = filename.substr(filename.find(".") + 1);

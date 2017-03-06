@@ -1,6 +1,8 @@
 #ifndef DEGRADATION_HPP
 #define DEGRADATION_HPP
 
+#include "util.hpp"
+
 class grayScaleCharsDegradation: public MyDynamicPage
 {
   bool getPage(HttpRequest* request, HttpResponse *response);

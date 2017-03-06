@@ -1,5 +1,5 @@
 #include "gestionSession.hpp"
-
+#include "util.hpp"
 
 bool StartSession::getPage(HttpRequest* request, HttpResponse *response)
 {
@@ -45,7 +45,7 @@ bool StartSession::getPage(HttpRequest* request, HttpResponse *response)
 }
 
 
-bool Stopsession::getPage(HttpRequest* request, HttpResponse *response)
+bool StopSession::getPage(HttpRequest* request, HttpResponse *response)
 {
   std::string token;
   request->getParameter("token", token);

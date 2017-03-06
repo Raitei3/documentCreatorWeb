@@ -1,4 +1,10 @@
 #include "SynthetizeImage.hpp"
+#include "binarization.hpp"
+#include "OCR.hpp"
+#include "convertor.h"
+#include "StructureDetection.hpp"
+#include "Painter.hpp"
+#include "synthetizeTest.hpp"
 
 bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 {
