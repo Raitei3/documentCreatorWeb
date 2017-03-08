@@ -77,6 +77,12 @@ SET(SRVR_SRCS
   src/OCR.cpp
   src/Painter.cpp
   src/Config.cpp
+  src/SynthetizeImage.cpp
+  src/degradations.cpp
+  src/gestionSession.cpp
+  src/manualFontExtractor.cpp
+  src/synthetizeTest.cpp
+  src/util.cpp
   )
 
 
