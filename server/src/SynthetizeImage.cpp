@@ -17,7 +17,10 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
     cv::Mat origin = activeSessions.at(sessionIndex)->getImage()->getMat();
     //cv::Mat origin=cv::imread("data/image/Bmt_res2812_002.png");
     cv::Mat binarize=cv::Mat(origin.rows,origin.cols, CV_8U);
-    Binarization::binarize(origin,binarize);
+    Binarization::preProcess(origin, binarize, 12);
+    Binarization::NiblackSauvolaWolfJolion(binarize, binarize, Binarization::WOLFJOLION, 128, 40, 40, 0.34);
+    Binarization::postProcess(binarize, binarize, 0.9, 7);
+    
 
     OCR ocr;
     ocr.setParameters("/usr/share/tesseract-ocr/","eng");
