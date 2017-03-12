@@ -34,12 +34,12 @@ struct fontLetter{
     bool checked;
 };
 
-class OCRDialog : public QObject
+class OCR : public QObject
 {
 
 public:
-    explicit OCRDialog(QObject *parent = 0);
-    ~OCRDialog();
+    explicit OCR(QObject *parent = 0);
+    ~OCR();
 
     void setParameters(const QString &tessdataParentDir, const QString &lang);
     
