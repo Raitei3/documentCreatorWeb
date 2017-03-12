@@ -9,7 +9,6 @@
 
 
 void SynthetizeImage::binarization(){
-  binarizedImage=cv::Mat(image.rows,image.cols, CV_8U);
   Binarization::preProcess(image, binarizedImage, 12);
   Binarization::NiblackSauvolaWolfJolion(binarizedImage, binarizedImage, Binarization::WOLFJOLION, 128, 40, 40, 0.34);
   Binarization::postProcess(binarizedImage, binarizedImage, 0.9, 7);
@@ -19,12 +18,8 @@ void SynthetizeImage::extractBackground(){
   QImage binarized;
   cv::Mat output;
 
-  Binarization::binarize(image,output);
-  binarized = Convertor::getQImage(output);
-  
+  binarized=Convertor::getQImage(binarizedImage);  
   QImage origin = Convertor::getQImage(image);
-  binarized.save("data/debug2.png");
-  origin.save("data/debug3.png");
   BackgroundReconstruction back;
   back.setOriginalImage(origin);
   back.setBinarizedImage(binarized);
@@ -68,8 +63,8 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 
     binarization();
     extractFont();
-    extractBlock();
     extractBackground();
+    extractBlock();
     createDocument();
 
     activeSessions.at(sessionIndex)->getImage()->setMat(result);
