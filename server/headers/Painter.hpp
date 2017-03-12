@@ -7,6 +7,9 @@
 #include <QString>
 #include <QPainter>
 #include "opencv2/core/core.hpp"
+#include <QXmlStreamWriter>
+#include <QFile>
+
 
 class Painter
 {
@@ -15,6 +18,10 @@ class Painter
     ~Painter();
     cv::Mat painting();
   void extractFont(std::string fontPath);
+  void initXML();
+  void xmlBlocks(int x, int y, int width, int height);
+  void addLetterToXML(QString display,int id,int x, int y, int width,int height);
+  void endXML();
 
   private:
     //QPainter _painter;
@@ -22,6 +29,12 @@ class Painter
     int * extractImage(char * str, int size);
     //unsigned long * extractImage(QString str,int size);
     cv::Mat extractImage(QString str, int width, int height);
+
+    QXmlStreamWriter xml;
+    QString fontName = "test";
+    int widthDoc;
+    int heightDoc;
+    QString backgroundName ="test";
 
     std::multimap<char,cv::Mat> _font;
   std::vector<cv::Rect> _blocks;
