@@ -11,9 +11,9 @@
 class Painter
 {
   public:
-    Painter(QImage background, std::vector<cv::Rect> blocks, int characterHeight);
+    Painter(cv::Mat background, std::vector<cv::Rect> blocks, int characterHeight);
     ~Painter();
-    QImage painting();
+    cv::Mat painting();
   void extractFont(std::string fontPath);
 
   private:

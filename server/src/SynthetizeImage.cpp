@@ -1,10 +1,59 @@
 #include "SynthetizeImage.hpp"
 #include "binarization.hpp"
-#include "OCR.hpp"
+
 #include "convertor.h"
 #include "StructureDetection.hpp"
 #include "Painter.hpp"
 #include "synthetizeTest.hpp"
+#include "BackgroundReconstruction.hpp"
+
+
+void SynthetizeImage::binarization(){
+  binarizedImage=cv::Mat(image.rows,image.cols, CV_8U);
+  Binarization::preProcess(image, binarizedImage, 12);
+  Binarization::NiblackSauvolaWolfJolion(binarizedImage, binarizedImage, Binarization::WOLFJOLION, 128, 40, 40, 0.34);
+  Binarization::postProcess(binarizedImage, binarizedImage, 0.9, 7);
+}
+
+void SynthetizeImage::extractBackground(){
+  QImage binarized;
+  cv::Mat output;
+
+  Binarization::binarize(image,output);
+  binarized = Convertor::getQImage(output);
+  
+  QImage origin = Convertor::getQImage(image);
+  binarized.save("data/debug2.png");
+  origin.save("data/debug3.png");
+  BackgroundReconstruction back;
+  back.setOriginalImage(origin);
+  back.setBinarizedImage(binarized);
+  back.process();
+  QImage res = back.getResultImage();
+
+
+  background = Convertor::getCvMat(back.getResultImage());
+
+}
+
+void SynthetizeImage::extractFont(){
+    ocr.setParameters("/usr/share/tesseract-ocr/","eng");
+    ocr.init(Convertor::getQImage(image),Convertor::getQImage(binarizedImage));
+    ocr.saveFont("data/test2.of");
+}
+
+void SynthetizeImage::extractBlock(){
+    characterHeight = structureDetection::getCharacterHeight(binarizedImage);
+    cv::Mat distanceMap = structureDetection::getDistanceMap( image,binarizedImage);
+    blocksImage = structureDetection::getBlocks(distanceMap,characterHeight);
+}
+
+void SynthetizeImage::createDocument(){
+    Painter painter(background,blocksImage,characterHeight);
+    painter.extractFont("data/test2.of");
+    result = painter.painting();
+}
+
 
 bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 {
@@ -14,34 +63,16 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
   int sessionIndex = getActiveSessionFromToken(token);
   if(sessionIndex != -1)
   {
-    cv::Mat origin = activeSessions.at(sessionIndex)->getImage()->getMat();
-    //cv::Mat origin=cv::imread("data/image/Bmt_res2812_002.png");
-    cv::Mat binarize=cv::Mat(origin.rows,origin.cols, CV_8U);
-    Binarization::preProcess(origin, binarize, 12);
-    Binarization::NiblackSauvolaWolfJolion(binarize, binarize, Binarization::WOLFJOLION, 128, 40, 40, 0.34);
-    Binarization::postProcess(binarize, binarize, 0.9, 7);
-    
+    image = activeSessions.at(sessionIndex)->getImage()->getMat();
+    //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
 
-    OCR ocr;
-    ocr.setParameters("/usr/share/tesseract-ocr/","eng");
-    ocr.init(Convertor::getQImage(origin),Convertor::getQImage(binarize));
-    ocr.saveFont("data/test2.of");
+    binarization();
+    extractFont();
+    extractBlock();
+    extractBackground();
+    createDocument();
 
-    QImage background = BackgroundReconstructionTest::getBackgroundMain(origin);
-
-
-    int characterHeight = structureDetection::getCharacterHeight(binarize);
-    cv::Mat distanceMap = structureDetection::getDistanceMap( origin,binarize);
-    std::vector<cv::Rect> blocks = structureDetection::getBlocks(distanceMap,characterHeight);
-
-	  
-
-    Painter painter(background,blocks,characterHeight);
-    painter.extractFont("data/test2.of");
-    QImage result = painter.painting();
-    cv::Mat cvResult = Convertor::getCvMat(result);
-
-    activeSessions.at(sessionIndex)->getImage()->setMat(cvResult);
+    activeSessions.at(sessionIndex)->getImage()->setMat(result);
     activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
     myUploadRepo->reload();
 

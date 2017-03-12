@@ -12,30 +12,31 @@
 
 using namespace std;
 
-Painter::Painter(QImage background, std::vector<cv::Rect> blocks, int characterHeight)
+Painter::Painter(cv::Mat background, std::vector<cv::Rect> blocks, int characterHeight)
 {
-  _background=Convertor::getCvMat(background);
+  _background=background;
   _blocks=blocks;
   _characterHeight=55;//characterHeight;
+  //cv::imwrite("data/debug.png",background);
 }
 
 Painter::~Painter()
 {
 }
 
-QImage Painter::painting()
+cv::Mat Painter::painting()
 {
-  
+
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
     //pour deboguer
     //cv::rectangle(_background,*block,0,2);
-      
+
     int line=block->y+_characterHeight;
     int ofset=block->x;
     auto it=_text.begin();
     while(it!=_text.end() && line<block->height+block->y){
-      
-      
+
+
       char c=*it;
       auto fontIt=_font.find(c);
       if(fontIt!=_font.end()){
@@ -45,10 +46,10 @@ QImage Painter::painting()
 	if(c!=' ')//pour éviter un carré gris
 	{
           cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
-	
+
           part=min(part,pict);//à améliorer
 
-	
+
 	}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
@@ -59,7 +60,7 @@ QImage Painter::painting()
       it++;
     }
   }
-  return Convertor::getQImage(_background);
+  return _background;
 }
 
 void Painter::extractFont(string fontPath){
