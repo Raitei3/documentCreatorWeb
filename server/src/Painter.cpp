@@ -69,7 +69,7 @@ cv::Mat Painter::painting()
 	  ofset=block->x;
 	}
       QString display = QChar(c);
-      addLetterToXML(display,1,ofset,line-hpict,pict.size().width,pict.size().width);
+      addLetterToXML(display,1,ofset,line-hpict,pict.size().width,pict.size().height);
       }
 
       it++;
