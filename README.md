@@ -7,16 +7,19 @@ This application can be tested online, or installed locally.
 
 ## Manual installation
 ```
-There are two dependencies: Qt5 and OpenCV
+There are three dependencies: Qt5 ,OpenCV and, tesseract
 
 // Qt installation
 #Ubuntu
-$ sudo apt-get install libqtbase5-dev
+$ sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev
+
+//tesseract installation
+$ sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
 
 // Opencv installation
 #Ubuntu Linux distribution
 $ sudo apt-get install libopencv-dev
-    
+
 #MAC distribution (with Homebrew)
 $ brew install opencv
 
@@ -29,19 +32,18 @@ $ brew install opencv
 $ git clone https://github.com/titi38/libnavajo.git
 $ cd libnavajo
 $ mkdir build
-$ cd build 
+$ cd build
 $ cmake ..
 $ make
 $ sudo make install
-    
+
 // Font-extractor installation
 $ git clone https://github.com/BorisMansencal/Pdp.git
 $ cd Pdp/server
 $ mkdir build
 $ cd build
-$ cmake .. -DCMAKE_MODULE_PATH=<libnavajo sources path>
- where <libnavajo sources path> must be replaced with root directory of libanvajo sources (where there is the file FindLibnavajo.cmake
- $ make
+$ cmake ..
+$ make
 ```
 
 
@@ -84,9 +86,3 @@ Developed by:
 * [Nicholas Journet]
 
 [Report link]()
-
-
-
-
-
-

@@ -2,13 +2,10 @@
 
 #include <convertor.h>
 #include <iostream>
-//#include <QGuiApplication>
-//#include <QCoreApplication>
-//#include <QXml>
-//#include <QDomDocument>
 #include <QDebug>
 #include <QXmlStreamReader>
-#include <QFile>
+#include <QChar>
+
 #include <opencv2/imgproc/imgproc.hpp>
 #include <map>
 #include <utility>
@@ -16,59 +13,129 @@
 
 using namespace std;
 
-Painter::Painter(QImage background, std::vector<cv::Rect> blocks, int characterHeight)
+Painter::Painter(cv::Mat background, std::vector<cv::Rect> blocks, int characterHeight)
 {
-  _background=Convertor::getCvMat(background);
+  _background=background;
   _blocks=blocks;
   _characterHeight=55;//characterHeight;
-  // for (size_t i = 0; i < blocks.size(); i++)
-  // {
-  //   _blocks.append(Convertor::getQRect(blocks.at(i)));
-  // }
+  //cv::imwrite("data/debug.png",background);
+  widthDoc = _background.cols;
+  heightDoc = _background.rows;
+
+
 }
 
 Painter::~Painter()
 {
 }
 
-QImage Painter::painting()
+cv::Mat Painter::painting()
 {
-  
+  //QFile file("data/output.xml");
+  QFile file(QString::fromStdString("data/output.xml"));
+  const bool ok = file.open( QFile::WriteOnly );
+  xml.setDevice(&file);
+  xml.setAutoFormatting(true);
+  initXML();
+
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
+    xmlBlocks(block->x,block->y,block->width,block->height);
     //pour deboguer
     //cv::rectangle(_background,*block,0,2);
-      
+
     int line=block->y+_characterHeight;
     int ofset=block->x;
     auto it=_text.begin();
     while(it!=_text.end() && line<block->height+block->y){
-      
-      
+
+
       char c=*it;
       auto fontIt=_font.find(c);
       if(fontIt!=_font.end()){
-	cv::Mat pict=fontIt->second;
-	int hpict=pict.size().height;
-	int wpict=pict.size().width;
+        cv::Mat pict=fontIt->second;
+	      int hpict=pict.size().height;
+        int wpict=pict.size().width;
 	if(c!=' ')//pour éviter un carré gris
 	{
-	cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
-	
-	part=min(part,pict);//à améliorer
+          cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
 
-	
+          part=min(part,pict);//à améliorer
+
+
 	}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
 	  line+=_characterHeight;
 	  ofset=block->x;
 	}
-	//return Convertor::getQImage(_background);
+      QString display = QChar(c);
+      addLetterToXML(display,1,ofset,line-hpict,pict.size().width,pict.size().height);
       }
+
       it++;
     }
+    endXML();
+
   }
-  return Convertor::getQImage(_background);
+  endXML();
+  xml.writeEndDocument();
+  return _background;
+}
+
+
+
+void Painter::initXML(){
+    xml.writeStartElement("document");
+    xml.writeAttribute("width",QString::number(widthDoc));
+    xml.writeAttribute("height",QString::number(heightDoc));
+    xml.writeStartElement("styles");
+    xml.writeStartElement("style");
+    xml.writeAttribute("name",fontName);
+    xml.writeStartElement("style");
+    xml.writeTextElement("font", fontName);
+    xml.writeEndElement();
+    xml.writeEndElement();
+    xml.writeEndElement();
+
+    xml.writeStartElement("content");
+    xml.writeStartElement("page");
+    xml.writeAttribute("backgroundFileName",backgroundName);
+
+}
+
+
+void Painter::xmlBlocks(int x, int y, int width, int height){
+  xml.writeStartElement("textBlock");
+  xml.writeAttribute("x",QString::number(x));
+  xml.writeAttribute("y",QString::number(y));
+  xml.writeAttribute("width",QString::number(width));
+  xml.writeAttribute("height",QString::number(height));
+  xml.writeAttribute("marginTop",QString::number(0));
+  xml.writeAttribute("marginBottom",QString::number(0));
+  xml.writeAttribute("marginLeft",QString::number(10));
+  xml.writeAttribute("marginRight",QString::number(0));
+  xml.writeStartElement("paragraph");
+  xml.writeAttribute("lineSpacing",QString::number(116));
+  xml.writeAttribute("tabulationSize",QString::number(0));
+  xml.writeStartElement("string");
+  xml.writeAttribute("style","vesale");
+}
+
+void Painter::addLetterToXML(QString display,int id,int x, int y, int width,int height){
+  xml.writeStartElement("char");
+  xml.writeAttribute("display", display);
+  xml.writeAttribute("id", QString::number(id));
+  xml.writeAttribute("x", QString::number(x));
+  xml.writeAttribute("y", QString::number(y));
+  xml.writeAttribute("width", QString::number(width));
+  xml.writeAttribute("height", QString::number(height));
+  xml.writeEndElement();
+}
+
+void Painter::endXML() {
+  xml.writeEndElement();
+  xml.writeEndElement();
+  xml.writeEndElement();
 }
 
 void Painter::extractFont(string fontPath){
@@ -87,7 +154,6 @@ void Painter::extractFont(string fontPath){
   QString s;
   char c[5];
 
-  //while (!reader.atEnd())
   while(!reader.atEnd())
   {
     QXmlStreamReader::TokenType token = reader.readNext();
@@ -95,17 +161,12 @@ void Painter::extractFont(string fontPath){
       if(reader.name()=="letter")
       {
         s = reader.attributes().value("char").toString();
-        //QDebug()<< s;
         strcpy(c, s.toStdString().c_str());
-        //c2=(char*)c;
       }
-      //s = reader.attributes().value("char").toString();
-      //std::cerr<<"char ="<<s.toStdString()<<".\n";
 
       if (reader.name() == "width") {
         reader.readNext();
         width = reader.text().toString().toInt();
-        //printf("%d,%d\n",width,height );
       }
       if (reader.name() == "height") {
         reader.readNext();
@@ -115,52 +176,19 @@ void Painter::extractFont(string fontPath){
       if (reader.name() == "data") {
         reader.readNext();
 
-        //printf("%d,%d ,%s\n",width,height,c );
         QString data = reader.text().toString();
 
         cv::Mat mat = extractImage(data,width,height);
-        //fontMap.insert(std::pair<char,int>(*c,mat));
-        //printf("%s\n",c );
         fontMap.insert(multimap<char,cv::Mat>::value_type(c[0],mat));
-        //fontMap [*c] = mat;
-
       }
     }
-    /*if (token == QXmlStreamReader::EndElement && reader.name()=="letter"){
-
-    }*/
   }
   if(reader.hasError())
-      cerr<<"Erreur : "<<reader.errorString().toStdString()<<endl;
+    cerr<<"Error at line "<<reader.lineNumber()<<" : "<<reader.errorString().toStdString()<<endl;
   _font=fontMap;
 }
 
-int* Painter::extractImage(char * str, int size){
-  int* array = (int*)malloc(sizeof(int)*size);
-  char * token;
-  const char s[2]=",";
-  int i=0;
-  printf("%s\n",str );
-  token = strtok(str,s);
-  while (token != NULL) {
-    int x = atoi(token);
-    array[i]= x;
-    token = strtok(NULL,s);
-    printf("%d\n",array[i] );
-    i++;
-  }
-  return array;
-}
 
-// unsigned long * Painter::extractImage(QString str,int size){
-//   unsigned long* array = (unsigned long*)malloc(sizeof(unsigned long)*size);
-//   QStringList list = str.split(',');
-//   for (int i =0 ; i<size;i++){
-//     array[i]=atol(list.at(i).toLocal8Bit().constData());
-//     printf("%lu\n",array[i] );
-//   }
-//   return array;
-// }
 
 cv::Mat Painter::extractImage(QString str, int width, int heigth){
   QImage ret=QImage(width,heigth,QImage::Format_ARGB32);
