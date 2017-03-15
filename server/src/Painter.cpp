@@ -91,7 +91,7 @@ cv::Mat Painter::painting()
 
 void Painter::extractFont(string fontPath){
 
-  std::multimap<char,cv::Mat> fontMap;
+  std::map<string,std::vector<fontLetter>> fontMap;
   QFile font(QString::fromStdString(fontPath));
   const bool ok = font.open( QFile::ReadOnly );
 
@@ -103,7 +103,9 @@ void Painter::extractFont(string fontPath){
   int width=0;
   int height=0;
   QString s;
-  char c[5];
+  string s2;
+  int baseline = 0;
+  fontLetter f;
 
   while(!reader.atEnd())
   {
@@ -112,7 +114,8 @@ void Painter::extractFont(string fontPath){
       if(reader.name()=="letter")
       {
         s = reader.attributes().value("char").toString();
-        strcpy(c, s.toStdString().c_str());
+        //strcpy(s2, s.toStdString());
+        s2 = s.toStdString();
       }
 
       if (reader.name() == "width") {
@@ -123,6 +126,10 @@ void Painter::extractFont(string fontPath){
         reader.readNext();
         height = reader.text().toString().toInt();
       }
+      if (reader.name()=="baseline") {
+        reader.readNext();
+        baseline = reader.text().toString().toInt();
+      }
 
       if (reader.name() == "data") {
         reader.readNext();
@@ -130,13 +137,22 @@ void Painter::extractFont(string fontPath){
         QString data = reader.text().toString();
 
         cv::Mat mat = extractImage(data,width,height);
-        fontMap.insert(multimap<char,cv::Mat>::value_type(c[0],mat));
+        f.mask = mat;
+        f.baseline = baseline;
+        if (fontMap.find(s2) == fontMap.end()) {
+          std::vector<fontLetter>* v = new std::vector<fontLetter>;
+          fontMap.insert(std::pair<string,vector<fontLetter>>(s2,*v));
+          fontMap[s2].push_back(f);
+        }
+        else{
+          fontMap[s2].push_back(f);
+        }
       }
     }
   }
   if(reader.hasError())
     cerr<<"Error at line "<<reader.lineNumber()<<" : "<<reader.errorString().toStdString()<<endl;
-  _font=fontMap;
+  _font2=fontMap;
 }
 
 
