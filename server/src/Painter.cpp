@@ -154,7 +154,7 @@ cv::Mat Painter::extractImage(QString str, int width, int heigth){
   return mat;
 }
 
-map<string,vector<fontLetter>> Painter::extractFont(vector<fontLetter> fl){
+void Painter::extractFont(vector<fontLetter> fl){
   map<string,vector<fontLetter>> font;
   string s;
 
@@ -170,7 +170,7 @@ map<string,vector<fontLetter>> Painter::extractFont(vector<fontLetter> fl){
       font[s].push_back(*it);
     }
   }
-  return font;
+  _font2=font;
 }
 
 
