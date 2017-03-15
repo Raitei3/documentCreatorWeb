@@ -57,7 +57,6 @@ cv::Mat Painter::painting()
       if(fontIt!=_font.end()){
         cv::Mat pict=fontIt->second.front().mask;
         int baseline=fontIt->second.front().baseline;
-        cerr<<c<<' '<<baseline<<endl;
         int hpict=pict.size().height;
         int wpict=pict.size().width;
         try{
