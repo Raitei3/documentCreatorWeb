@@ -55,8 +55,9 @@ cv::Mat Painter::painting()
       char c=*it;
       auto fontIt=_font.find(c);
       if(fontIt!=_font.end()){
-        cv::Mat pict=fontIt->second;
-	      int hpict=pict.size().height;
+        cv::Mat pict=fontIt->front().mask;
+        int baseline=fontIt->front().baseline;
+        int hpict=pict.size().height;
         int wpict=pict.size().width;
 	if(c!=' ')//pour éviter un carré gris
 	{
