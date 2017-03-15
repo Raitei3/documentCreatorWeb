@@ -53,10 +53,10 @@ cv::Mat Painter::painting()
 
 
       char c=*it;
-      auto fontIt=_font.find(c);
+      auto fontIt=_font.find(string(&c,1));
       if(fontIt!=_font.end()){
-        cv::Mat pict=fontIt->front().mask;
-        int baseline=fontIt->front().baseline;
+        cv::Mat pict=fontIt->second.front().mask;
+        int baseline=fontIt->second.front().baseline;
         int hpict=pict.size().height;
         int wpict=pict.size().width;
 	if(c!=' ')//pour éviter un carré gris
@@ -152,7 +152,7 @@ void Painter::extractFont(string fontPath){
   }
   if(reader.hasError())
     cerr<<"Error at line "<<reader.lineNumber()<<" : "<<reader.errorString().toStdString()<<endl;
-  _font2=fontMap;
+  _font=fontMap;
 }
 
 
@@ -187,7 +187,7 @@ void Painter::extractFont(vector<fontLetter> fl){
       font[s].push_back(*it);
     }
   }
-  _font2=font;
+  _font=font;
 }
 
 
