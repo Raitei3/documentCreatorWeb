@@ -150,6 +150,7 @@ void Painter::extractFont(string fontPath){
       }
     }
   }
+
   if(reader.hasError())
     cerr<<"Error at line "<<reader.lineNumber()<<" : "<<reader.errorString().toStdString()<<endl;
   _font=fontMap;
@@ -188,6 +189,10 @@ void Painter::extractFont(vector<fontLetter> fl){
     }
   }
   _font=font;
+}
+
+void Painter::setText(string s){
+  _text = s;
 }
 
 
