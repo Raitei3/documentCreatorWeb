@@ -24,6 +24,7 @@ class Painter
   void addLetterToXML(QString display,int id,int x, int y, int width,int height);
   void endXML();
   void extractFont(std::vector<fontLetter> fl);
+  void setText(std::string s);
 
   private:
     //QPainter _painter;
