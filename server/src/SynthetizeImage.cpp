@@ -18,7 +18,7 @@ void SynthetizeImage::extractBackground(){
   QImage binarized;
   cv::Mat output;
 
-  binarized=Convertor::getQImage(binarizedImage);  
+  binarized=Convertor::getQImage(binarizedImage);
   QImage origin = Convertor::getQImage(image);
   BackgroundReconstruction back;
   back.setOriginalImage(origin);
@@ -28,12 +28,14 @@ void SynthetizeImage::extractBackground(){
 
 
   background = Convertor::getCvMat(back.getResultImage());
+  cv::imwrite("data/backgroundServeur.png",background);
 
 }
 
 void SynthetizeImage::extractFont(){
     ocr.setParameters("/usr/share/tesseract-ocr/","eng");
     ocr.init(Convertor::getQImage(image),Convertor::getQImage(binarizedImage));
+    font = ocr.getFinalFont();
     ocr.saveFont("data/test2.of");
 }
 
@@ -45,6 +47,7 @@ void SynthetizeImage::extractBlock(){
 
 void SynthetizeImage::createDocument(){
     Painter painter(background,blocksImage,characterHeight);
+    painter.extractFont(font);
     painter.extractFont("data/test2.of");
     result = painter.painting();
 }
@@ -62,8 +65,10 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
     //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
 
     binarization();
+    cv::imwrite("data/binarizedserveur.png",binarizedImage);
     extractFont();
     extractBackground();
+    //cv::imwrite("data/backgroundServeur.png",background);
     extractBlock();
     createDocument();
 
