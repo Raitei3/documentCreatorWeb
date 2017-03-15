@@ -46,10 +46,10 @@ cv::Mat Painter::painting()
     //pour deboguer
     //cv::rectangle(_background,*block,0,2);
 
-    int line=block->y+_characterHeight;
+    int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();
-    while(it!=_text.end() && line<block->height+block->y){
+    while(it!=_text.end() && line+_characterHeight <block->height+block->y){
 
 
       char c=*it;
@@ -57,16 +57,18 @@ cv::Mat Painter::painting()
       if(fontIt!=_font.end()){
         cv::Mat pict=fontIt->second.front().mask;
         int baseline=fontIt->second.front().baseline;
+        cerr<<c<<' '<<baseline<<endl;
         int hpict=pict.size().height;
         int wpict=pict.size().width;
+        try{
 	if(c!=' ')//pour éviter un carré gris
 	{
-          cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
+          cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 ,wpict, hpict));
 
           part=min(part,pict);//à améliorer
 
 
-	}
+	}}catch(cv::Exception){}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
 	  line+=_characterHeight;
@@ -126,7 +128,7 @@ void Painter::extractFont(string fontPath){
         reader.readNext();
         height = reader.text().toString().toInt();
       }
-      if (reader.name()=="baseline") {
+      if (reader.name()=="baseLine") {
         reader.readNext();
         baseline = reader.text().toString().toInt();
       }
