@@ -9,7 +9,8 @@
 #include "opencv2/core/core.hpp"
 #include <QXmlStreamWriter>
 #include <QFile>
-
+#include <map>
+#include "OCR.hpp"
 
 class Painter
 {
@@ -22,6 +23,7 @@ class Painter
   void xmlBlocks(int x, int y, int width, int height);
   void addLetterToXML(QString display,int id,int x, int y, int width,int height);
   void endXML();
+  std::map<std::string,std::vector<fontLetter>> extractFont(std::vector<fontLetter> fl);
 
   private:
     //QPainter _painter;

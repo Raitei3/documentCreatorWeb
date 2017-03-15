@@ -7,7 +7,7 @@
 #include <QChar>
 
 #include <opencv2/imgproc/imgproc.hpp>
-#include <map>
+
 #include <utility>
 
 
@@ -34,6 +34,9 @@ cv::Mat Painter::painting()
   //QFile file("data/output.xml");
   QFile file(QString::fromStdString("data/output.xml"));
   const bool ok = file.open( QFile::WriteOnly );
+  if (! ok) {
+    std::cerr<<"Warning: unable to open font file: \n";
+  }
   xml.setDevice(&file);
   xml.setAutoFormatting(true);
   initXML();
@@ -84,59 +87,6 @@ cv::Mat Painter::painting()
 
 
 
-void Painter::initXML(){
-    xml.writeStartElement("document");
-    xml.writeAttribute("width",QString::number(widthDoc));
-    xml.writeAttribute("height",QString::number(heightDoc));
-    xml.writeStartElement("styles");
-    xml.writeStartElement("style");
-    xml.writeAttribute("name",fontName);
-    xml.writeStartElement("style");
-    xml.writeTextElement("font", fontName);
-    xml.writeEndElement();
-    xml.writeEndElement();
-    xml.writeEndElement();
-
-    xml.writeStartElement("content");
-    xml.writeStartElement("page");
-    xml.writeAttribute("backgroundFileName",backgroundName);
-
-}
-
-
-void Painter::xmlBlocks(int x, int y, int width, int height){
-  xml.writeStartElement("textBlock");
-  xml.writeAttribute("x",QString::number(x));
-  xml.writeAttribute("y",QString::number(y));
-  xml.writeAttribute("width",QString::number(width));
-  xml.writeAttribute("height",QString::number(height));
-  xml.writeAttribute("marginTop",QString::number(0));
-  xml.writeAttribute("marginBottom",QString::number(0));
-  xml.writeAttribute("marginLeft",QString::number(10));
-  xml.writeAttribute("marginRight",QString::number(0));
-  xml.writeStartElement("paragraph");
-  xml.writeAttribute("lineSpacing",QString::number(116));
-  xml.writeAttribute("tabulationSize",QString::number(0));
-  xml.writeStartElement("string");
-  xml.writeAttribute("style","vesale");
-}
-
-void Painter::addLetterToXML(QString display,int id,int x, int y, int width,int height){
-  xml.writeStartElement("char");
-  xml.writeAttribute("display", display);
-  xml.writeAttribute("id", QString::number(id));
-  xml.writeAttribute("x", QString::number(x));
-  xml.writeAttribute("y", QString::number(y));
-  xml.writeAttribute("width", QString::number(width));
-  xml.writeAttribute("height", QString::number(height));
-  xml.writeEndElement();
-}
-
-void Painter::endXML() {
-  xml.writeEndElement();
-  xml.writeEndElement();
-  xml.writeEndElement();
-}
 
 void Painter::extractFont(string fontPath){
 
@@ -202,4 +152,79 @@ cv::Mat Painter::extractImage(QString str, int width, int heigth){
   }
   cv::Mat mat=Convertor::getCvMat(ret);
   return mat;
+}
+
+map<string,vector<fontLetter>> Painter::extractFont(vector<fontLetter> fl){
+  map<string,vector<fontLetter>> font;
+  string s;
+
+  vector<fontLetter>::iterator it = fl.begin();
+  for(it;it != fl.end();it++){
+    s=it->label;
+    if (font.find(s) == font.end()) {
+      std::vector<fontLetter>* v = new std::vector<fontLetter>;
+      font.insert(std::pair<string,vector<fontLetter>>(s,*v));
+      font[s].push_back(*it);
+    }
+    else{
+      font[s].push_back(*it);
+    }
+  }
+  return font;
+}
+
+
+
+void Painter::initXML(){
+    xml.writeStartElement("document");
+    xml.writeAttribute("width",QString::number(widthDoc));
+    xml.writeAttribute("height",QString::number(heightDoc));
+    xml.writeStartElement("styles");
+    xml.writeStartElement("style");
+    xml.writeAttribute("name",fontName);
+    xml.writeStartElement("style");
+    xml.writeTextElement("font", fontName);
+    xml.writeEndElement();
+    xml.writeEndElement();
+    xml.writeEndElement();
+
+    xml.writeStartElement("content");
+    xml.writeStartElement("page");
+    xml.writeAttribute("backgroundFileName",backgroundName);
+
+}
+
+
+void Painter::xmlBlocks(int x, int y, int width, int height){
+  xml.writeStartElement("textBlock");
+  xml.writeAttribute("x",QString::number(x));
+  xml.writeAttribute("y",QString::number(y));
+  xml.writeAttribute("width",QString::number(width));
+  xml.writeAttribute("height",QString::number(height));
+  xml.writeAttribute("marginTop",QString::number(0));
+  xml.writeAttribute("marginBottom",QString::number(0));
+  xml.writeAttribute("marginLeft",QString::number(10));
+  xml.writeAttribute("marginRight",QString::number(0));
+  xml.writeStartElement("paragraph");
+  xml.writeAttribute("lineSpacing",QString::number(116));
+  xml.writeAttribute("tabulationSize",QString::number(0));
+  xml.writeStartElement("string");
+  xml.writeAttribute("style","vesale");
+}
+
+void Painter::addLetterToXML(QString display,int id,int x, int y, int width,int height){
+  xml.writeStartElement("char");
+  xml.writeAttribute("display", display);
+  xml.writeAttribute("id", QString::number(id));
+  xml.writeAttribute("x", QString::number(x));
+  xml.writeAttribute("y", QString::number(y));
+  xml.writeAttribute("width", QString::number(width));
+  xml.writeAttribute("height", QString::number(height));
+  xml.writeEndElement();
+}
+
+void Painter::endXML() {
+  xml.writeEndElement();
+  xml.writeEndElement();
+  xml.writeEndElement();
 }

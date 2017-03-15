@@ -23,6 +23,7 @@ private:
   std::vector<cv::Rect> blocksImage;
   int characterHeight;
   cv::Mat result;
+  std::vector<fontLetter> font;
 };
 
 #endif //SYNTHETIZEIMAGEE_HPP
