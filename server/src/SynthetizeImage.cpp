@@ -52,6 +52,10 @@ void SynthetizeImage::createDocument(){
     result = painter.painting();
 }
 
+cv::Rect SynthetizeImage::createStandardBlock(cv::Mat background){
+  return cv::Rect(30,30,background.size().width-30,background.size().height-30);
+}
+
 
 bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 {

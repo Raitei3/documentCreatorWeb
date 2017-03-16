@@ -120,7 +120,3 @@ cv::Mat structureDetection::getDistanceMap(const cv::Mat &img, const cv::Mat &im
     return distance2;
 
 }
-
-cv::Rect structureDetection::createStandardBlock(cv::Mat background){
-  return cv::Rect(30,30,background.size().width-30,background.size().height-30);
-}
