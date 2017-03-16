@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QXmlStreamReader>
 #include <QChar>
-
+#include <cv.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <utility>
@@ -180,6 +180,7 @@ void Painter::extractFont(vector<fontLetter> fl){
   vector<fontLetter>::iterator it = fl.begin();
   for(it;it != fl.end();it++){
     s=it->label;
+
     if (font.find(s) == font.end()) {
       std::vector<fontLetter>* v = new std::vector<fontLetter>;
       font.insert(std::pair<string,vector<fontLetter>>(s,*v));
@@ -188,6 +189,7 @@ void Painter::extractFont(vector<fontLetter> fl){
     else{
       font[s].push_back(*it);
     }
+    cvtColor(font[s].back().mask, font[s].back().mask, CV_GRAY2BGR);
   }
   _font=font;
 }
