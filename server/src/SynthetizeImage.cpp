@@ -1,6 +1,5 @@
 #include "SynthetizeImage.hpp"
 #include "binarization.hpp"
-
 #include "convertor.h"
 #include "StructureDetection.hpp"
 #include "Painter.hpp"
@@ -50,6 +49,10 @@ void SynthetizeImage::createDocument(){
     painter.extractFont(font);
     //painter.extractFont("data/test2.of");
     result = painter.painting();
+}
+
+cv::Rect SynthetizeImage::createStandardBlock(cv::Mat background){
+  return cv::Rect(30,30,background.size().width-30,background.size().height-30);
 }
 
 

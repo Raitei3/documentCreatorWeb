@@ -39,13 +39,9 @@ class Painter
     int heightDoc;
     QString backgroundName ="test";
 
-
-    std::multimap<char,cv::Mat> _font;
-    std::map<std::string,std::vector<fontLetter>> _font2;
+    std::map<std::string,std::vector<fontLetter>> _font;
   std::vector<cv::Rect> _blocks;
   int _characterHeight;
-
-
   std::string _text = "Loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 };
 

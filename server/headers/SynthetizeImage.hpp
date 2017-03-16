@@ -14,6 +14,7 @@ private:
   void extractFont();
   void extractBlock();
   void createDocument();
+  cv::Rect createStandardBlock(cv::Mat background);
 
 
   cv::Mat image;
