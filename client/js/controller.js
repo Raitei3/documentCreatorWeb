@@ -568,8 +568,11 @@ function ControllerCreateDocument() {
 
     // Envois les informations nécessaire pour télécharger le document à créé (font, background, texte, format XML/PNG)
     var downloads = document.getElementsByName("createDocumentDownload");
-    for (var i = 0; i < downloads.length; i++){
-	document.getElementById(downloads[i].id).addEventListener('click', function(event){
+    //for (var i = 0; i < downloads.length; i++){
+
+	document.getElementById("createDocumentStart").addEventListener('click', function(event){
+
+    alert('tamere');
 	    var fonts = document.getElementById("createDocumentFont");
 	    var font = fonts.options[fonts.selectedIndex].value;
 
@@ -579,15 +582,15 @@ function ControllerCreateDocument() {
 	    var text = document.getElementById("createDocumentText").value;
 
 	    var type;
-	    if (this.id == "createDocumentDownloadXML"){
+	    /*if (this.id == "createDocumentDownloadXML"){
 		type = "xml";
 	    } else { // this.id == "createDocumentDownloadPNG"
 		type = "png";
-	    }
+  }*/
 
-	    session.downloadCreateDocument(type, font, background, text, controller);
+	    session.composeImage( font, background, text, controller);
 	}, true);
-    }
+  //  }
 }
 
 // Mets à jour les selects "Font" et "Background" à partir des données renvoyées par le serveur.
@@ -665,6 +668,18 @@ function ControllerSynthetize(canvas) {
       session.synthetizeImage(controller);
 
     }, true);
+
+    /*document.getElementById('createDocumentStart').addEventListener('click', function(){
+      var fonts = document.getElementById("createDocumentFont");
+      var font = fonts.options[fonts.selectedIndex].value;
+
+      var backgrounds = document.getElementById("createDocumentBackground");
+      var background = backgrounds.options[backgrounds.selectedIndex].value;
+
+      var text = document.getElementById("createDocumentText").value;
+      //alert(font);
+      session.composeImage(font,background,text,controller);
+    },true);*/
 
 }
 ControllerSynthetize.prototype.replaceImage = function replaceImage(imagePath)

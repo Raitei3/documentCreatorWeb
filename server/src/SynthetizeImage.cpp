@@ -55,32 +55,70 @@ void SynthetizeImage::createDocument(){
 
 bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 {
-  std::string tokenParam;
-  request->getParameter("token", tokenParam);
-  int token = stoi(tokenParam);
-  int sessionIndex = getActiveSessionFromToken(token);
-  if(sessionIndex != -1)
-  {
-    image = activeSessions.at(sessionIndex)->getImage()->getMat();
-    //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
+  const char* url = request->getUrl();
 
-    binarization();
-    cv::imwrite("data/binarizedserveur.png",binarizedImage);
-    extractFont();
-    extractBackground();
-    //cv::imwrite("data/backgroundServeur.png",background);
-    extractBlock();
-    createDocument();
+  std::cout << url << std::endl;
 
-    activeSessions.at(sessionIndex)->getImage()->setMat(result);
-    activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-    myUploadRepo->reload();
+  if (!strcmp(url,"composeImage.txt")) {
 
-    std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
-    return fromString(json_response, response);
+
+    std::string fontPath;
+    std::string backgroundPath;
+    std::string text;
+    request->getParameter("font",fontPath);
+    request->getParameter("background",backgroundPath);
+    request->getParameter("text",text);
+
+    fontPath = "data/"+fontPath;
+    backgroundPath= "data/"+backgroundPath;
+
+
+    characterHeight =50;
+    background = cv::imread(backgroundPath);
+    
+
+
+    std::cout << fontPath << std::endl;
+    //std::cout << backgroundPath << std::endl;
+    //std::cout << text << std::endl;
+
   }
-  else
-  {
-    return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
+
+  else{
+    std::string tokenParam;
+    request->getParameter("token", tokenParam);
+    int token = stoi(tokenParam);
+    int sessionIndex = getActiveSessionFromToken(token);
+    std::cout << tokenParam << std::endl;
+
+    if(sessionIndex != -1)
+    {
+
+
+      image = activeSessions.at(sessionIndex)->getImage()->getMat();
+      //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
+
+      binarization();
+      cv::imwrite("data/binarizedserveur.png",binarizedImage);
+      extractFont();
+      extractBackground();
+      //cv::imwrite("data/backgroundServeur.png",background);
+      extractBlock();
+      createDocument();
+
+      activeSessions.at(sessionIndex)->getImage()->setMat(result);
+      activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+      myUploadRepo->reload();
+
+      std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+      return fromString(json_response, response);
+    }
+
+
+    else
+    {
+      return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
+    }
   }
+
 }

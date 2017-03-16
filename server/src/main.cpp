@@ -117,7 +117,7 @@ class MyDynamicRepository : public DynamicRepository
     }
   } getElemsDirectory;
 
-    
+
 
   class Controller: public MyDynamicPage
   {
@@ -171,6 +171,7 @@ class MyDynamicRepository : public DynamicRepository
     add("structureDetectionTest.txt", &_structureDetectionTest);
     add("fontExtractionTest.txt", &_fontExtractionTest);
     add("synthetizeImage.txt",&_synthetizeImage);
+    add("composeImage.txt",&_synthetizeImage);
   }
 };
 

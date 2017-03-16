@@ -464,6 +464,38 @@ Session.prototype.synthetizeImage = function(callback)
     });
 }
 
+Session.prototype.composeImage = function(font, background, text, callback)
+{
+
+    $('.overlay').show();
+    $('.loader').show();
+
+
+
+    $.ajax({
+        url: 'composeImage.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&font=' +font + '&background=' + background + '&text=' + text,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
 // Envois les informations nécessaires pour créer un document, et récupère le path du document créer.
 Session.prototype.downloadCreateDocument = function(typeDownload, font, background, text, callback)
 {
