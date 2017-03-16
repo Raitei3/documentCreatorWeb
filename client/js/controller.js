@@ -572,7 +572,6 @@ function ControllerCreateDocument() {
 
 	document.getElementById("createDocumentStart").addEventListener('click', function(event){
 
-    alert('tamere');
 	    var fonts = document.getElementById("createDocumentFont");
 	    var font = fonts.options[fonts.selectedIndex].value;
 

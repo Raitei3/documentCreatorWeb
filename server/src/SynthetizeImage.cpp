@@ -72,13 +72,23 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
     request->getParameter("background",backgroundPath);
     request->getParameter("text",text);
 
-    fontPath = "data/"+fontPath;
-    backgroundPath= "data/"+backgroundPath;
+    fontPath = "data/font/"+fontPath;
+    backgroundPath= "data/background/"+backgroundPath;
 
 
     characterHeight =50;
     background = cv::imread(backgroundPath);
-    
+    blocksImage.push_back(createStandardBlock(background));
+    Painter painter(background,blocksImage,characterHeight);
+    if (text!="") {
+      painter.setText(text);
+    }
+    painter.extractFont(fontPath);
+    result = painter.painting();
+
+    cv::imwrite("data/testCompose.png",result);
+
+    return fromString("t", response);
 
 
     std::cout << fontPath << std::endl;
@@ -123,5 +133,6 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
       return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
     }
   }
+
 
 }
