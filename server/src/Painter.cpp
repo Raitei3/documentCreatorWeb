@@ -56,13 +56,10 @@ cv::Mat Painter::painting()
       auto fontIt=_font.find(string(&c,1));
       if(fontIt!=_font.end()){
 
-        int numLetter = rand() % _font[string(&c,1)].size();
-        for (int i = 0; i < numLetter; i++) {
-          fontIt++;
-        }
+        int numLetter = rand() % fontIt->second.size();
         
-        cv::Mat pict=fontIt->second.front().mask;
-        int baseline=fontIt->second.front().baseline;
+        cv::Mat pict=fontIt->second[numLetter].mask;
+        int baseline=fontIt->second[numLetter].baseline;
         int hpict=pict.size().height;
         int wpict=pict.size().width;
         try{
