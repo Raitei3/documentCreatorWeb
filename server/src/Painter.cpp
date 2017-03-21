@@ -55,6 +55,12 @@ cv::Mat Painter::painting()
       char c=*it;
       auto fontIt=_font.find(string(&c,1));
       if(fontIt!=_font.end()){
+
+        int numLetter = rand() % _font[string(&c,1)].size();
+        for (int i = 0; i < numLetter; i++) {
+          fontIt++;
+        }
+        
         cv::Mat pict=fontIt->second.front().mask;
         int baseline=fontIt->second.front().baseline;
         int hpict=pict.size().height;
@@ -67,7 +73,8 @@ cv::Mat Painter::painting()
           part=min(part,pict);//à améliorer
 
 
-	}}catch(cv::Exception){}
+	}
+}catch(cv::Exception){}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
 	  line+=_characterHeight;
@@ -86,6 +93,8 @@ cv::Mat Painter::painting()
   xml.writeEndDocument();
   return _background;
 }
+
+
 
 
 
