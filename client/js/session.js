@@ -11,15 +11,15 @@ function Session() {
  * Start the communication with server by sending the image
  * The server will return the token of the session
  * \memberof Session
- * \param file file to upload 
- * \param callback callback method 
+ * \param file file to upload
+ * \param callback callback method
  */
 Session.prototype.startSession = function(typeOfSession, file, callback)
 {
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
-
+    
     $.ajax({
 	url: 'startSession.txt',
 	type: 'POST',
@@ -71,10 +71,10 @@ Session.prototype.removeSession = function(isAsync)
 
 Session.prototype.uploadImage = function(file, callback)
 {
-    // Loading panel  
+    // Loading panel
     $('.overlay').show();
     $('.loader').show();
-    
+
     $.ajax({
 	url: 'uploadImage.txt',
 	type: 'POST',
@@ -104,13 +104,13 @@ Session.prototype.uploadImage = function(file, callback)
 /*!
  * Get informations about the image
  * \memberof Session
- * \param filename filename where the image is stored 
- * \param callback callback method 
+ * \param filename filename where the image is stored
+ * \param callback callback method
  */
 Session.prototype.imageInfos = function(typeOfSession, filename, callback)
 {
     var imagePath = "data/" + filename;
-    
+
     $.ajax({
 	url: 'getBoundingBox.txt',
 	type: 'POST',
@@ -122,9 +122,9 @@ Session.prototype.imageInfos = function(typeOfSession, filename, callback)
 	    $('#canvas').show();
 	    $('.zoom-icon').show();
 	    $('.navbar-nav').show();
-	    
+
 	    callback(imagePath, JSON.parse(data).boundingbox, JSON.parse(data).baseline, typeOfSession);
-	    
+
 	    $('.loader').hide();
 	    $('.overlay').hide();
 	},
@@ -142,7 +142,7 @@ Session.prototype.imageInfos = function(typeOfSession, filename, callback)
  * \param id id of the Component in the client
  * \param idCC id of the component
  * \param idLine id of the line where is the component
- * \param callback callback method 
+ * \param callback callback method
  */
 Session.prototype.getInfoOnCC = function(id, idCC, idLine, callback)
 {
@@ -195,13 +195,13 @@ Session.prototype.updateInfoOnCC = function(activeId, activeLine, jsonId, left, 
 /*!
  * Ask the xml font document to the server
  * \memberof Session
- * \param fontname name we want to give the font 
+ * \param fontname name we want to give the font
  */
 Session.prototype.extractFont = function(fontname)
 {
     $('.overlay').show();
     $('.loader').show();
-    
+
     $.ajax({
 	url: 'extractFont.txt',
 	type: 'POST',
@@ -210,11 +210,11 @@ Session.prototype.extractFont = function(fontname)
 	{
             var file = new Blob([data], {type: "text/plain;charset=utf-8"});
             saveAs(file, fontname + ".of");
-            
+
             $('.loader').hide();
             $('.overlay').hide();
             $('#saveModal').modal('hide');
-	    
+
 	},
 	error: function(error)
 	{
@@ -237,7 +237,7 @@ Session.prototype.updateBaseline = function(idLine, value)
 	data: "token=" + this.token +"&idLine=" + idLine + "&value=" + value,
 	success: function(data, textStatus, jqXHR)
 	{
-            
+
 	},
 	error: function(error)
 	{
@@ -292,7 +292,7 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
 	    } else {
 		callback.replaceImage(response.filename);
 	    }
-	    
+
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -305,7 +305,7 @@ Session.prototype.grayScaleCharsDegradation = function(level, callback)
 
 // Envois les informations nécessaire pour faire Shadow Binding, et récupère le path de l'image dégradé.
 Session.prototype.shadowBinding = function(border, width, intensity, angle, callback)
-{    
+{
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
@@ -324,7 +324,7 @@ Session.prototype.shadowBinding = function(border, width, intensity, angle, call
 	    } else {
 		callback.replaceImage(response.filename);
 	    }
-	    
+
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -356,7 +356,7 @@ Session.prototype.phantomCharacter = function(frequency, callback)
 	    } else {
 		callback.replaceImage(response.filename);
 	    }
-	    
+
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -432,6 +432,70 @@ Session.prototype.blurFilter = function(method, typeIntensity, intensity, callba
     });
 }
 
+
+//Sinthetize une image automatiquement depuis l'image uploader
+Session.prototype.synthetizeImage = function(callback)
+{
+    // Loading panel
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'synthetizeImage.txt',
+        type: 'POST',
+        data: 'token=' + this.token,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		callback.replaceImage(response.filename);
+	    }
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+Session.prototype.composeImage = function(font, background, text, callback)
+{
+
+    $('.overlay').show();
+    $('.loader').show();
+
+
+    $.ajax({
+        url: 'composeImage.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&font=' +font + '&background=' + background + '&text=' + text,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+		//callback.replaceImage(response.filename);
+                document.location.href='data/'+response.filename;
+	    }
+            $('.overlay').hide();
+            $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
 // Envois les informations nécessaires pour créer un document, et récupère le path du document créer.
 Session.prototype.downloadCreateDocument = function(typeDownload, font, background, text, callback)
 {
@@ -447,7 +511,7 @@ Session.prototype.downloadCreateDocument = function(typeDownload, font, backgrou
         success : function(data, textStatus, jqXHR)
         {
 	    callback.changeDownload(data);
-	    
+
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -475,7 +539,7 @@ Session.prototype.getElemsDirectory = function(directory, callback)
         success : function(data, textStatus, jqXHR)
         {
 	    callback.updateElemsDirectory(directory, data);
-	    
+
             $('.overlay').hide();
             $('.loader').hide();
         },
@@ -485,5 +549,3 @@ Session.prototype.getElemsDirectory = function(directory, callback)
         }
     });
 }
-
-

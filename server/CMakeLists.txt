@@ -49,11 +49,6 @@ FIND_PACKAGE(Tesseract REQUIRED)
 
 #FIND_PACKAGE(OpenSSL REQUIRED)
 
-INCLUDE_DIRECTORIES(${libnavajo_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Core_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Gui_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/headers)
 
@@ -81,33 +76,26 @@ SET(SRVR_SRCS
   src/StructureDetection.cpp
   src/OCR.cpp
   src/Painter.cpp
+  src/Config.cpp
+  src/SynthetizeImage.cpp
+  src/degradations.cpp
+  src/gestionSession.cpp
+  src/manualFontExtractor.cpp
+  src/synthetizeTest.cpp
+  src/util.cpp
+  src/StartSession2.cpp
   )
 
-SET(SRVR_HDRS
-  headers/binarization.hpp
-  headers/BleedThrough.hpp
-  headers/BlurFilter.hpp
-  headers/Character.hpp
-  headers/convertor.h
-  headers/ConnectedComponent.hpp
-  headers/connectedcomponentextraction.h
-  headers/Font.hpp
-  headers/GrayscaleCharsDegradationModel.hpp
-  headers/HoleDegradation.hpp
-  headers/Image.hpp
-  headers/json.hpp
-  headers/Line.hpp
-  headers/PhantomCharacter.hpp
-  headers/ShadowBinding.hpp
-  headers/Session.hpp
-  headers/LineDetection.hpp
-  headers/BackgroundReconstruction.hpp
-  headers/textinpainting.hpp
-  headers/baseline.hpp
-  headers/StructureDetection.hpp
-  headers/OCR.hpp
-  headers/Painter.hpp
-)
 
-ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
+# ADD_CUSTOM_COMMAND(OUTPUT config.ini
+#   COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}
+#   DEPENDS config.ini
+#   VERBATIM)
+
+# ADD_CUSTOM_TARGET(config ALL
+#   DEPENDS config.ini)
+
+CONFIGURE_FILE(config.ini config.ini)
+
+ADD_EXECUTABLE(main ${SRVR_SRCS})
 TARGET_LINK_LIBRARIES(main  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
