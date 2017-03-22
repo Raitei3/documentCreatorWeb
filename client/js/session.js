@@ -19,7 +19,7 @@ Session.prototype.startSession = function(typeOfSession, file, callback)
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
-
+    
     $.ajax({
 	url: 'startSession.txt',
 	type: 'POST',
@@ -484,7 +484,7 @@ Session.prototype.composeImage = function(font, background, text, callback)
 		alert(response.error);
 	    } else {
 		//callback.replaceImage(response.filename);
-                document.location.href=response.filename;
+                document.location.href='data/'+response.filename;
 	    }
             $('.overlay').hide();
             $('.loader').hide();

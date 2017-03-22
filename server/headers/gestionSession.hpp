@@ -5,6 +5,7 @@
 
 class StartSession: public DynamicPage
 {
+public:
   bool getPage(HttpRequest* request, HttpResponse *response);
 };
 

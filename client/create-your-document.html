@@ -32,7 +32,8 @@
     	      var response = JSON.parse(responseJson);
     	      if(response.error == null)
     	      {
-    		  this.token = response.token;
+      session.token = response.token;
+      alert(response.token)
               }
       
 	  },

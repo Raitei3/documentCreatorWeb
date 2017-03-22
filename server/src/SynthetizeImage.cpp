@@ -64,36 +64,47 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 
   if (!strcmp(url,"composeImage.txt")) {
 
+    std::string tokenParam;
+    request->getParameter("token", tokenParam);
+    int token = stoi(tokenParam);
+    int sessionIndex = getActiveSessionFromToken(token);
+    std::cout << tokenParam << std::endl;
 
-    std::string fontPath;
-    std::string backgroundPath;
-    std::string text;
-    request->getParameter("font",fontPath);
-    request->getParameter("background",backgroundPath);
-    request->getParameter("text",text);
-
-    fontPath = "data/font/"+fontPath;
-    backgroundPath= "data/background/"+backgroundPath;
+    if(sessionIndex != -1)
+    {
 
 
-    characterHeight =50;
-    background = cv::imread(backgroundPath);
-    blocksImage.push_back(createStandardBlock(background));
-    Painter painter(background,blocksImage,characterHeight);
-    if (text!="") {
-      painter.setText(text);
+      image = activeSessions.at(sessionIndex)->getImage()->getMat();
+      std::string fontPath;
+      std::string backgroundPath;
+      std::string text;
+      request->getParameter("font",fontPath);
+      request->getParameter("background",backgroundPath);
+      request->getParameter("text",text);
+
+      fontPath = "data/font/"+fontPath;
+      backgroundPath= "data/background/"+backgroundPath;
+
+
+      characterHeight =50;
+      background = cv::imread(backgroundPath);
+      blocksImage.push_back(createStandardBlock(background));
+      Painter painter(background,blocksImage,characterHeight);
+      if (text!="") {
+        painter.setText(text);
+      }
+      painter.extractFont(fontPath);
+      result = painter.painting();
+
+      cv::imwrite("data/testCompose.png",result);
+      activeSessions.at(sessionIndex)->getImage()->setMat(result);
+      activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+      myUploadRepo->reload();
+
+      std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
+      return fromString(json_response, response);
     }
-    painter.extractFont(fontPath);
-    result = painter.painting();
-
-    cv::imwrite("data/testCompose.png",result);
-
-    return fromString("t", response);
-
-
-    std::cout << fontPath << std::endl;
-    //std::cout << backgroundPath << std::endl;
-    //std::cout << text << std::endl;
+    
 
   }
 

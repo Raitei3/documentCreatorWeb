@@ -41,11 +41,11 @@
 #include "manualFontExtractor.hpp"
 #include "synthetizeTest.hpp"
 #include "util.hpp"
-
+#include "StartSession2.hpp"
 
 class MyDynamicRepository : public DynamicRepository
 {
-  StartSession _startSession;
+  StartSession2 _startSession;
   StopSession _stopSession;
   UploadImage _uploadImage;
 
