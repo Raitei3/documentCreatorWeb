@@ -6,7 +6,7 @@ bool StartSession2::getPage(HttpRequest* request, HttpResponse *response)
         return _startSession.getPage(request,response);
     }
     else{
-        std::string json_Session = InitiateSession("../../server/data/background/bckg-manuscrit1.png", request);
+        std::string json_Session = InitiateSession("../../server/data/background/newBackGround2.png", request);
         NVJ_LOG->append(NVJ_ERROR, "Start Session : " + json_Session);
         return fromString(json_Session, response);
     }
