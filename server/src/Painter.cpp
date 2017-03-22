@@ -57,7 +57,7 @@ cv::Mat Painter::painting()
       if(fontIt!=_font.end()){
 
         int numLetter = rand() % fontIt->second.size();
-        
+
         cv::Mat pict=fontIt->second[numLetter].mask;
         int baseline=fontIt->second[numLetter].baseline;
         int hpict=pict.size().height;
@@ -105,6 +105,7 @@ void Painter::extractFont(string fontPath){
   if (! ok) {
     std::cerr<<"Warning: unable to open font file: \n";
   }
+
 
   QXmlStreamReader reader(&font);
   int width=0;
