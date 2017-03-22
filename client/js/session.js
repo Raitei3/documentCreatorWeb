@@ -470,8 +470,8 @@ Session.prototype.composeImage = function(font, background, text, callback)
     $('.overlay').show();
     $('.loader').show();
 
-    alert('ok')
-    document.location.href='data/Bmt_res2812_002.png'
+    //alert('ok')
+    //document.location.href='data/Bmt_res2812_002.png'
 
     $.ajax({
         url: 'composeImage.txt',
@@ -486,7 +486,7 @@ Session.prototype.composeImage = function(font, background, text, callback)
 		alert(response.error);
 	    } else {
 		//callback.replaceImage(response.filename);
-                document.location.href=response.filename;
+                document.location.href='data/'+response.filename;
 	    }
             $('.overlay').hide();
             $('.loader').hide();
