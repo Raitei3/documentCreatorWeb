@@ -86,7 +86,7 @@ bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
       backgroundPath= "data/background/"+backgroundPath;
 
 
-      characterHeight =50;
+      characterHeight =100;
       background = cv::imread(backgroundPath);
       blocksImage.push_back(createStandardBlock(background));
       Painter painter(background,blocksImage,characterHeight);

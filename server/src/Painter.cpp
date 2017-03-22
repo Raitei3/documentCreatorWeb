@@ -17,7 +17,7 @@ Painter::Painter(cv::Mat background, std::vector<cv::Rect> blocks, int character
 {
   _background=background;
   _blocks=blocks;
-  _characterHeight=55;//characterHeight;
+  _characterHeight=characterHeight;
   //cv::imwrite("data/debug.png",background);
   widthDoc = _background.cols;
   heightDoc = _background.rows;
