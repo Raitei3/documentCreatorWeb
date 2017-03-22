@@ -19,7 +19,7 @@ Session.prototype.startSession = function(typeOfSession, file, callback)
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
-    
+
     $.ajax({
 	url: 'startSession.txt',
 	type: 'POST',
@@ -470,8 +470,6 @@ Session.prototype.composeImage = function(font, background, text, callback)
     $('.overlay').show();
     $('.loader').show();
 
-    alert('ok')
-    document.location.href='data/Bmt_res2812_002.png'
 
     $.ajax({
         url: 'composeImage.txt',
