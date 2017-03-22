@@ -84,6 +84,7 @@ SET(SRVR_SRCS
   src/synthetizeTest.cpp
   src/util.cpp
   src/StartSession2.cpp
+  src/GetSynthetizeImage.cpp
   )
 
 
