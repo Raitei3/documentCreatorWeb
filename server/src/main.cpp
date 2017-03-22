@@ -35,7 +35,7 @@
 #include "../headers/OCR.hpp"
 #include "Config.hpp"
 
-#include "SynthetizeImage.hpp"
+#include "GetSynthetizeImage.hpp"
 #include "degradation.hpp"
 #include "gestionSession.hpp"
 #include "manualFontExtractor.hpp"
@@ -136,7 +136,7 @@ class MyDynamicRepository : public DynamicRepository
   StructureDetectionTest _structureDetectionTest;
   FontExtractionTest _fontExtractionTest;
 
-  SynthetizeImage _synthetizeImage;
+  GetSynthetizeImage _getSynthetizeImage;
 
 
 
@@ -170,8 +170,8 @@ class MyDynamicRepository : public DynamicRepository
     add("backgroundReconstruction.txt", &_backgroundReconstructionTest);
     add("structureDetectionTest.txt", &_structureDetectionTest);
     add("fontExtractionTest.txt", &_fontExtractionTest);
-    add("synthetizeImage.txt",&_synthetizeImage);
-    add("composeImage.txt",&_synthetizeImage);
+    add("synthetizeImage.txt",&_getSynthetizeImage);
+    add("composeImage.txt",&_getSynthetizeImage);
   }
 };
 

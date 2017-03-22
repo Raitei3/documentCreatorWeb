@@ -55,95 +55,32 @@ cv::Rect SynthetizeImage::createStandardBlock(cv::Mat background){
   return cv::Rect(30,30,background.size().width-30,background.size().height-30);
 }
 
+cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgroundPath, std::string text ){
 
-bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
-{
-  const char* url = request->getUrl();
+  background = cv::imread(backgroundPath);
+  blocksImage.push_back(createStandardBlock(background));
+  Painter painter(background,blocksImage,characterHeight);
 
-  std::cout << url << std::endl;
-
-  if (!strcmp(url,"composeImage.txt")) {
-
-    std::string tokenParam;
-    request->getParameter("token", tokenParam);
-    int token = stoi(tokenParam);
-    int sessionIndex = getActiveSessionFromToken(token);
-    std::cout << tokenParam << std::endl;
-
-    if(sessionIndex != -1)
-    {
-
-
-      image = activeSessions.at(sessionIndex)->getImage()->getMat();
-      std::string fontPath;
-      std::string backgroundPath;
-      std::string text;
-      request->getParameter("font",fontPath);
-      request->getParameter("background",backgroundPath);
-      request->getParameter("text",text);
-
-      fontPath = "data/font/"+fontPath;
-      backgroundPath= "data/background/"+backgroundPath;
-
-
-      characterHeight =100;
-      background = cv::imread(backgroundPath);
-      blocksImage.push_back(createStandardBlock(background));
-      Painter painter(background,blocksImage,characterHeight);
-      if (text!="") {
-        painter.setText(text);
-      }
-      painter.extractFont(fontPath);
-      result = painter.painting();
-
-      cv::imwrite("data/testCompose.png",result);
-      activeSessions.at(sessionIndex)->getImage()->setMat(result);
-      activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-      myUploadRepo->reload();
-
-      std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
-      return fromString(json_response, response);
-    }
-    
-
+  if (text!="") {
+    painter.setText(text);
   }
 
-  else{
-    std::string tokenParam;
-    request->getParameter("token", tokenParam);
-    int token = stoi(tokenParam);
-    int sessionIndex = getActiveSessionFromToken(token);
-    std::cout << tokenParam << std::endl;
+  painter.extractFont(fontPath);
+  result = painter.painting();
 
-    if(sessionIndex != -1)
-    {
+  cv::imwrite("data/testCompose.png",result);
+  return result;
 
+}
 
-      image = activeSessions.at(sessionIndex)->getImage()->getMat();
-      //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
+cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img){
 
-      binarization();
-      cv::imwrite("data/binarizedserveur.png",binarizedImage);
-      extractFont();
-      extractBackground();
-      //cv::imwrite("data/backgroundServeur.png",background);
-      extractBlock();
-      createDocument();
+  image = img;
 
-      activeSessions.at(sessionIndex)->getImage()->setMat(result);
-      activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-      myUploadRepo->reload();
-
-      std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
-      return fromString(json_response, response);
-    }
-
-
-    else
-    {
-      return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
-    }
-  }
-
+  binarization();
+  extractFont();
+  extractBackground();
+  extractBlock();
+  createDocument();
 
 }
