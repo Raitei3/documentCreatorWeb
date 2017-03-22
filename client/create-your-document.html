@@ -20,6 +20,27 @@
         $('.loader').hide();
         $('#createDocumentPractice').show();
         init(null, null, null, "createDocument");
+        $.ajax({
+  	  url: 'startSession.txt',
+	  type: 'GET',
+          cache: false,
+	  processData: false,
+ 	  contentType: false,
+	  context : this,
+	  success: function(responseJson, textStatus, jqXHR)
+	  {
+    	      var response = JSON.parse(responseJson);
+    	      if(response.error == null)
+    	      {
+    		  this.token = response.token;
+              }
+      
+	  },
+	  error: function(jqXHR, textStatus, errorThrown)
+	  {
+              console.log('ERRORS: ' + textStatus);
+	  }
+        });
       });
     </script>
     <link rel="shortcut icon" href="img/favicon.png">
