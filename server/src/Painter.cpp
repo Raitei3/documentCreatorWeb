@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QXmlStreamReader>
 #include <QChar>
-
+#include <cv.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <utility>
@@ -17,7 +17,7 @@ Painter::Painter(cv::Mat background, std::vector<cv::Rect> blocks, int character
 {
   _background=background;
   _blocks=blocks;
-  _characterHeight=55;//characterHeight;
+  _characterHeight=characterHeight;
   //cv::imwrite("data/debug.png",background);
   widthDoc = _background.cols;
   heightDoc = _background.rows;
@@ -46,26 +46,32 @@ cv::Mat Painter::painting()
     //pour deboguer
     //cv::rectangle(_background,*block,0,2);
 
-    int line=block->y+_characterHeight;
+    int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();
-    while(it!=_text.end() && line<block->height+block->y){
+    while(it!=_text.end() && line+_characterHeight <block->height+block->y){
 
 
       char c=*it;
-      auto fontIt=_font.find(c);
+      auto fontIt=_font.find(string(&c,1));
       if(fontIt!=_font.end()){
-        cv::Mat pict=fontIt->second;
-	      int hpict=pict.size().height;
+
+        int numLetter = rand() % fontIt->second.size();
+
+        cv::Mat pict=fontIt->second[numLetter].mask;
+        int baseline=fontIt->second[numLetter].baseline;
+        int hpict=pict.size().height;
         int wpict=pict.size().width;
+        try{
 	if(c!=' ')//pour éviter un carré gris
 	{
-          cv::Mat part=_background(cv::Rect(ofset, line-hpict ,wpict, hpict));
+          cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 ,wpict, hpict));
 
           part=min(part,pict);//à améliorer
 
 
 	}
+}catch(cv::Exception){}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
 	  line+=_characterHeight;
@@ -88,9 +94,11 @@ cv::Mat Painter::painting()
 
 
 
+
+
 void Painter::extractFont(string fontPath){
 
-  std::multimap<char,cv::Mat> fontMap;
+  std::map<string,std::vector<fontLetter>> fontMap;
   QFile font(QString::fromStdString(fontPath));
   const bool ok = font.open( QFile::ReadOnly );
 
@@ -98,11 +106,14 @@ void Painter::extractFont(string fontPath){
     std::cerr<<"Warning: unable to open font file: \n";
   }
 
+
   QXmlStreamReader reader(&font);
   int width=0;
   int height=0;
   QString s;
-  char c[5];
+  string s2;
+  int baseline = 0;
+  fontLetter f;
 
   while(!reader.atEnd())
   {
@@ -111,7 +122,8 @@ void Painter::extractFont(string fontPath){
       if(reader.name()=="letter")
       {
         s = reader.attributes().value("char").toString();
-        strcpy(c, s.toStdString().c_str());
+        //strcpy(s2, s.toStdString());
+        s2 = s.toStdString();
       }
 
       if (reader.name() == "width") {
@@ -122,6 +134,10 @@ void Painter::extractFont(string fontPath){
         reader.readNext();
         height = reader.text().toString().toInt();
       }
+      if (reader.name()=="baseLine") {
+        reader.readNext();
+        baseline = reader.text().toString().toInt();
+      }
 
       if (reader.name() == "data") {
         reader.readNext();
@@ -129,10 +145,20 @@ void Painter::extractFont(string fontPath){
         QString data = reader.text().toString();
 
         cv::Mat mat = extractImage(data,width,height);
-        fontMap.insert(multimap<char,cv::Mat>::value_type(c[0],mat));
+        f.mask = mat;
+        f.baseline = baseline;
+        if (fontMap.find(s2) == fontMap.end()) {
+          std::vector<fontLetter>* v = new std::vector<fontLetter>;
+          fontMap.insert(std::pair<string,vector<fontLetter>>(s2,*v));
+          fontMap[s2].push_back(f);
+        }
+        else{
+          fontMap[s2].push_back(f);
+        }
       }
     }
   }
+
   if(reader.hasError())
     cerr<<"Error at line "<<reader.lineNumber()<<" : "<<reader.errorString().toStdString()<<endl;
   _font=fontMap;
@@ -161,6 +187,7 @@ void Painter::extractFont(vector<fontLetter> fl){
   vector<fontLetter>::iterator it = fl.begin();
   for(it;it != fl.end();it++){
     s=it->label;
+
     if (font.find(s) == font.end()) {
       std::vector<fontLetter>* v = new std::vector<fontLetter>;
       font.insert(std::pair<string,vector<fontLetter>>(s,*v));
@@ -169,8 +196,13 @@ void Painter::extractFont(vector<fontLetter> fl){
     else{
       font[s].push_back(*it);
     }
+    cvtColor(font[s].back().mask, font[s].back().mask, CV_GRAY2BGR);
   }
-  _font2=font;
+  _font=font;
+}
+
+void Painter::setText(string s){
+  _text = s;
 }
 
 

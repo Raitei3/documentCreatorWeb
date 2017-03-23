@@ -83,6 +83,8 @@ SET(SRVR_SRCS
   src/manualFontExtractor.cpp
   src/synthetizeTest.cpp
   src/util.cpp
+  src/StartSession2.cpp
+  src/GetSynthetizeImage.cpp
   )
 
 

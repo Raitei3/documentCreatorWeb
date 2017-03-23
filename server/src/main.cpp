@@ -35,17 +35,17 @@
 #include "../headers/OCR.hpp"
 #include "Config.hpp"
 
-#include "SynthetizeImage.hpp"
+#include "GetSynthetizeImage.hpp"
 #include "degradation.hpp"
 #include "gestionSession.hpp"
 #include "manualFontExtractor.hpp"
 #include "synthetizeTest.hpp"
 #include "util.hpp"
-
+#include "StartSession2.hpp"
 
 class MyDynamicRepository : public DynamicRepository
 {
-  StartSession _startSession;
+  StartSession2 _startSession;
   StopSession _stopSession;
   UploadImage _uploadImage;
 
@@ -117,7 +117,7 @@ class MyDynamicRepository : public DynamicRepository
     }
   } getElemsDirectory;
 
-    
+
 
   class Controller: public MyDynamicPage
   {
@@ -136,7 +136,7 @@ class MyDynamicRepository : public DynamicRepository
   StructureDetectionTest _structureDetectionTest;
   FontExtractionTest _fontExtractionTest;
 
-  SynthetizeImage _synthetizeImage;
+  GetSynthetizeImage _getSynthetizeImage;
 
 
 
@@ -170,7 +170,8 @@ class MyDynamicRepository : public DynamicRepository
     add("backgroundReconstruction.txt", &_backgroundReconstructionTest);
     add("structureDetectionTest.txt", &_structureDetectionTest);
     add("fontExtractionTest.txt", &_fontExtractionTest);
-    add("synthetizeImage.txt",&_synthetizeImage);
+    add("synthetizeImage.txt",&_getSynthetizeImage);
+    add("composeImage.txt",&_getSynthetizeImage);
   }
 };
 

@@ -19,21 +19,41 @@
       $(function() {
         $('.loader').hide();
         $('#createDocumentPractice').show();
-        document.getElementById('createDocumentStart').addEventListener('click', function(){
-          init(null, null, null, "createDocument");
+        init(null, null, null, "createDocument");
+        $.ajax({
+  	  url: 'startSession.txt',
+	  type: 'GET',
+          cache: false,
+	  processData: false,
+ 	  contentType: false,
+	  context : this,
+	  success: function(responseJson, textStatus, jqXHR)
+	  {
+    	      var response = JSON.parse(responseJson);
+    	      if(response.error == null)
+    	      {
+      session.token = response.token;
+      alert(response.token)
+              }
+      
+	  },
+	  error: function(jqXHR, textStatus, errorThrown)
+	  {
+              console.log('ERRORS: ' + textStatus);
+	  }
         });
       });
     </script>
     <link rel="shortcut icon" href="img/favicon.png">
   </head>
-  
-  
+
+
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
     <div class="overlay">
       <div class="loader">
       </div>
     </div>
-    
+
     <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
     <header class="header">
       <div class="sticky-wrapper">
@@ -68,7 +88,7 @@
       </div>
     </header>
 
-    
+
     <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
     <!-- <section id="createDocument">
       <div class="container">
@@ -88,7 +108,7 @@
 	  </div>
 	  <div class="col-md-12 text-center">
 	    <p class="text-center">
-	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>  
+	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>
 	    </p>
 	  </div>
 	</div>
@@ -112,13 +132,18 @@
 	    </a>Download PNG
 	  </div>
 	  <div class="col-md-8">
-	    <textarea id="createDocumentText" rows="6" cols="75">lorem ipsum et dolor</textarea>
+	    <textarea id="createDocumentText" rows="6" cols="75"></textarea>
+	  </div>
+    <div class="col-md-12 text-center">
+	    <p class="text-center">
+	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>
+	    </p>
 	  </div>
 	</div>
       </div>
     </section>
 
-    
+
     <!-- MOD// CREDITS  -->
     <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm">
@@ -155,20 +180,20 @@
     </div>
 
     <!-- FOOTER  -->
-    <footer>  
+    <footer>
       <div class="row copyright">
 	<p class="text-center">
 	  <a data-toggle="modal" href="#" data-target="#creditModal">
 	    <span class="glyphicon glyphicon-info-sign"></span>
 	  </a>Credits<br>
-	  
+
 	  <a href="https://github.com/titi38/libnavajo">
 	    <span class="glyphicon glyphicon-education" id="git"></span>
 	  </a>
 	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
 	</p>
       </div>
-    </footer>  
+    </footer>
 
 
     <script type="text/javascript" src="js/Blob.js"></script>

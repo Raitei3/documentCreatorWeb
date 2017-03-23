@@ -1,6 +1,5 @@
 #include "SynthetizeImage.hpp"
 #include "binarization.hpp"
-
 #include "convertor.h"
 #include "StructureDetection.hpp"
 #include "Painter.hpp"
@@ -48,39 +47,40 @@ void SynthetizeImage::extractBlock(){
 void SynthetizeImage::createDocument(){
     Painter painter(background,blocksImage,characterHeight);
     painter.extractFont(font);
-    painter.extractFont("data/test2.of");
+    //painter.extractFont("data/test2.of");
     result = painter.painting();
 }
 
+cv::Rect SynthetizeImage::createStandardBlock(cv::Mat background){
+  return cv::Rect(30,30,background.size().width-30,background.size().height-30);
+}
 
-bool SynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
-{
-  std::string tokenParam;
-  request->getParameter("token", tokenParam);
-  int token = stoi(tokenParam);
-  int sessionIndex = getActiveSessionFromToken(token);
-  if(sessionIndex != -1)
-  {
-    image = activeSessions.at(sessionIndex)->getImage()->getMat();
-    //cv::Mat image=cv::imread("data/image/Bmt_res2812_002.png");
+cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgroundPath, std::string text ){
 
-    binarization();
-    cv::imwrite("data/binarizedserveur.png",binarizedImage);
-    extractFont();
-    extractBackground();
-    //cv::imwrite("data/backgroundServeur.png",background);
-    extractBlock();
-    createDocument();
+  background = cv::imread(backgroundPath);
+  blocksImage.push_back(createStandardBlock(background));
+  Painter painter(background,blocksImage,characterHeight);
 
-    activeSessions.at(sessionIndex)->getImage()->setMat(result);
-    activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
-    myUploadRepo->reload();
-
-    std::string json_response ="{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName()+ "\"}";
-    return fromString(json_response, response);
+  if (text!="") {
+    painter.setText(text);
   }
-  else
-  {
-    return fromString("{\"error\":\"Error : this session doesn't exist\"}", response);
-  }
+
+  painter.extractFont(fontPath);
+  result = painter.painting();
+
+  cv::imwrite("data/testCompose.png",result);
+  return result;
+
+}
+
+cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img){
+
+  image = img;
+
+  binarization();
+  extractFont();
+  extractBackground();
+  extractBlock();
+  createDocument();
+
 }
