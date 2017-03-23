@@ -187,10 +187,10 @@ void Painter::computeSpaceLine(){
   int aboveMax=0;
   int underMax=0;
   for(int i =0;i<5;i++){
-    aboveMax += aboveBaseline.at(i);
-    underMax += aboveBaseline.at(i);
+    aboveMax += aboveBaseline[i];
+    underMax += underBaseline[i];
   }
-  _lineSpacing = (aboveMax+underMax)/10;
+  _lineSpacing = (aboveMax+underMax)/5;
   cout << "linsespacing = " << _lineSpacing << endl;
 }
 
