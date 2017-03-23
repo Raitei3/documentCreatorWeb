@@ -32,6 +32,7 @@ Painter::~Painter()
 cv::Mat Painter::painting()
 {
   //QFile file("data/output.xml");
+  computeSpaceLine();
   QFile file(QString::fromStdString("data/output.xml"));
   const bool ok = file.open( QFile::WriteOnly );
   if (! ok) {
@@ -49,7 +50,7 @@ cv::Mat Painter::painting()
     int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();
-    while(it!=_text.end() && line+_characterHeight <block->height+block->y){
+    while(it!=_text.end() && line+_lineSpacing <block->height+block->y){
 
 
       char c=*it;
@@ -74,7 +75,7 @@ cv::Mat Painter::painting()
 }catch(cv::Exception){}
 	ofset+=wpict;
 	if(ofset>block->x+block->width){
-	  line+=_characterHeight;
+	  line+=_lineSpacing;
 	  ofset=block->x;
 	}
       QString display = QChar(c);
@@ -164,6 +165,34 @@ void Painter::extractFont(string fontPath){
   _font=fontMap;
 }
 
+
+void Painter::computeSpaceLine(){
+  std::vector<int> aboveBaseline;
+  std::vector<int> underBaseline;
+  for (auto fontIt=_font.begin(); fontIt!=_font.end(); ++fontIt)
+  {
+    for ( auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
+    {
+      double h = it->mask.size().height;
+      int baseline = it->baseline;
+      int above = (h/100)*baseline;
+      int under = h-above;
+
+      aboveBaseline.push_back(above);
+      underBaseline.push_back(under);
+    }
+  }
+  std::sort(aboveBaseline.begin(),aboveBaseline.end(), std::greater<int>());
+  std::sort(underBaseline.begin(),underBaseline.end(), std::greater<int>());
+  int aboveMax=0;
+  int underMax=0;
+  for(int i =0;i<5;i++){
+    aboveMax += aboveBaseline.at(i);
+    underMax += aboveBaseline.at(i);
+  }
+  _lineSpacing = (aboveMax+underMax)/10;
+  cout << "linsespacing = " << _lineSpacing << endl;
+}
 
 
 cv::Mat Painter::extractImage(QString str, int width, int heigth){

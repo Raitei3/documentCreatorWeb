@@ -25,6 +25,7 @@ class Painter
   void endXML();
   void extractFont(std::vector<fontLetter> fl);
   void setText(std::string s);
+  void computeSpaceLine();
 
   private:
     //QPainter _painter;
@@ -38,7 +39,7 @@ class Painter
     int widthDoc;
     int heightDoc;
     QString backgroundName ="test";
-    int lineSpacing;
+    int _lineSpacing;
 
     std::map<std::string,std::vector<fontLetter>> _font;
     std::vector<cv::Rect> _blocks;
