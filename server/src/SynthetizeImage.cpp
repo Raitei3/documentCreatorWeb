@@ -82,5 +82,7 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img){
   extractBackground();
   extractBlock();
   createDocument();
+  return result;
+
 
 }
