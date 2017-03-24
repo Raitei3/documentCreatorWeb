@@ -66,7 +66,7 @@ cv::Mat Painter::painting()
         try{
 	if(c!=' ')//pour éviter un carré gris
 	{
-          cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 ,wpict, hpict));
+          cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
 
           part=min(part,pict);//à améliorer
 
