@@ -554,12 +554,13 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
    =============================================
 */
 
-function ControllerCreateDocument() {
+function ControllerCreateDocument(canvas) {
+    this.canvas = canvas;
     var controller = this;
 
     // Init
-    //$('#createDocument').hide();
-    //$('#createDocumentPractice').show();
+    $('#createDocumentPractice').show();
+    $('#composePractice').hide();
 
     // Récupère les fonts situés dans le dossier server/data/font/
     session.getElemsDirectory("font", controller);
@@ -589,6 +590,47 @@ function ControllerCreateDocument() {
 
 	    session.composeImage( font, background, text, controller);
 	}, true);
+
+
+
+
+
+  // Detect when we move the image
+  canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
+  canvas.canvas.addEventListener('mousemove', function(e) { canvas.onMouseMove(e);}, true);
+  canvas.canvas.addEventListener('mouseup', function(e) { canvas.onMouseUp(e);}, true);
+
+  // Detect when we click
+  canvas.canvas.addEventListener('click',function(e) { controller.getInfoOnClickedObject(e); }, true);
+
+  // Dectection of zoom
+  document.getElementById('zoom-in').addEventListener('click', function(e){ canvas.zoomIn();}, true);
+  document.getElementById('zoom-out').addEventListener('click', function(e){ canvas.zoomOut();}, true);
+  document.getElementById('zoom-reset').addEventListener('click', function(e){ canvas.zoomReset();}, true);
+
+   // Click on the trash button
+  document.getElementById('resetImage').addEventListener('click', function(e){
+      session.removeSession(true);
+      location.reload();
+  }, true);
+
+  // Click to download image
+  document.getElementById('downloadImage').addEventListener('click', function(){
+  var img = controller.canvas.image.img.src;
+  var img_split = img.split('/');
+  var extension = img.split('.');
+  img = img_split[img_split.length - 1];
+  extension = extension[extension.length - 1];
+
+  document.getElementById('downloadImage').setAttribute('href','data/' + img);
+  document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
+  }, true);
+
+  // sinthetise Image
+  document.getElementById('synthetizeExec').addEventListener('click', function(){
+    //session.synthetizeImage(controller);
+
+  }, true);
   //  }
 }
 
@@ -615,6 +657,13 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
     var downloadPNG = document.getElementById("createDocumentDownloadPNG");
     downloadPNG.setAttribute('href','background/' + filename);
     downloadPNG.setAttribute('download', 'doc-online.png');
+}
+
+ControllerCreateDocument.prototype.replaceImage = function replaceImage(imagePath)
+{
+this.canvas.changeImage("data/" + imagePath);
+$('#createDocumentPractice').hide();
+$('#composePractice').show();
 }
 
 /*
