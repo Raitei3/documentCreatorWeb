@@ -661,9 +661,7 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
 
 ControllerCreateDocument.prototype.replaceImage = function replaceImage(imagePath)
 {
-  //alert('tamere')
 this.canvas.changeImage("data/" + imagePath);
-//alert('tamere')
 $('#createDocumentPractice').hide();
 $('#composePractice').show();
 }

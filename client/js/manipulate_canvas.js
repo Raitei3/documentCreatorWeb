@@ -293,6 +293,33 @@ function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
 }
 
 
+Canvas.prototype.formatCanvas = function(image) {
+  var myCanvas = this;
+  //this.image=image;
+
+
+  this.image.img.onload = function(){
+      myCanvas.image.w = this.width;
+      myCanvas.image.h = this.height;
+
+      myCanvas.image.initialx = myCanvas.width/2 - this.width/2;
+      myCanvas.image.initialy = myCanvas.height/2 - this.height/2;
+
+      myCanvas.image.x = myCanvas.image.initialx;
+      myCanvas.image.y = myCanvas.image.initialy;
+
+
+      if(this.width > this.height)
+          myCanvas.scale = myCanvas.width /this.width;
+      else
+          myCanvas.scale = myCanvas.height /this.height;
+      //myCanvas.draw();
+    }
+}
+
+
+
+
 /*!
  * When the mouse down (Dectection for moving the image)
  * \memberof Canvas
@@ -435,7 +462,13 @@ Canvas.prototype.getMouse = function(e) {
 
 
 Canvas.prototype.changeImage = function(imagePath) {
+
     var canvas = this;
+
+    /*if (this.typeOfCanvas == 'create-your-document') {
+      var image = ProcessingImage(imagePath);
+      canvas.formatCanvas(image)
+    }*/
     this.image.img.src = imagePath;
           this.image.img.onload = function(){
         canvas.draw();
@@ -704,7 +737,7 @@ function init(src, boundingBox, baseline, typeOfController) {
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "synthetize");
 	var controller = new ControllerSynthetize(normalCanvas);
     } else { // typeOfController == "createDocument"
-    var image = new ProcessingImage('data/ticket.PNG');
+    var image = new ProcessingImage('data/init.png');
     var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "create-your-document");
 	var controller = new ControllerCreateDocument(normalCanvas);
     }
