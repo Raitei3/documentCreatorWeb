@@ -39,9 +39,10 @@ void SynthetizeImage::extractFont(){
 }
 
 void SynthetizeImage::extractBlock(){
-    characterHeight = structureDetection::getCharacterHeight(binarizedImage);
+    
     cv::Mat distanceMap = structureDetection::getDistanceMap( image,binarizedImage);
-    blocksImage = structureDetection::getBlocks(distanceMap,characterHeight);
+    characterHeight = structureDetection::getCharacterHeight(binarizedImage);
+    blocksImage = structureDetection::getBlocks(distanceMap,characterHeight*1.5);
 }
 
 void SynthetizeImage::createDocument(){
