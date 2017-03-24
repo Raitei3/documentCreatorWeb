@@ -85,6 +85,7 @@ SET(SRVR_SRCS
   src/util.cpp
   src/StartSession2.cpp
   src/GetSynthetizeImage.cpp
+  src/DocumentXML.cpp
   )
 
 
