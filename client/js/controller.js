@@ -555,12 +555,12 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 */
 
 function ControllerCreateDocument(canvas) {
-    this.canvas = null;
+    this.canvas = canvas;
     var controller = this;
 
     // Init
-    $('#createDocumentPractice').hide();
-    $('#composePractice').show();
+    $('#createDocumentPractice').show();
+    $('#composePractice').hide();
 
     // Récupère les fonts situés dans le dossier server/data/font/
     session.getElemsDirectory("font", controller);
@@ -661,7 +661,11 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
 
 ControllerCreateDocument.prototype.replaceImage = function replaceImage(imagePath)
 {
-
+  alert('tamere')
+this.canvas.changeImage("data/" + imagePath);
+alert('tamere')
+$('#createDocumentPractice').hide();
+$('#composePractice').show();
 }
 
 /*
