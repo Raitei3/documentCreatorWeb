@@ -49,7 +49,7 @@ cv::Mat Painter::painting()
     int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();
-    while(it!=_text.end() && line+_lineSpacing <block->height+block->y){
+    while(it!=_text.end() && line <block->height+block->y){
 
 
       char c=*it;
