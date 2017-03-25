@@ -484,7 +484,22 @@ Session.prototype.composeImage = function(font, background, text, callback)
 		alert(response.error);
 	    } else {
 		//callback.replaceImage(response.filename);
-                document.location.href='data/'+response.filename;
+     
+       //document.location.href='data/'+response.filename;
+       if(response.filename)
+       { 
+        var data = "<html><body><iframe width='300px' height='500px' src='data/"+response.filename+"'></iframe><button class='return'>Returns</button></body></html>";
+      //  var c = response.filename;
+      // var x = window.open();
+      //  x.document.open();
+      //  x.document.write(data);
+
+      $("html").html(data);
+      $(".return").click(function(){
+document.location.href='http://localhost:8080/create-your-document.html';
+      });
+        }
+         
 	    }
             $('.overlay').hide();
             $('.loader').hide();
@@ -549,3 +564,5 @@ Session.prototype.getElemsDirectory = function(directory, callback)
         }
     });
 }
+
+

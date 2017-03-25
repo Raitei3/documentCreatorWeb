@@ -592,6 +592,12 @@ function ControllerCreateDocument() {
   //  }
 }
 
+ControllerCreateDocument.prototype.remplirImage = function remplirImage(imagePath)
+{
+    this.canvas.changeImage(imagePath);
+
+}
+
 // Mets à jour les selects "Font" et "Background" à partir des données renvoyées par le serveur.
 ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, elems){
     var tabElems = elems.split(';');
