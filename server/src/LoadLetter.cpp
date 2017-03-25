@@ -83,15 +83,8 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
 
   for(auto it=vec.begin();it != vec.end();it++){
     s=it->label;
-
-    if (font.find(s) == font.end()) {
-      std::vector<fontLetter>* v = new std::vector<fontLetter>;
-      font.insert(std::pair<string,vector<fontLetter>>(s,*v));
-      font[s].push_back(*it);
-    }
-    else{
-      font[s].push_back(*it);
-    }
+    font[s].push_back(*it);
+    
     cvtColor(font[s].back().mask, font[s].back().mask, CV_GRAY2BGR);
   }
   return font;
