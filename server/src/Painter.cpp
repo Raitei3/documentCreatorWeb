@@ -37,7 +37,7 @@ cv::Mat Painter::painting()
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
     xml.openBlock(block->x,block->y,block->width,block->height);
     //pour deboguer
-    cv::rectangle(_background,*block,0,2);
+    //cv::rectangle(_background,*block,0,2);
     int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();

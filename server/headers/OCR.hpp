@@ -65,26 +65,8 @@ public:
 
 private:
     void process();
-#if 0
-    void on_tableLetters_clicked(const QModelIndex &index);
-    void on_baselineSpinBox_valueChanged(int arg1);
-    void on_apply_clicked();
-    void on_letterLabel_textChanged();
-    void on_deleteButton_clicked();
-    void on_tableAlphabet_cellClicked(int row, int column);
-    void on_maxSymbol_valueChanged(int arg1);
-    void on_smoothed_toggled(bool checked);
 
-    //void on_pushButton_3_clicked();
-    void on_binarizationSpinBox_valueChanged(int arg1);
-
-    void on_saveFont_clicked();
-#endif
 protected:
-    #if 0
-    void updateView();
-    void updateTable();
-    #endif
     void updateAlphabet();
     void computeBaselines();
     void rebinarizeCurrentLetter();
