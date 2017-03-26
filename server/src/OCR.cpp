@@ -44,32 +44,7 @@ void OCR::setParameters(const QString &tessdataParentDir, const QString &languag
   m_tessdataParentDir = tessdataParentDir;
   m_language = language;
 }
-#if 0
-bool OCR::eventFilter(QObject *watched, QEvent *event)
-{
-  // Add an event to detect the click on the image to update the preview area
-  QLabel *label = qobject_cast<QLabel *>(watched);
-  if ( label && event->type() == QEvent::MouseButtonPress ) {
-    const QMouseEvent *k = (QMouseEvent *)event;
 
-    const double xmouse = (int)(((double)k->pos().x() / ui->originalLabel->pixmap()->width()) * m_originalImg.width());
-    const double ymouse = (int)(((double)k->pos().y() / ui->originalLabel->pixmap()->height()) * m_originalImg.height());
-
-    for (int i=0; i<(int)m_font.size(); ++i) {
-      const fontLetter &f = m_font[i];
-
-      // We check if the click is inside a known bounding box
-      if (f.rect.contains(cv::Point(xmouse, ymouse))) {
-	m_currentIndex = i;
-	m_currentLetter = f;
-	updateView();
-	return QObject::eventFilter(watched, event);
-      }
-    }
-  }
-  return QObject::eventFilter(watched, event);
-}
-#endif
 void OCR::init(const QImage &ori, const QImage &bin)
 {
   setOriginalImage(ori);
@@ -270,43 +245,9 @@ void OCR::process()
     //  updateView();
   }
 }
-#if 0
-void OCR::updateTable() {
 
-  ui->tableLetters->clear();
-  ui->tableLetters->setRowCount(0);    
-  ui->tableLetters->setColumnCount(1);
-
-  QStringList horzHeaders;
-  horzHeaders << "Similar symbols";
-  ui->tableLetters->setHorizontalHeaderLabels( horzHeaders );
-
-  // We take the list of letters with the same label (sorted by confidence)
-  m_similarList = getSimilarLetters(m_currentLetter);
-
-  // And display them in the table
-  for (const int ind : m_similarList) {
-    assert(ind>=0 && ind<m_font.size());
-    const fontLetter &f = m_font[ind];
-    QTableWidgetItem *thumb = new QTableWidgetItem();
-    thumb->setData(Qt::DecorationRole, QPixmap::fromImage(Convertor::getQImage(f.mask).scaled(20, 20)));
-    thumb->setTextAlignment(Qt::AlignCenter);
-
-    ui->tableLetters->insertRow(ui->tableLetters->rowCount());
-    ui->tableLetters->setItem(ui->tableLetters->rowCount()-1, 0, thumb);
-    ui->tableLetters->item(ui->tableLetters->rowCount()-1, 0)->setBackground(getConfidenceColor(f.confidence));
-  }
-
-}
-#endif
 void OCR::updateAlphabet()
 {
-#if 0
-  ui->tableAlphabet->clear();
-  ui->tableAlphabet->setRowCount(0);
-  ui->tableAlphabet->setColumnCount(3);
-  ui->tableAlphabet->verticalHeader()->setVisible(false);
-#endif
   m_alphabet.clear();
 
   // We fill the alphabet
@@ -335,99 +276,8 @@ void OCR::updateAlphabet()
   sort(m_alphabet.begin(), m_alphabet.end(), [](const std::pair<int, int>& c1, const std::pair<int, int>& c2) {
       return c1.second > c2.second;
     });
-#if 0
-  // We fill the QTable
-  for(int j=0; j<(int)m_alphabet.size(); ++j) {
-    QTableWidgetItem *thumb = new QTableWidgetItem();
-    thumb->setText(QString::fromStdString(m_font[m_alphabet[j].first].label + " (" + std::to_string(m_alphabet[j].second) +")"));
-
-    if(j%3 == 0)
-      ui->tableAlphabet->insertRow(ui->tableAlphabet->rowCount());
-
-    ui->tableAlphabet->setItem(ui->tableAlphabet->rowCount()-1, j%3, thumb);
-    if(j%2 == 0)
-      ui->tableAlphabet->item(ui->tableAlphabet->rowCount()-1, j%3)->setBackground(QColor(235, 235, 239));
-  }
-
-  ui->tableAlphabet->horizontalHeader()->adjustSize();
-#endif
 }
-#if 0
-void OCR::updateView()
-{
-  cv::Mat thumb = Convertor::getCvMat(m_originalImg);
 
-  // Draw the baseline on the thumbnail
-  cv::Mat image = getImageFromMask(thumb(m_currentLetter.rect), m_currentLetter.mask);
-
-  // (+ borders to display it clearer)
-  cv::copyMakeBorder(image, image, 3, 3, 3, 3, cv::BORDER_CONSTANT, cv::Scalar(237, 237, 237));
-
-  if(m_currentLetter.baseline > image.rows)
-    cv::copyMakeBorder(image, image, 0, m_currentLetter.baseline - image.rows +3, 0, 0, cv::BORDER_CONSTANT, cv::Scalar(237, 237, 237));
-
-  cv::line(image, cv::Point(0, m_currentLetter.baseline+3), cv::Point(image.cols-1, m_currentLetter.baseline+3), cv::Scalar(50, 220, 50), 1);
-
-
-  QImage img = Convertor::getQImage(image);
-
-  // Set the images
-  ui->thumbnailImage->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  ui->thumbnailImage->setText(tr("thumbnail"));
-  ui->thumbnailImage->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-  ui->thumbnailImage->setPixmap(QPixmap::fromImage(img.scaled(200, 200, Qt::KeepAspectRatio, Qt::FastTransformation)));
-
-
-  // Set the original image
-  cv::Mat ori_img = thumb(m_currentLetter.rect);
-  cv::copyMakeBorder(ori_img, ori_img, 3, 3, 3, 3, cv::BORDER_CONSTANT, cv::Scalar(237, 237, 237));
-
-  if(m_currentLetter.baseline > image.rows)
-    cv::copyMakeBorder(ori_img, ori_img, 0, m_currentLetter.baseline - ori_img.rows +3, 0, 0, cv::BORDER_CONSTANT, cv::Scalar(237, 237, 237));
-
-
-  QImage ori_img2 = Convertor::getQImage(ori_img);
-  ui->thumbnailOriginalImage->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  ui->thumbnailOriginalImage->setText(tr("original thumbnail"));
-  ui->thumbnailOriginalImage->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-  ui->thumbnailOriginalImage->setPixmap(QPixmap::fromImage(ori_img2.scaled(200, 200, Qt::KeepAspectRatio, Qt::FastTransformation)));
-
-
-  // Set the label
-  ui->letterLabel->setText(QString::fromStdString(m_currentLetter.label));
-
-  // Set the baseline value
-  ui->baselineSpinBox->setValue(m_currentLetter.baseline);
-
-  // Set the binarization threshold value
-  ui->binarizationSpinBox->setValue(m_currentLetter.binarization_step);
-
-  // Draw a rectangle on the image over the selected component
-  cv::rectangle(thumb, m_currentLetter.rect, cv::Scalar(0, 0, 255), 3);
-
-  ui->smoothed->setChecked(m_currentLetter.checked);
-
-  updateTable();
-
-  // Highlight the symbols in the image with the same label
-  for (const int ind : m_similarList) {
-    assert(ind>=0 && ind<m_font.size());
-    const fontLetter &f = m_font[ind];
-    const cv::Mat roi = thumb(f.rect);
-    cv::Mat color(roi.size(), CV_8UC3, cv::Scalar(250, 150, 0));
-    const double alpha = 0.2;
-
-    cv::addWeighted(color, alpha, roi, 1 - alpha , 0, roi);
-  }
-
-  // Set the image
-  ui->originalLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-  ui->originalLabel->setText(tr("Original Image"));
-  ui->originalLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  ui->originalLabel->setPixmap(QPixmap::fromImage(Convertor::getQImage(thumb).scaled(IMG_WIDTH, IMG_HEIGHT, Qt::KeepAspectRatio, Qt::FastTransformation)));
-
-}
-#endif
 QColor OCR::getConfidenceColor(float conf) const
 {
   // Returns a color from a confidence value (between 0-100)
@@ -517,110 +367,7 @@ std::vector<fontLetter> OCR::getFinalFont() const
 
   return finalFont;
 }
-#if 0
-void OCR::on_tableLetters_clicked(const QModelIndex &index) {
-  // Change the current letter
-  if (index.isValid()) {
-    m_currentIndex = m_similarList[index.row()];
-    m_currentLetter = m_font[m_currentIndex];
-  }
 
-  updateView();
-}
-#endif
-#if 0
-void OCR::on_baselineSpinBox_valueChanged(int arg1)
-{
-  // update baseline value
-  m_currentLetter.baseline = arg1;
-  updateView();
-}
-#endif 
-#if 0
-void OCR::on_apply_clicked()
-{
-  if (m_font.empty())
-    return;
-
-  assert(m_currentIndex >=0 && m_currentIndex<m_font.size());
-
-  // Modify the label and set the confidence to 100%
-  m_currentLetter.label = ui->letterLabel->text().toUtf8().constData();
-  m_currentLetter.confidence = 100;
-  m_font[m_currentIndex] = m_currentLetter;
-
-  m_validatedFont.push_back(m_currentLetter);
-
-  // Switch to the next symbol
-  const int fontSize = m_font.size();
-  if(++m_currentIndex >= fontSize)
-    m_currentIndex = 0;
-  if (fontSize == 0)
-    return;
-  
-  m_currentLetter = m_font[m_currentIndex];
-
-  updateView();
-  updateAlphabet();
-}
-#endif
-#if 0
-void OCR::on_letterLabel_textChanged() {
-  // Update the label
-  m_currentLetter.label = ui->letterLabel->text().toUtf8().constData();
-}
-#endif
-#if 0
-void OCR::on_deleteButton_clicked()
-{
-  if (m_font.empty())
-    return;
-
-  // Remove the symbol from the font
-  assert(m_currentIndex >=0 && m_currentIndex<m_font.size());
-  ui->tableLetters->removeRow(m_currentIndex);
-  m_font.erase(m_font.begin() + m_currentIndex);
-
-  const int fontSize = m_font.size();
-  if (m_currentIndex >= fontSize)
-    m_currentIndex = 0;
-  if (fontSize == 0)
-    return;
-
-  m_currentLetter = m_font[m_currentIndex];
-
-  updateView();
-  updateAlphabet();
-}
-#endif
-#if 0
-void OCR::on_tableAlphabet_cellClicked(int row, int column)
-{
-  // Get current label
-  assert(row*3+column < m_alphabet.size());
-  std::string label = m_font[m_alphabet[row*3+column].first].label;
-
-  int tmp_conf = -1;
-
-  // Select the one with the highest confidence
-  for(int i=0; i<(int)m_font.size(); ++i) {
-    const fontLetter &f = m_font[i];
-    if(f.label == label && f.confidence > tmp_conf) {
-      m_currentIndex = i;
-      m_currentLetter = m_font[m_currentIndex];
-      tmp_conf = f.confidence;
-    }
-  }
-  updateView();
-}
-#endif
-#if 0
-void OCR::on_maxSymbol_valueChanged(int arg1)
-{
-  m_maxNumberOfSymbols = arg1;
-  updateView();
-}
-#endif
 void OCR::rebinarizeCurrentLetter()
 {
   // Re-binarize the image of the current symbol
@@ -639,13 +386,7 @@ void OCR::rebinarizeCurrentLetter()
 //  updateView();
 
 }
-#if 0
-void OCR::on_smoothed_toggled(bool checked)
-{
-  m_currentLetter.checked = checked;
-  rebinarizeCurrentLetter();
-}
-#endif
+
 /*
 void OCR::on_pushButton_3_clicked()
 {
@@ -662,22 +403,7 @@ void OCR::on_pushButton_3_clicked()
   //B:useless ???
 }
 */
-#if 0
-void OCR::on_binarizationSpinBox_valueChanged(int arg1)
-{
-  m_currentLetter.binarization_step = arg1;
-  rebinarizeCurrentLetter();
-}
-#endif
-#if 0
-void OCR::on_saveFont_clicked()
-{
-  QString filters("font files (*.of)");
-  QString filename = QFileDialog::getSaveFileName(nullptr, "Save Font", QDir::currentPath(), filters);
-  writeFont(filename, getFinalFont());
 
-}
-#endif
 QString OCR::saveFont()
 {
   QString filters("font files (*.of)");
