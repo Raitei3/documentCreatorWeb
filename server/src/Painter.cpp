@@ -64,12 +64,12 @@ cv::Mat Painter::painting()
 
 	}
 }catch(cv::Exception){}
-	ofset+=wpict;
+        xml.addLetter(string(&c,1),numLetter,ofset,line-hpict,pict.size().width,pict.size().height);
+	ofset+=wpict*fontIt->second[numLetter].rightline/100;
 	if(ofset>block->x+block->width){
 	  line+=_lineSpacing;
 	  ofset=block->x;
 	}
-        xml.addLetter(string(&c,1),numLetter,ofset,line-hpict,pict.size().width,pict.size().height);
       }
 
       it++;
