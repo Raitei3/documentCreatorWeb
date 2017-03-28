@@ -32,6 +32,9 @@ struct fontLetter{
 
     // Smoothed image
     bool checked;
+
+    //rightLine given by the font file
+    int rightLine = 100;
 };
 
 class OCR : public QObject
@@ -42,7 +45,7 @@ public:
     ~OCR();
 
     void setParameters(const QString &tessdataParentDir, const QString &lang);
-    
+
     void init(const QImage &ori, const QImage &bin);
     void setOriginalImage(const QImage &img);
     void setBinarizedImage(const QImage &img);
@@ -77,7 +80,7 @@ protected:
     cv::Mat getImageFromMask(const cv::Mat &original, const cv::Mat &mask, int background_value = 237) const;
     QColor getConfidenceColor(float conf) const;
     std::vector<int> getSimilarLetters(const fontLetter &fl) const;
-    
+
 private:
     QString m_tessdataParentDir;
     QString m_language;

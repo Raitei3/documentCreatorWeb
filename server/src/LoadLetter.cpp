@@ -25,6 +25,7 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
   QString s;
   string s2;
   int baseline = 0;
+  int rightLine = 100;
   fontLetter f;
 
   while(!reader.atEnd())
@@ -50,15 +51,21 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
         reader.readNext();
         baseline = reader.text().toString().toInt();
       }
-
+      if (reader.name()=="rightLine"){
+        reader.readNext();
+        rightLine = reader.text().toString().toInt();
+      }
       if (reader.name() == "data") {
         reader.readNext();
+
+
 
         QString data = reader.text().toString();
 
         cv::Mat mat = extractImage(data,width,height);
         f.mask = mat;
         f.baseline = baseline;
+        f.rightLine = rightLine;
         if (fontMap.find(s2) == fontMap.end()) {
           vector<fontLetter>* v = new vector<fontLetter>;
           fontMap.insert(pair<string,vector<fontLetter>>(s2,*v));
@@ -84,7 +91,7 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
   for(auto it=vec.begin();it != vec.end();it++){
     s=it->label;
     font[s].push_back(*it);
-    
+
     cvtColor(font[s].back().mask, font[s].back().mask, CV_GRAY2BGR);
   }
   return font;
