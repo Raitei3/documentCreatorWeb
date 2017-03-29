@@ -42,7 +42,6 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
   else{
       cv::Mat image = activeSessions.at(sessionIndex)->getImage()->getMat();
 
-
       SynthetizeImage synthetizeImage;
       cv::Mat result = synthetizeImage.SynthetizeAuto(image);
 

@@ -19,7 +19,7 @@ Session.prototype.startSession = function(typeOfSession, file, callback)
     // Loading panel
     $('.overlay').show();
     $('.loader').show();
-    
+
     $.ajax({
 	url: 'startSession.txt',
 	type: 'POST',
@@ -452,6 +452,7 @@ Session.prototype.synthetizeImage = function(callback)
     	    {
 		alert(response.error);
 	    } else {
+        alert(response.filename);
 		callback.replaceImage(response.filename);
 	    }
             $('.overlay').hide();
@@ -470,7 +471,6 @@ Session.prototype.composeImage = function(font, background, text, callback)
     $('.overlay').show();
     $('.loader').show();
 
-
     $.ajax({
         url: 'composeImage.txt',
         type: 'POST',
@@ -483,11 +483,15 @@ Session.prototype.composeImage = function(font, background, text, callback)
     	    {
 		alert(response.error);
 	    } else {
-		//callback.replaceImage(response.filename);
-                document.location.href='data/'+response.filename;
-	    }
+        //alert(response.filename);
             $('.overlay').hide();
             $('.loader').hide();
+
+
+		callback.replaceImage(response.filename);
+                //document.location.href='data/'+response.filename;
+	    }
+
         },
         error: function(error)
         {
@@ -514,6 +518,7 @@ Session.prototype.downloadCreateDocument = function(typeDownload, font, backgrou
 
             $('.overlay').hide();
             $('.loader').hide();
+
         },
         error: function(error)
         {

@@ -32,6 +32,9 @@ struct fontLetter{
 
     // Smoothed image
     bool checked;
+
+    //rightLine given by the font file
+    int rightLine = 100;
 };
 
 class OCR : public QObject
@@ -42,7 +45,7 @@ public:
     ~OCR();
 
     void setParameters(const QString &tessdataParentDir, const QString &lang);
-    
+
     void init(const QImage &ori, const QImage &bin);
     void setOriginalImage(const QImage &img);
     void setBinarizedImage(const QImage &img);
@@ -65,26 +68,8 @@ public:
 
 private:
     void process();
-#if 0
-    void on_tableLetters_clicked(const QModelIndex &index);
-    void on_baselineSpinBox_valueChanged(int arg1);
-    void on_apply_clicked();
-    void on_letterLabel_textChanged();
-    void on_deleteButton_clicked();
-    void on_tableAlphabet_cellClicked(int row, int column);
-    void on_maxSymbol_valueChanged(int arg1);
-    void on_smoothed_toggled(bool checked);
 
-    //void on_pushButton_3_clicked();
-    void on_binarizationSpinBox_valueChanged(int arg1);
-
-    void on_saveFont_clicked();
-#endif
 protected:
-    #if 0
-    void updateView();
-    void updateTable();
-    #endif
     void updateAlphabet();
     void computeBaselines();
     void rebinarizeCurrentLetter();
@@ -95,7 +80,7 @@ protected:
     cv::Mat getImageFromMask(const cv::Mat &original, const cv::Mat &mask, int background_value = 237) const;
     QColor getConfidenceColor(float conf) const;
     std::vector<int> getSimilarLetters(const fontLetter &fl) const;
-    
+
 private:
     QString m_tessdataParentDir;
     QString m_language;

@@ -85,6 +85,8 @@ SET(SRVR_SRCS
   src/util.cpp
   src/StartSession2.cpp
   src/GetSynthetizeImage.cpp
+  src/DocumentXML.cpp
+  src/LoadLetter.cpp
   )
 
 
@@ -98,5 +100,5 @@ SET(SRVR_SRCS
 
 CONFIGURE_FILE(config.ini config.ini)
 
-ADD_EXECUTABLE(main ${SRVR_SRCS})
-TARGET_LINK_LIBRARIES(main  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
+ADD_EXECUTABLE(documentCreatorWeb ${SRVR_SRCS})
+TARGET_LINK_LIBRARIES(documentCreatorWeb  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)

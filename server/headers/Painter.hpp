@@ -11,6 +11,7 @@
 #include <QFile>
 #include <map>
 #include "OCR.hpp"
+#include "DocumentXML.hpp"
 
 class Painter
 {
@@ -25,6 +26,7 @@ class Painter
   void endXML();
   void extractFont(std::vector<fontLetter> fl);
   void setText(std::string s);
+  void computeSpaceLine();
 
   private:
     //QPainter _painter;
@@ -33,12 +35,12 @@ class Painter
     //unsigned long * extractImage(QString str,int size);
     cv::Mat extractImage(QString str, int width, int height);
 
-    QXmlStreamWriter xml;
-    QString fontName = "test";
+    documentXML xml;
+    std::string fontName = "test";
     int widthDoc;
     int heightDoc;
-    QString backgroundName ="test";
-    int lineSpacing;
+    std::string backgroundName ="test";
+    int _lineSpacing;
 
     std::map<std::string,std::vector<fontLetter>> _font;
     std::vector<cv::Rect> _blocks;

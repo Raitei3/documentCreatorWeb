@@ -10,25 +10,18 @@ static const int IMG_WIDTH = 500;
 static const int IMG_HEIGHT = 680;
 
 BackgroundReconstruction::BackgroundReconstruction(QObject *parent) :
-    QObject(parent){}
-    //ui(new Ui::BackgroundReconstruction){
-    //ui->setupUi(this);
+    QObject(parent)
+{}
 
 
-BackgroundReconstruction::~BackgroundReconstruction(){
-    //delete ui;
-}
+BackgroundReconstruction::~BackgroundReconstruction(){}
 
 void BackgroundReconstruction::setOriginalImage(const QImage &img){
 
     QImage small = img.scaled(IMG_WIDTH,IMG_HEIGHT,Qt::KeepAspectRatio, Qt::FastTransformation);
     _smallOriginalImg = Convertor::getCvMat(small);
 
-    //ui->originalLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    //ui->originalLabel->setText(tr("original image"));
-    //ui->originalLabel->setPixmap(QPixmap::fromImage(small));
-
-  _originalImg = Convertor::getCvMat(img);
+    _originalImg = Convertor::getCvMat(img);
 }
 
 void BackgroundReconstruction::setBinarizedImage(const QImage &img){
@@ -48,9 +41,6 @@ void BackgroundReconstruction::process(bool preview){
         background = TextInpainting::getBackground(_smallOriginalImg, _smallBinarizedImg, getMaxTextArea(), getMaxTextWidth(), getMaxTextHeight());
         _background = Convertor::getQImage(background);
 
-      //  ui->background->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-      //  ui->background->setText(tr("estimated background"));
-      //  ui->background->setPixmap(QPixmap::fromImage(_background.scaled(IMG_WIDTH,IMG_HEIGHT,Qt::KeepAspectRatio, Qt::FastTransformation)));
 
     } else { // With the whole image
         background = TextInpainting::getBackground(_originalImg, _binarizedImg, getMaxTextArea(), getMaxTextWidth(), getMaxTextHeight());
