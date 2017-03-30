@@ -79,8 +79,8 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img){
   image = img;
 
   binarization();
-  extractFont();
   extractBackground();
+  extractFont();
   extractBlock();
   createDocument();
   return result;

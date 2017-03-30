@@ -66,14 +66,7 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
         f.mask = mat;
         f.baseline = baseline;
         f.rightLine = rightLine;
-        if (fontMap.find(s2) == fontMap.end()) {
-          vector<fontLetter>* v = new vector<fontLetter>;
-          fontMap.insert(pair<string,vector<fontLetter>>(s2,*v));
-          fontMap[s2].push_back(f);
-        }
-        else{
-          fontMap[s2].push_back(f);
-        }
+        fontMap[s2].push_back(f);
       }
     }
   }
