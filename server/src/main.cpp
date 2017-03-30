@@ -107,6 +107,7 @@ class MyDynamicRepository : public DynamicRepository
           messageConsole.append("  - " + std::string(file->d_name) + "\n");
         }
       }
+      closedir(directory);
 
       listFiles.insert(0, ";");
       listFiles.insert(0, std::to_string(nbFiles));
