@@ -37,7 +37,7 @@ cv::Mat Painter::painting()
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
     xml.openBlock(block->x,block->y,block->width,block->height);
     //pour deboguer
-    //cv::rectangle(_background,*block,0,2);
+    cv::rectangle(_background,*block,0,2);
     int line=block->y;
     int ofset=block->x;
     auto it=_text.begin();
@@ -55,21 +55,23 @@ cv::Mat Painter::painting()
         int hpict=pict.size().height;
         int wpict=pict.size().width;
         try{
-	if(c!=' ')//pour éviter un carré gris
-	{
-          cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
+          if(c!=' ')//pour éviter un carré gris
+          {
+            cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
 
-          part=min(part,pict);//à améliorer
+            part=min(part,pict);//à améliorer
 
 
-	}
-}catch(cv::Exception){}
+          }
+        }catch(cv::Exception){}
         xml.addLetter(string(&c,1),numLetter,ofset,line-hpict,pict.size().width,pict.size().height);
 	ofset+=wpict*fontIt->second[numLetter].rightLine/100;
-	if(ofset>block->x+block->width){
-	  line+=_lineSpacing;
-	  ofset=block->x;
-	}
+      }
+      if(ofset>block->x+block->width || c=='\n'){
+        ofset=block->x;
+        line+=_lineSpacing;
+        if(line+_lineSpacing > block->height+block->y)
+          break;	
       }
 
       it++;
