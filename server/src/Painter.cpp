@@ -33,7 +33,7 @@ cv::Mat Painter::painting()
 {
   computeSpaceLine();
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
-      
+
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
     xml.openBlock(block->x,block->y,block->width,block->height);
     //pour deboguer
@@ -65,7 +65,7 @@ cv::Mat Painter::painting()
 	}
 }catch(cv::Exception){}
         xml.addLetter(string(&c,1),numLetter,ofset,line-hpict,pict.size().width,pict.size().height);
-	ofset+=wpict*fontIt->second[numLetter].rightline/100;
+	ofset+=wpict*fontIt->second[numLetter].rightLine/100;
 	if(ofset>block->x+block->width){
 	  line+=_lineSpacing;
 	  ofset=block->x;
@@ -128,6 +128,3 @@ void Painter::extractFont(vector<fontLetter> fl){
 void Painter::setText(string s){
   _text = s;
 }
-
-
-
