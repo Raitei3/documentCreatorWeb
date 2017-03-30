@@ -55,7 +55,7 @@ bool isFormatSupported( const std::string &filename)
 {
   std::string extension = filename.substr(filename.find(".") + 1);
   std::transform(extension.begin(), extension.end(), extension.begin(), ::toupper);
-  std::unordered_set<std::string> format ={"JPG","JPEG","PNG","TIFF","TIF"};
+  std::unordered_set<std::string> format ={"JPG","JPEG","PNG"};
   std::unordered_set<std::string>::const_iterator got = format.find(extension);
   if (got != format.end()){
     return true;
