@@ -24,7 +24,7 @@ class Painter
   void xmlBlocks(int x, int y, int width, int height);
   void addLetterToXML(QString display,int id,int x, int y, int width,int height);
   void endXML();
-  void extractFont(std::vector<fontLetter> fl);
+  void extractFont(std::vector<fontLetter> fl, cv::Mat background);
   void setText(std::string s);
   void computeSpaceLine();
 

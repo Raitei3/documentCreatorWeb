@@ -76,16 +76,17 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
   return fontMap;
 }
 
-map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> &vec)
+map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> &vec,
+                                                       const cv::Mat &background)
 {
   map<string,vector<fontLetter>> font;
   string s;
 
   for(auto it=vec.begin();it != vec.end();it++){
-    s=it->label;
-    font[s].push_back(*it);
-
-    cvtColor(font[s].back().mask, font[s].back().mask, CV_GRAY2BGR);
+    fontLetter l=*it;
+    s=l.label;
+    l.mask=getImageFromMask(background(l.rect), l.mask, 255);    
+    font[s].push_back(l);
   }
   return font;
 }
@@ -102,4 +103,19 @@ cv::Mat LoadLetter::extractImage(QString str, int width, int heigth){
   }
   cv::Mat mat=Convertor::getCvMat(ret);
   return mat;
+}
+
+cv::Mat LoadLetter::getImageFromMask(const cv::Mat &original, const cv::Mat &mask, int background_value)
+{
+  // We extract the image
+  cv::Mat mask_tmp;
+  cv::threshold(mask, mask_tmp, 20, 1, cv::THRESH_BINARY_INV);
+
+  cv::Mat letter;
+  letter = cv::Mat::ones(mask_tmp.rows, mask_tmp.cols, original.type());
+  letter.setTo(cv::Scalar(background_value, background_value, background_value));
+
+  original.copyTo(letter, mask_tmp);
+
+  return letter;
 }

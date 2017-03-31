@@ -125,8 +125,8 @@ void Painter::computeSpaceLine(){
 }
 
 
-void Painter::extractFont(vector<fontLetter> fl){
-    _font=LoadLetter::fromVector(fl);
+void Painter::extractFont(vector<fontLetter> fl,cv::Mat background){
+  _font=LoadLetter::fromVector(fl,background);
 }
 
 void Painter::setText(string s){

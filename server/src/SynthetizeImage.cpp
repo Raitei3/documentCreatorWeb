@@ -47,7 +47,7 @@ void SynthetizeImage::extractBlock(){
 
 void SynthetizeImage::createDocument(){
     Painter painter(background,blocksImage,characterHeight);
-    painter.extractFont(font);
+    painter.extractFont(font,image);
     //painter.extractFont("data/test2.of");
     result = painter.painting();
 }
