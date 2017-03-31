@@ -34,9 +34,8 @@ int split(std::vector<std::string>& v, const std::string &s, char separateur);
 /*
  * \brief Function use when the service is closed and killed the active session
  *
- * \param dummy : the dummy as integer
  */
-void exitFunction( int /*dummy*/ );
+void exitFunction();
 
 /*
  * \brief Verify if the format's image uploaded is supported

@@ -182,9 +182,8 @@ int main(int /*argc*/, char** /*argv*/ )
 {
   srand(time(NULL));
 
-  signal( SIGTERM, exitFunction );
-  signal( SIGINT, exitFunction );
-
+  atexit(exitFunction);
+  
   NVJ_LOG->addLogOutput(new LogStdOutput);
   Config conf;
   webServer = new WebServer;

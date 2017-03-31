@@ -38,7 +38,7 @@ int split(std::vector<std::string>& v, const std::string &s, char separateur)
   return v.size();
 }
 
-void exitFunction( int /*dummy*/ )
+void exitFunction()
 {
   for (unsigned i=0; i<activeSessions.size(); i++)
   {
