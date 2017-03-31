@@ -16,6 +16,8 @@
 #include <cstdio> //remove
 
 #include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
 
 #include "../headers/Image.hpp"
 #include "../headers/Font.hpp"
@@ -182,28 +184,43 @@ int main(int /*argc*/, char** /*argv*/ )
 {
   srand(time(NULL));
 
-  atexit(exitFunction);
-  
-  NVJ_LOG->addLogOutput(new LogStdOutput);
   Config conf;
-  webServer = new WebServer;
+  bool run=true;
+  while(run){
+    int pid;
+    pid=fork();
+    if(pid==0){
+      std::cerr<<"Server launched with pid "<<getpid()<<std::endl;
+      atexit(exitFunction);
+      NVJ_LOG->addLogOutput(new LogStdOutput);
+      webServer = new WebServer;
 
-  //webServer->setUseSSL(true, "../mycert.pem");
-  LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
-  //myLocalRepo.addDirectory("", "../client/");
-  webServer->addRepository(myLocalRepo);
+      //webServer->setUseSSL(true, "../mycert.pem");
+      LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
+      //myLocalRepo.addDirectory("", "../client/");
+      webServer->addRepository(myLocalRepo);
 
-  MyDynamicRepository myRepo;
-  webServer->addRepository(&myRepo);
+      MyDynamicRepository myRepo;
+      webServer->addRepository(&myRepo);
 
-  myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
-  webServer->addRepository(myUploadRepo);
+      myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
+      webServer->addRepository(myUploadRepo);
 
-  webServer->startService();
+      webServer->startService();
 
-  webServer->wait();
+      webServer->wait();
 
-  LogRecorder::freeInstance();
+      LogRecorder::freeInstance();
 
-  return 0;
+      return 0;
+    }
+    else{
+      int status;
+      waitpid(pid,&status,0);
+      if((WIFSIGNALED(status) && WTERMSIG(status)==15)||
+         WIFEXITED(status)){//tant que le serveur n'as pas terminé normalement ou par le signal 15, on le relance
+        run=false;
+      }
+    }
+  }
 }
