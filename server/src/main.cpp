@@ -194,7 +194,7 @@ int main(int /*argc*/, char** /*argv*/ )
       atexit(exitFunction);
       NVJ_LOG->addLogOutput(new LogStdOutput);
       webServer = new WebServer;
-
+      webServer->setSocketTimeoutInSecond(10);
       //webServer->setUseSSL(true, "../mycert.pem");
       LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
       //myLocalRepo.addDirectory("", "../client/");
