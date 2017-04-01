@@ -55,9 +55,9 @@ cv::Mat Painter::painting()
         int hpict=pict.size().height;
         int wpict=pict.size().width;
         try{
-          if(line-baseline*hpict/100>0 && ofset + wpict < _background.cols &&
-             line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
-            c!=' ')//pour éviter un carré gris
+          if(line > 0 && ofset > 0 && ofset + wpict < _background.cols &&
+             line-baseline*hpict/100 + hpict < _background.rows &&
+             c!=' ')//pour éviter un carré gris
           {
             cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
 
