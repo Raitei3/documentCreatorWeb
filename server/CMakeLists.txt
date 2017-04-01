@@ -90,14 +90,6 @@ SET(SRVR_SRCS
   )
 
 
-# ADD_CUSTOM_COMMAND(OUTPUT config.ini
-#   COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}
-#   DEPENDS config.ini
-#   VERBATIM)
-
-# ADD_CUSTOM_TARGET(config ALL
-#   DEPENDS config.ini)
-
 CONFIGURE_FILE(config.ini config.ini)
 
 ADD_EXECUTABLE(documentCreatorWeb ${SRVR_SRCS})
