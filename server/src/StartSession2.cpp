@@ -10,7 +10,7 @@ bool StartSession2::getPage(HttpRequest* request, HttpResponse *response)
   }
   else{
     string nameCopy=gen_random(".png");
-    ifstream orig("data/background/newBackGround2.png");
+    ifstream orig("data/small.png");
     ofstream dest(UPLOAD_DIR + nameCopy);
     cerr<<nameCopy<<endl;
     dest<<orig.rdbuf();
