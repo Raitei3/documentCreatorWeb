@@ -41,7 +41,6 @@
 #include "degradation.hpp"
 #include "gestionSession.hpp"
 #include "manualFontExtractor.hpp"
-#include "synthetizeTest.hpp"
 #include "util.hpp"
 #include "StartSession2.hpp"
 
@@ -133,12 +132,6 @@ class MyDynamicRepository : public DynamicRepository
 
   } controller;
 
-
-  BinarizationTest _binarizationTest;
-  BackgroundReconstructionTest _backgroundReconstructionTest;
-  StructureDetectionTest _structureDetectionTest;
-  FontExtractionTest _fontExtractionTest;
-
   GetSynthetizeImage _getSynthetizeImage;
 
 
@@ -169,10 +162,6 @@ class MyDynamicRepository : public DynamicRepository
     add("downloadCreateDocument.txt", &downloadCreateDocument);
     add("getElemsDirectory.txt", &getElemsDirectory);
 
-    add("testBinarization.txt", &_binarizationTest);
-    add("backgroundReconstruction.txt", &_backgroundReconstructionTest);
-    add("structureDetectionTest.txt", &_structureDetectionTest);
-    add("fontExtractionTest.txt", &_fontExtractionTest);
     add("synthetizeImage.txt",&_getSynthetizeImage);
     add("composeImage.txt",&_getSynthetizeImage);
   }

@@ -3,7 +3,6 @@
 #include "convertor.h"
 #include "StructureDetection.hpp"
 #include "Painter.hpp"
-#include "synthetizeTest.hpp"
 #include "BackgroundReconstruction.hpp"
 
 

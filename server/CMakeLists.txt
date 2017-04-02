@@ -88,7 +88,6 @@ SET(SRVR_SRCS
   src/synthetize/OCR.cpp 
   src/synthetize/Painter.cpp
   src/synthetize/SynthetizeImage.cpp
-  src/synthetize/synthetizeTest.cpp
   src/synthetize/DocumentXML.cpp
   src/synthetize/LoadLetter.cpp
   
