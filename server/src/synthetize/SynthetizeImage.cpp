@@ -5,30 +5,32 @@
 #include "Painter.hpp"
 #include "BackgroundReconstruction.hpp"
 
+using namespace std;
 
-void SynthetizeImage::binarization()
+cv::Mat SynthetizeImage::binarization(cv::Mat originalImage)
 {
-  Binarization::preProcess(image, binarizedImage, 12);
-  Binarization::NiblackSauvolaWolfJolion(binarizedImage, binarizedImage, Binarization::WOLFJOLION, 128, 40, 40, 0.34);
+  cv::Mat binarizedImage;
+  Binarization::preProcess(originalImage, binarizedImage, 12);
+  Binarization::NiblackSauvolaWolfJolion(binarizedImage, binarizedImage,
+                                         Binarization::WOLFJOLION, 128, 40, 40, 0.34);
   Binarization::postProcess(binarizedImage, binarizedImage, 0.9, 7);
+  return binarizedImage;
 }
 
-void SynthetizeImage::extractBackground()
+void SynthetizeImage::extractBackground(cv::mat originalImage, cv::Mat binarizedImage)
 {
   QImage binarized;
   cv::Mat output;
+  BackgroundReconstruction back;
 
   binarized = Convertor::getQImage(binarizedImage);
-  QImage origin = Convertor::getQImage(image);
-  BackgroundReconstruction back;
+  QImage origin = Convertor::getQImage(originalImage);
   back.setOriginalImage(origin);
   back.setBinarizedImage(binarized);
   back.process();
   QImage res = back.getResultImage();
 
-
-  background = Convertor::getCvMat(back.getResultImage());
-  cv::imwrite("data/backgroundServeur.png", background);
+  return Convertor::getCvMat(back.getResultImage());
 }
 
 void SynthetizeImage::extractFont()
@@ -41,14 +43,14 @@ void SynthetizeImage::extractFont()
 void SynthetizeImage::extractBlock()
 {
     
-  cv::Mat distanceMap = structureDetection::getDistanceMap( image,binarizedImage);
+  cv::Mat distanceMap = structureDetection::getDistanceMap(image, binarizedImage);
   characterHeight = structureDetection::getCharacterHeight(binarizedImage);
-  blocksImage = structureDetection::getBlocks(distanceMap,characterHeight*1.5);
+  blocksImage = structureDetection::getBlocks(distanceMap, characterHeight*1.5);
 }
 
 void SynthetizeImage::createDocument()
 {
-  Painter painter(background,blocksImage,characterHeight);
+  Painter painter(background,blocksImage, characterHeight);
   painter.extractFont(font,image);
   result = painter.painting();
 }
