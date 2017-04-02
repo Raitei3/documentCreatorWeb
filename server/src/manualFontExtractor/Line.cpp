@@ -1,4 +1,4 @@
-#include "../headers/Line.hpp"
+#include "Line.hpp"
 
 Line::Line():m_baseline(0){
 

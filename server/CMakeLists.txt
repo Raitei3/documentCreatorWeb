@@ -50,43 +50,52 @@ FIND_PACKAGE(Tesseract REQUIRED)
 #FIND_PACKAGE(OpenSSL REQUIRED)
 
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/headers)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/headers/degradations
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/manualFontExtractor
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/synthetize
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/util
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/webPages)
 
 SET(SRVR_SRCS
-  src/binarization.cpp
-  src/BleedThrough.cpp
-  src/BlurFilter.cpp
-  src/Character.cpp
-  src/convertor.cpp
-  src/ConnectedComponent.cpp
-  src/connectedcomponentextraction.cpp
-  src/Font.cpp
-  src/GrayscaleCharsDegradationModel.cpp
-  src/HoleDegradation.cpp
-  src/Image.cpp
-  src/Line.cpp
-  src/PhantomCharacter.cpp
-  src/ShadowBinding.cpp
-  src/Session.cpp
   src/main.cpp
-  src/LineDetection.cpp
-  src/BackgroundReconstruction.cpp
-  src/textinpainting.cpp
-  src/baseline.cpp
-  src/StructureDetection.cpp
-  src/OCR.cpp
-  src/Painter.cpp
-  src/Config.cpp
-  src/SynthetizeImage.cpp
-  src/degradations.cpp
-  src/gestionSession.cpp
-  src/manualFontExtractor.cpp
-  src/synthetizeTest.cpp
-  src/util.cpp
-  src/StartSession2.cpp
-  src/GetSynthetizeImage.cpp
-  src/DocumentXML.cpp
-  src/LoadLetter.cpp
+
+  src/degradations/BleedThrough.cpp
+  src/degradations/BlurFilter.cpp
+  src/degradations/GrayscaleCharsDegradationModel.cpp
+  src/degradations/PhantomCharacter.cpp
+  src/degradations/ShadowBinding.cpp
+  src/degradations/degradations.cpp
+  src/degradations/HoleDegradation.cpp
+  
+  src/manualFontExtractor/Character.cpp
+  src/manualFontExtractor/ConnectedComponent.cpp
+  src/manualFontExtractor/connectedcomponentextraction.cpp
+  src/manualFontExtractor/Font.cpp
+  src/manualFontExtractor/Line.cpp
+  src/manualFontExtractor/Image.cpp
+  
+  src/util/binarization.cpp
+  src/util/convertor.cpp
+  src/util/Session.cpp
+  src/util/baseline.cpp
+  src/util/Config.cpp
+  src/util/util.cpp
+  
+  src/synthetize/LineDetection.cpp
+  src/synthetize/BackgroundReconstruction.cpp
+  src/synthetize/textinpainting.cpp
+  src/synthetize/StructureDetection.cpp
+  src/synthetize/OCR.cpp 
+  src/synthetize/Painter.cpp
+  src/synthetize/SynthetizeImage.cpp
+  src/synthetize/synthetizeTest.cpp
+  src/synthetize/DocumentXML.cpp
+  src/synthetize/LoadLetter.cpp
+  
+  src/webPages/gestionSession.cpp
+  src/webPages/manualFontExtractor.cpp
+  src/webPages/StartSession2.cpp
+  src/webPages/GetSynthetizeImage.cpp
   )
 
 

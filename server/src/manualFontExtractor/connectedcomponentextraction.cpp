@@ -1,4 +1,4 @@
-#include "../headers/connectedcomponentextraction.h"
+#include "connectedcomponentextraction.h"
 
 #include <algorithm>
 #include <stack>

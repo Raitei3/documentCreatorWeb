@@ -1,6 +1,6 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "convertor.h"
-#include "../headers/ShadowBinding.hpp"
+#include "ShadowBinding.hpp"
 #include <cassert>
 
 #include <iostream>//DEBUG

@@ -1,4 +1,4 @@
-#include "../headers/Character.hpp"
+#include "Character.hpp"
 
 
 Character::Character():m_baseline(0)

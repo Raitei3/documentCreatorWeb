@@ -14,7 +14,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#include "../headers/GrayscaleCharsDegradationModel.hpp"
+#include "GrayscaleCharsDegradationModel.hpp"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <time.h>
@@ -25,7 +25,7 @@
 #include <cmath>
 #include <algorithm>
 #include <ctype.h>
-#include "../headers/connectedcomponentextraction.h"
+#include "connectedcomponentextraction.h"
 #include <cassert>
 /**
  * \mainpage

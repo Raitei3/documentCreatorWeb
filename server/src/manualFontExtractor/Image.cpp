@@ -1,5 +1,5 @@
-#include "../headers/Image.hpp"
-#include "../headers/binarization.hpp"
+#include "Image.hpp"
+#include "binarization.hpp"
 
 Image::Image(const std::string &path){
   m_img = cv::imread(path, CV_LOAD_IMAGE_COLOR);

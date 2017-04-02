@@ -1,15 +1,15 @@
 #include <iostream>//DEBUG
 
 #include <opencv2/imgproc/imgproc.hpp>
-#include "../headers/PhantomCharacter.hpp"
-#include "../headers/connectedcomponentextraction.h"
+#include "PhantomCharacter.hpp"
+#include "connectedcomponentextraction.h"
 #include "convertor.h"
 #include <cassert>
 #include <QDir>
 
 
 
-#include "../headers/BlurFilter.hpp" // To test blur
+#include "BlurFilter.hpp" // To test blur
 
 static const int SPACING_MIN = 10;//Spacing minimum between two character to be able to paste a pattern
 static const int SPACING_MAX = 20;//Spacing maximum beyond which we will consider that two character are not in the same word
