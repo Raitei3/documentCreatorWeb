@@ -52,7 +52,7 @@ vector<cv::Rect> SynthetizeImage::extractBlock(cv::Mat originalImage, cv::Mat bi
 cv::Mat SynthetizeImage::createDocument(cv::Mat background, vector<cv::Rect> blocks,
                                         vector<fontLetter> font, cv::Mat originalImage)
 {
-  Painter painter(background,blocks, characterHeight);
+  Painter painter(background,blocks);
   painter.extractFont(font,originalImage);
   return painter.painting();
 }
@@ -66,7 +66,7 @@ cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgrou
 {
   cv::Mat background = cv::imread(backgroundPath);
   vector<cv::Rect> blocks = createStandardBlock(background);
-  Painter painter(background,blocks, characterHeight);
+  Painter painter(background,blocks);
 
   if (!text.empty()) {
     painter.setText(text);

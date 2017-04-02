@@ -13,11 +13,10 @@
 
 using namespace std;
 
-Painter::Painter(cv::Mat background, vector<cv::Rect> blocks, int characterHeight)
+Painter::Painter(cv::Mat background, vector<cv::Rect> blocks)
 {
   _background = background;
   _blocks = blocks;
-  _characterHeight = characterHeight;
   widthDoc = _background.cols;
   heightDoc = _background.rows;
 }

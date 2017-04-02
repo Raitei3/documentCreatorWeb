@@ -20,9 +20,6 @@ private:
   cv::Mat createDocument(cv::Mat background, std::vector<cv::Rect> blocks,
                          std::vector<fontLetter> font, cv::Mat originalImage);
   std::vector<cv::Rect> createStandardBlock(cv::Mat background);
-
-  
-  int characterHeight = 100;
 };
 
 #endif //SYNTHETIZEIMAGEE_HPP
