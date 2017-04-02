@@ -15,8 +15,6 @@ class BackgroundReconstruction;
 
 class BackgroundReconstruction : public QObject
 {
-    //Q_OBJECT
-
 public:
     explicit BackgroundReconstruction(QObject *parent = 0);
     ~BackgroundReconstruction();
@@ -30,13 +28,8 @@ public:
     float getMaxTextWidth() const { return (float)max_text_area*0.005;}
     float getMaxTextHeight() const {return (float)max_text_area*0.005;}
 
-private slots:
-    void on_slider_valueChanged(int value);
-
 private:
     int max_text_area = 20;
-
-  //  Ui::BackgroundReconstructionDialog *ui;
 
     cv::Mat _originalImg;
     cv::Mat _binarizedImg;

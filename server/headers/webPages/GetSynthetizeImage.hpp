@@ -5,11 +5,6 @@
 class GetSynthetizeImage: public MyDynamicPage
 {
 public:
-
   bool getPage(HttpRequest* request, HttpResponse *response);
-
-private:
-
-
 };
 #endif

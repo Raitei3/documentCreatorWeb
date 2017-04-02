@@ -8,33 +8,33 @@ using namespace std;
 documentXML::documentXML():
     stream(&xml)
 {
-    stream.setAutoFormatting(true);
+  stream.setAutoFormatting(true);
 }
 
 void documentXML::init(int widthDoc, int heightDoc, string fontName, string backgroundName)
 {
-    stream.writeStartElement("document");
-    stream.writeAttribute("width",QString::number(widthDoc));
-    stream.writeAttribute("height",QString::number(heightDoc));
-    stream.writeStartElement("styles");
-    stream.writeStartElement("style");
-    stream.writeAttribute("name",QString::fromStdString(fontName));
-    stream.writeStartElement("style");
-    stream.writeTextElement("font", QString::fromStdString(fontName));
-    stream.writeEndElement();
-    stream.writeEndElement();
-    stream.writeEndElement();
+  stream.writeStartElement("document");
+  stream.writeAttribute("width",QString::number(widthDoc));
+  stream.writeAttribute("height",QString::number(heightDoc));
+  stream.writeStartElement("styles");
+  stream.writeStartElement("style");
+  stream.writeAttribute("name",QString::fromStdString(fontName));
+  stream.writeStartElement("style");
+  stream.writeTextElement("font", QString::fromStdString(fontName));
+  stream.writeEndElement();
+  stream.writeEndElement();
+  stream.writeEndElement();
 
-    stream.writeStartElement("content");
-    stream.writeStartElement("page");
-    stream.writeAttribute("backgroundFileName",QString::fromStdString(backgroundName));
+  stream.writeStartElement("content");
+  stream.writeStartElement("page");
+  stream.writeAttribute("backgroundFileName",QString::fromStdString(backgroundName));
 }
 
 void documentXML::close()
 {
-    stream.writeEndElement();
-    stream.writeEndElement();
-    stream.writeEndElement();
+  stream.writeEndElement();
+  stream.writeEndElement();
+  stream.writeEndElement();
 }
 
 void documentXML::openBlock(int x, int y, int width, int height)
@@ -57,9 +57,9 @@ void documentXML::openBlock(int x, int y, int width, int height)
 
 void documentXML::closeBlock()
 {
-    stream.writeEndElement();
-    stream.writeEndElement();
-    stream.writeEndElement();
+  stream.writeEndElement();
+  stream.writeEndElement();
+  stream.writeEndElement();
 }
 
 void documentXML::addLetter(string display, int id, int x, int y, int width, int height)
@@ -74,15 +74,16 @@ void documentXML::addLetter(string display, int id, int x, int y, int width, int
   stream.writeEndElement();
 }
 
-bool documentXML::write(const std::string& fileName)
+bool documentXML::write(const string& fileName)
 {
-    QFile file(QString::fromStdString(fileName));
-    if(!file.open(QFile::WriteOnly))
-        return false;
-    else
-    {
-        QTextStream txt(&file);
-        txt<<xml;
-    }
-    return true;
+  QFile file(QString::fromStdString(fileName));
+  
+  if(!file.open(QFile::WriteOnly)){
+    return false;
+  }
+  else{
+    QTextStream txt(&file);
+    txt<<xml;
+  }
+  return true;
 }

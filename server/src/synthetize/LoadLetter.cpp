@@ -28,40 +28,33 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
   int rightLine = 100;
   fontLetter f;
 
-  while(!reader.atEnd())
-  {
+  while(!reader.atEnd()){
     QXmlStreamReader::TokenType token = reader.readNext();
     if (token == QXmlStreamReader::StartElement) {
-      if(reader.name()=="letter")
-      {
+      if(reader.name()=="letter"){
         s = reader.attributes().value("char").toString();
         //strcpy(s2, s.toStdString());
         s2 = s.toStdString();
       }
-
-      if (reader.name() == "width") {
+      else if (reader.name() == "width") {
         reader.readNext();
         width = reader.text().toString().toInt();
       }
-      if (reader.name() == "height") {
+      else if (reader.name() == "height") {
         reader.readNext();
         height = reader.text().toString().toInt();
       }
-      if (reader.name()=="baseLine") {
+      else if (reader.name()=="baseLine") {
         reader.readNext();
         baseline = reader.text().toString().toInt();
       }
-      if (reader.name()=="rightLine"){
+      else if (reader.name()=="rightLine"){
         reader.readNext();
         rightLine = reader.text().toString().toInt();
       }
-      if (reader.name() == "data") {
+      else if (reader.name() == "data") {
         reader.readNext();
-
-
-
         QString data = reader.text().toString();
-
         cv::Mat mat = extractImage(data,width,height);
         f.mask = mat;
         f.baseline = baseline;
@@ -87,10 +80,12 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
     s=l.label;
     l.mask=getImageFromMask(background(l.rect), l.mask, 255);    
     font[s].push_back(l);
-    if(font[s].size()==1)
+    if(font[s].size()==1){
         font[s].back().baseline=((double)l.baseline/(double)l.rect.height) *100;
-    else
+    }
+    else{
         font[s].back().baseline=font[s].front().baseline;
+    }
   }
   return font;
 }

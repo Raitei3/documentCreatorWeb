@@ -29,17 +29,15 @@ class Painter
   void computeSpaceLine();
 
   private:
-    //QPainter _painter;
     cv::Mat _background;
-    int * extractImage(char * str, int size);
-    //unsigned long * extractImage(QString str,int size);
+    int * extractImage(char *str, int size);
     cv::Mat extractImage(QString str, int width, int height);
 
     documentXML xml;
     std::string fontName = "test";
     int widthDoc;
     int heightDoc;
-    std::string backgroundName ="test";
+    std::string backgroundName = "test";
     int _lineSpacing;
 
     std::map<std::string,std::vector<fontLetter>> _font;

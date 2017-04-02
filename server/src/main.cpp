@@ -36,7 +36,6 @@
 #include "Painter.hpp"
 #include "OCR.hpp"
 #include "Config.hpp"
-
 #include "GetSynthetizeImage.hpp"
 #include "degradation.hpp"
 #include "gestionSession.hpp"
@@ -172,12 +171,12 @@ class MyDynamicRepository : public DynamicRepository
 int main(int /*argc*/, char** /*argv*/ )
 {
   srand(time(NULL));
-
   Config conf;
   bool run=true;
+  
   while(run){
-    int pid;
-    pid=fork();
+    int pid=fork();
+    
     if(pid==0){
       std::cerr<<"Server launched with pid "<<getpid()<<std::endl;
       atexit(exitFunction);
@@ -205,9 +204,10 @@ int main(int /*argc*/, char** /*argv*/ )
     }
     else{
       int status;
+      
       waitpid(pid,&status,0);
       if((WIFSIGNALED(status) && WTERMSIG(status)==15)||
-         WIFEXITED(status)){//tant que le serveur n'as pas terminé normalement ou par le signal 15, on le relance
+         WIFEXITED(status)){//si le serveur as terminé normalement ou par le signal 15, on ne le relance pas
         run=false;
       }
     }

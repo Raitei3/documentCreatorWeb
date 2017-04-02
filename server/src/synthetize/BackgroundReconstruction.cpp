@@ -49,8 +49,3 @@ void BackgroundReconstruction::process(bool preview){
 
 
 }
-
-void BackgroundReconstruction::on_slider_valueChanged(int value){
-    max_text_area = value;
-    process(true);
-}

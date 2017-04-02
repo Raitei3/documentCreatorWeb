@@ -12,8 +12,6 @@ class QLabel;
 
 class LineDetectionDialog : public QObject
 {
-    //Q_OBJECT
-
 public:
     explicit LineDetectionDialog(QObject *parent = 0);
     ~LineDetectionDialog();
