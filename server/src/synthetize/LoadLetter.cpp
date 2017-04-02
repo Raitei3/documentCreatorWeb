@@ -14,10 +14,9 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
   QFile font(QString::fromStdString(path));
   const bool ok = font.open( QFile::ReadOnly );
 
-  if (! ok) {
+  if (!ok) {
     std::cerr<<"Warning: unable to open font file: \n";
   }
-
 
   QXmlStreamReader reader(&font);
   int width=0;
@@ -33,7 +32,6 @@ map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
     if (token == QXmlStreamReader::StartElement) {
       if(reader.name()=="letter"){
         s = reader.attributes().value("char").toString();
-        //strcpy(s2, s.toStdString());
         s2 = s.toStdString();
       }
       else if (reader.name() == "width") {
