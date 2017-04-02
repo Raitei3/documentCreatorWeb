@@ -17,7 +17,7 @@ cv::Mat SynthetizeImage::binarization(cv::Mat originalImage)
   return binarizedImage;
 }
 
-void SynthetizeImage::extractBackground(cv::mat originalImage, cv::Mat binarizedImage)
+cv::Mat SynthetizeImage::extractBackground(cv::Mat originalImage, cv::Mat binarizedImage)
 {
   QImage binarized;
   cv::Mat output;
@@ -33,56 +33,59 @@ void SynthetizeImage::extractBackground(cv::mat originalImage, cv::Mat binarized
   return Convertor::getCvMat(back.getResultImage());
 }
 
-void SynthetizeImage::extractFont()
+vector<fontLetter> SynthetizeImage::extractFont(cv::Mat originalImage, cv::Mat binarizedImage,
+                                  string language, string tesseractDir)
 {
-  ocr.setParameters("/usr/share/tesseract-ocr/", "eng");
-  ocr.init(Convertor::getQImage(image), Convertor::getQImage(binarizedImage));
-  font = ocr.getFinalFont();
+  OCR ocr;
+  ocr.setParameters(QString::fromStdString(tesseractDir), QString::fromStdString(language));
+  ocr.init(Convertor::getQImage(originalImage), Convertor::getQImage(binarizedImage));
+  return ocr.getFinalFont();
 }
 
-void SynthetizeImage::extractBlock()
+vector<cv::Rect> SynthetizeImage::extractBlock(cv::Mat originalImage, cv::Mat binarizedImage)
 {
-    
-  cv::Mat distanceMap = structureDetection::getDistanceMap(image, binarizedImage);
-  characterHeight = structureDetection::getCharacterHeight(binarizedImage);
-  blocksImage = structureDetection::getBlocks(distanceMap, characterHeight*1.5);
+  cv::Mat distanceMap = structureDetection::getDistanceMap(originalImage, binarizedImage);
+  int characterHeight = structureDetection::getCharacterHeight(binarizedImage);
+  return structureDetection::getBlocks(distanceMap, characterHeight*1.5);
 }
 
-void SynthetizeImage::createDocument()
+cv::Mat SynthetizeImage::createDocument(cv::Mat background, vector<cv::Rect> blocks,
+                                        vector<fontLetter> font, cv::Mat originalImage)
 {
-  Painter painter(background,blocksImage, characterHeight);
-  painter.extractFont(font,image);
-  result = painter.painting();
+  Painter painter(background,blocks, characterHeight);
+  painter.extractFont(font,originalImage);
+  return painter.painting();
 }
 
-cv::Rect SynthetizeImage::createStandardBlock(cv::Mat background)
+vector<cv::Rect> SynthetizeImage::createStandardBlock(cv::Mat background)
 {
-  return cv::Rect(30,30,background.size().width-30,background.size().height-30);
+  return vector<cv::Rect>({cv::Rect(30,30,background.size().width-30,background.size().height-30)});
 }
 
 cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgroundPath, std::string text)
 {
-  background = cv::imread(backgroundPath);
-  blocksImage.push_back(createStandardBlock(background));
-  Painter painter(background,blocksImage, characterHeight);
+  cv::Mat background = cv::imread(backgroundPath);
+  vector<cv::Rect> blocks = createStandardBlock(background);
+  Painter painter(background,blocks, characterHeight);
 
   if (!text.empty()) {
     painter.setText(text);
   }
 
   painter.extractFont(fontPath);
-  result = painter.painting();
-
-  return result;
+  return painter.painting();
 }
 
 cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
 {
-  image = img;
-  binarization();
-  extractBackground();
-  extractFont();
-  extractBlock();
-  createDocument();
-  return result;
+  cv::Mat binarizedImage;
+  cv::Mat background;
+  vector<fontLetter> font;
+  vector<cv::Rect> blocks;
+  
+  binarizedImage = binarization(img);
+  background = extractBackground(img, binarizedImage);
+  font = extractFont(img, binarizedImage);
+  blocks = extractBlock(img, binarizedImage);
+  return createDocument(background, blocks, font, img);
 }

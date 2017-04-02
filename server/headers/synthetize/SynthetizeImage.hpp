@@ -19,16 +19,10 @@ private:
   std::vector<cv::Rect> extractBlock(cv::Mat originalImage, cv::Mat binarizedImage);
   cv::Mat createDocument(cv::Mat background, std::vector<cv::Rect> blocks,
                          std::vector<fontLetter> font, cv::Mat originalImage);
-  cv::Rect createStandardBlock(cv::Mat background);
+  std::vector<cv::Rect> createStandardBlock(cv::Mat background);
 
-  cv::Mat image;
-  cv::Mat binarizedImage;
-  cv::Mat background;
-  OCR ocr;
-  std::vector<cv::Rect> blocksImage;
+  
   int characterHeight = 100;
-  cv::Mat result;
-  std::vector<fontLetter> font;
 };
 
 #endif //SYNTHETIZEIMAGEE_HPP
