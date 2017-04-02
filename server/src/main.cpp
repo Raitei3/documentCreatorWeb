@@ -6,42 +6,21 @@
 #include "libnavajo/LogStdOutput.hh"
 
 #include <ctime>
-#include <signal.h>
-#include <cstring>
-#include <unordered_set>
 
 //manipulation des répertoires
 #include <dirent.h>
 #include <sys/stat.h>
-#include <cstdio> //remove
 
 #include <iostream>
 #include <unistd.h>
 #include <sys/wait.h>
 
-#include "Image.hpp"
-#include "Font.hpp"
-#include "Session.hpp"
-#include "json.hpp"
-#include "GrayscaleCharsDegradationModel.hpp"
-#include "ShadowBinding.hpp"
-#include "PhantomCharacter.hpp"
-#include "HoleDegradation.hpp"
-#include "BlurFilter.hpp"
-#include "BleedThrough.hpp"
-#include "BackgroundReconstruction.hpp"
-#include "binarization.hpp"
-#include "convertor.h"
-#include "StructureDetection.hpp"
-#include "Painter.hpp"
-#include "OCR.hpp"
-#include "Config.hpp"
+
 #include "GetSynthetizeImage.hpp"
-#include "degradation.hpp"
-#include "gestionSession.hpp"
 #include "manualFontExtractor.hpp"
-#include "util.hpp"
 #include "StartSession2.hpp"
+#include "Config.hpp"
+#include "degradation.hpp"
 
 class MyDynamicRepository : public DynamicRepository
 {

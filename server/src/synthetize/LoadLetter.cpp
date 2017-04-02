@@ -2,7 +2,6 @@
 
 #include <QFile>
 #include <QXmlStreamReader>
-#include <iostream>
 
 #include "convertor.h"
 

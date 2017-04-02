@@ -2,9 +2,7 @@
 
 #include <convertor.h>
 #include <iostream>
-#include <QDebug>
 #include <QXmlStreamReader>
-#include <QChar>
 #include <cv.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <utility>
@@ -107,7 +105,6 @@ void Painter::computeSpaceLine()
     underMax += underBaseline[i];
   }
   _lineSpacing = (aboveMax+underMax)/5;
-  cout << "linsespacing = " << _lineSpacing << endl;
 }
 
 

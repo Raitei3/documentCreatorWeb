@@ -1,15 +1,9 @@
 #ifndef PAINTER_HPP
 #define PAINTER_HPP
 
-#include <QImage>
-#include <QFont>
-#include <QRect>
-#include <QString>
-#include <QPainter>
 #include "opencv2/core/core.hpp"
-#include <QXmlStreamWriter>
-#include <QFile>
 #include <map>
+#include <string>
 #include "OCR.hpp"
 #include "DocumentXML.hpp"
 
