@@ -115,3 +115,14 @@ cv::Mat LoadLetter::getImageFromMask(const cv::Mat &original, const cv::Mat &mas
 
   return letter;
 }
+
+void LoadLetter::reComputeBaseline(map<string,vector<fontLetter> > font)
+{
+  for(auto mit = font.begin(); mit != font.end(); mit++){
+    fontLetter l = mit->second.front();
+    int baseline = ((double)l.baseline / (double)l.rect.height) * 100;
+    for(auto vit = mit->second.begin(); vit != mit->second.end(); vit++){
+      vit->baseline=baseline;
+    }
+  }
+}

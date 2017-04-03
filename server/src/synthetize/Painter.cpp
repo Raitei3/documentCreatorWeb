@@ -26,6 +26,7 @@ Painter::~Painter()
 cv::Mat Painter::painting()
 {
   computeSpaceLine();
+  LoadLetter::reComputeBaseline(_font);
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
 
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
