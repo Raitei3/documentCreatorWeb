@@ -34,9 +34,8 @@ cv::Mat SynthetizeImage::extractBackground(cv::Mat originalImage, cv::Mat binari
 }
 
 vector<fontLetter> SynthetizeImage::extractFont(cv::Mat originalImage, cv::Mat binarizedImage,
-                                  string language, string tesseractDir)
+                                                string language, string tesseractDir)
 {
-  OCR ocr;
   ocr.setParameters(QString::fromStdString(tesseractDir), QString::fromStdString(language));
   ocr.init(Convertor::getQImage(originalImage), Convertor::getQImage(binarizedImage));
   return ocr.getFinalFont();
@@ -79,7 +78,6 @@ cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgrou
 cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
 {
   cv::Mat binarizedImage;
-  cv::Mat background;
   vector<fontLetter> font;
   vector<cv::Rect> blocks;
   
@@ -88,4 +86,16 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
   font = extractFont(img, binarizedImage);
   blocks = extractBlock(img, binarizedImage);
   return createDocument(background, blocks, font, img);
+}
+
+string SynthetizeImage::saveFont(int token)
+{
+  ocr.saveFont(UPLOAD_DIR + QString::number(token) + ".of");
+  return to_string(token) + ".of";
+}
+
+string SynthetizeImage::saveBackground(int token)
+{
+  cv::imwrite(UPLOAD_DIR + to_string(token) + "_background.png",background);
+  return to_string(token) + "_background.png";
 }
