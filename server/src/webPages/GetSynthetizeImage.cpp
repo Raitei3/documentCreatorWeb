@@ -1,5 +1,8 @@
-#include "SynthetizeImage.hpp"
 #include "GetSynthetizeImage.hpp"
+
+#include <string>
+
+#include "SynthetizeImage.hpp"
 
 bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 {
@@ -42,9 +45,20 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 
       activeSessions.at(sessionIndex)->getImage()->setMat(result);
       activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
+
+      std::string fontPath = synthetizeImage.saveFont(token);
+      std::string backgroundPath = synthetizeImage.saveBackground(token);
+      
       myUploadRepo->reload();
 
-      std::string json_response = "{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName() + "\"}";
+      std::string json_response = "{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName() + "\"";
+      if(!fontPath.empty()){
+        json_response += "\"fontPath\":" + fontPath;
+      }
+      if(!backgroundPath.empty()){
+        json_response += "\"backgroundPath\"" + backgroundPath;
+      }
+      json_response += "}";
       return fromString(json_response, response);
     }
   }

@@ -9,6 +9,8 @@ class SynthetizeImage
 public:
   cv::Mat composeImage(std::string fontPath, std::string backgroundPath, std::string text);
   cv::Mat SynthetizeAuto(cv::Mat img);
+  std::string saveFont(int token);
+  std::string saveBackground(int token);
 
 private:
   cv::Mat binarization(cv::Mat originalImage);
@@ -20,6 +22,9 @@ private:
   cv::Mat createDocument(cv::Mat background, std::vector<cv::Rect> blocks,
                          std::vector<fontLetter> font, cv::Mat originalImage);
   std::vector<cv::Rect> createStandardBlock(cv::Mat background);
+
+  OCR ocr;
+  cv::Mat background;
 };
 
 #endif //SYNTHETIZEIMAGEE_HPP

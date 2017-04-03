@@ -737,7 +737,7 @@ function init(src, boundingBox, baseline, typeOfController) {
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "synthetize");
 	var controller = new ControllerSynthetize(normalCanvas);
     } else { // typeOfController == "createDocument"
-    var image = new ProcessingImage('data/init.png');
+    var image = new ProcessingImage('init.png');
     var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "create-your-document");
 	var controller = new ControllerCreateDocument(normalCanvas);
     }
