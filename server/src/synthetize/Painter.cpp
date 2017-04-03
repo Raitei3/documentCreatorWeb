@@ -29,6 +29,7 @@ cv::Mat Painter::painting()
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
 
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
+    cv::rectangle(_background,*block,0,2);
     xml.openBlock(block->x, block->y, block->width, block->height);
     int line = block->y;
     int ofset = block->x;
