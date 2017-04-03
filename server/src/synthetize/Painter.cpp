@@ -51,13 +51,15 @@ cv::Mat Painter::painting()
         
         try{
           if(line > 0 && ofset > 0 && ofset + wpict < _background.cols &&
-             line-baseline*hpict/100 + hpict < _background.rows &&
+             line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
              c!=' ')//pour éviter un carré gris
           {
             cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
             part=min(part,pict);
           }
-        }catch(cv::Exception){}
+        }catch(cv::Exception){
+          cerr << "erreur : caractère <" << c << ">, ligne =" << line << " et ofset= " << ofset << ".\n"; 
+        }
         xml.addLetter(string(&c,1), numLetter, ofset, line-hpict,pict.size().width, pict.size().height);
 	ofset += wpict*fontIt->second[numLetter].rightLine/100;
       }
