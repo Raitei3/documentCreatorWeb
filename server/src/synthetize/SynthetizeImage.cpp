@@ -1,4 +1,7 @@
 #include "SynthetizeImage.hpp"
+
+#include <ctime>
+
 #include "binarization.hpp"
 #include "convertor.h"
 #include "StructureDetection.hpp"
@@ -80,12 +83,27 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
 {
   cv::Mat binarizedImage;
   cv::Mat background;
+  cv::Mat ret;
   vector<fontLetter> font;
   vector<cv::Rect> blocks;
-  
+  clock_t t1,t2,t3,t4,t5,t6;
+
+  t1=clock();
   binarizedImage = binarization(img);
+  t2=clock();
   background = extractBackground(img, binarizedImage);
+  t3=clock();
   font = extractFont(img, binarizedImage);
+  t4=clock();
   blocks = extractBlock(img, binarizedImage);
-  return createDocument(background, blocks, font, img);
+  t5=clock();
+  ret = createDocument(background, blocks, font, img);
+  t6=clock();
+
+  cerr << "binarization : " << 1000*(t2-t1)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "extraction fond : " << 1000*(t3-t2)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "extraction police : " << 1000*(t4-t3)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "exctraction blocks : " << 1000*(t5-t4)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "painter : " << 1000*(t6-t5)/CLOCKS_PER_SEC << "ms" << endl;
+  return ret;
 }
