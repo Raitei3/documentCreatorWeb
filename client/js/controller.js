@@ -153,7 +153,7 @@ function ControllerFontCreator(canvas, previewCanvas, listCharacter) {
 
     // When the user quit the application
     window.onunload = function() {
-	session.removeSession(false);
+    session.removeSession(false);
     };
 }
 
@@ -415,14 +415,14 @@ function ControllerDegradation(canvas) {
 
     // Click to download image
     document.getElementById('downloadImage').addEventListener('click', function(){
-	var img = controller.canvas.image.img.src;
-	var img_split = img.split('/');
-	var extension = img.split('.');
-	img = img_split[img_split.length - 1];
-	extension = extension[extension.length - 1];
+    var img = controller.canvas.image.img.src;
+    var img_split = img.split('/');
+    var extension = img.split('.');
+    img = img_split[img_split.length - 1];
+    extension = extension[extension.length - 1];
 
-	document.getElementById('downloadImage').setAttribute('href','data/' + img);
-	document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
+    document.getElementById('downloadImage').setAttribute('href','data/' + img);
+    document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
     }, true);
 
     /* =======================
@@ -431,113 +431,113 @@ function ControllerDegradation(canvas) {
 
     // Blur Filter
     document.getElementById('blurFilterExec').addEventListener('click', function(){
-	var tabTypeIntensity = document.getElementsByName("blurFilterTypeIntensity");
-	var typeIntensity;
-	for (var i = 0; i < tabTypeIntensity.length; i++) {
-	    if (tabTypeIntensity[i].checked) {
-		typeIntensity = tabTypeIntensity[i].value;
-		break;
-	    }
-	}
+    var tabTypeIntensity = document.getElementsByName("blurFilterTypeIntensity");
+    var typeIntensity;
+    for (var i = 0; i < tabTypeIntensity.length; i++) {
+        if (tabTypeIntensity[i].checked) {
+        typeIntensity = tabTypeIntensity[i].value;
+        break;
+        }
+    }
 
-	var intensity;
-	if (typeIntensity == "value"){
-	    intensity = document.getElementById('blurFilterIntensityValue').value;
-	} else { // typeIntensity == "image"
-	    intensity = document.getElementById('blurFilterIntensityImage').src;
-	    intensity = intensity.split('/');
-	    intensity = intensity[intensity.length - 1];
-	}
+    var intensity;
+    if (typeIntensity == "value"){
+        intensity = document.getElementById('blurFilterIntensityValue').value;
+    } else { // typeIntensity == "image"
+        intensity = document.getElementById('blurFilterIntensityImage').src;
+        intensity = intensity.split('/');
+        intensity = intensity[intensity.length - 1];
+    }
 
-	var tabMethod = document.getElementsByName("blurFilterMethod");
-	var method;
-	for (var i = 0; i < tabMethod.length; i++) {
-	    if (tabMethod[i].checked) {
-		method = tabMethod[i].value;
-		break;
-	    }
-	}
+    var tabMethod = document.getElementsByName("blurFilterMethod");
+    var method;
+    for (var i = 0; i < tabMethod.length; i++) {
+        if (tabMethod[i].checked) {
+        method = tabMethod[i].value;
+        break;
+        }
+    }
 
-	session.blurFilter(method, typeIntensity, intensity, controller);
+    session.blurFilter(method, typeIntensity, intensity, controller);
     }, true);
 
     // Blur Filter - change l'image du blur
     document.getElementById('changeImgBlurFilter').addEventListener('click', function(event){
-	if(event.target.nodeName == "BUTTON") {
-	    var src = document.getElementById('blurFilterIntensityImage').src;
-	    numImg = src.charAt(src.length - 5);
-	    if ($(event.target).data("id") == "changeImgLeft") {
-		numImg = parseInt(numImg) - 1;
-		if (numImg < 1){
-		    numImg = 7;
-		}
-	    } else if ($(event.target).data("id") == "changeImgRight") {
-		numImg = parseInt(numImg) + 1;
-		if (numImg > 7){
-		    numImg = 1;
-		}
-	    }
-	    var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
-	    document.getElementById('blurFilterIntensityImage').setAttribute('src', new_src);
-	}
+    if(event.target.nodeName == "BUTTON") {
+        var src = document.getElementById('blurFilterIntensityImage').src;
+        numImg = src.charAt(src.length - 5);
+        if ($(event.target).data("id") == "changeImgLeft") {
+        numImg = parseInt(numImg) - 1;
+        if (numImg < 1){
+            numImg = 7;
+        }
+        } else if ($(event.target).data("id") == "changeImgRight") {
+        numImg = parseInt(numImg) + 1;
+        if (numImg > 7){
+            numImg = 1;
+        }
+        }
+        var new_src = "img/blurExamples/blurGenerated" + numImg + ".png";
+        document.getElementById('blurFilterIntensityImage').setAttribute('src', new_src);
+    }
     });
 
     // Bleed Through
     document.getElementById('BleedThroughExec').addEventListener('click', function(){
         session.bleedThrough(
-	    document.getElementById('BleedThroughNbIteration').value,
-	    document.getElementById('BleedThroughImgVerso').src,
-	    controller);
+        document.getElementById('BleedThroughNbIteration').value,
+        document.getElementById('BleedThroughImgVerso').src,
+        controller);
     }, true);
 
 
     // Shadow Binding
     document.getElementById('ShadowBindingExec').addEventListener('click', function(){
-	var all_border = document.getElementsByName("ShadowBindingBorder");
-	var border;
-	for (var i = 0; i < all_border.length; i++) {
-	    if (all_border[i].checked) {
-		border = all_border[i].value;
-		break;
-	    }
-	}
+    var all_border = document.getElementsByName("ShadowBindingBorder");
+    var border;
+    for (var i = 0; i < all_border.length; i++) {
+        if (all_border[i].checked) {
+        border = all_border[i].value;
+        break;
+        }
+    }
 
         session.shadowBinding(
-	    border,
-	    document.getElementById('ShadowBindingWidth').value,
-	    document.getElementById('ShadowBindingIntensity').value,
-	    document.getElementById('ShadowBindingAngle').value,
-	    controller);
+        border,
+        document.getElementById('ShadowBindingWidth').value,
+        document.getElementById('ShadowBindingIntensity').value,
+        document.getElementById('ShadowBindingAngle').value,
+        controller);
     }, true);
 
 
     // Phantom Character
     document.getElementById('PhantomCharacterExec').addEventListener('click', function(){
-	var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
-	var frequency;
-	for (var i = 0; i < all_frequency.length; i++) {
-	    if (all_frequency[i].checked) {
-		frequency = all_frequency[i].value;
-		break;
-	    }
-	}
+    var all_frequency = document.getElementsByName('PhantomCharacterFrequency');
+    var frequency;
+    for (var i = 0; i < all_frequency.length; i++) {
+        if (all_frequency[i].checked) {
+        frequency = all_frequency[i].value;
+        break;
+        }
+    }
 
         session.phantomCharacter(
-	    frequency,
-	    controller);
+        frequency,
+        controller);
     }, true);
 
     // GrayScale Character Degradation
     document.getElementById('GrayScaleCharacterDegradationExec').addEventListener('click', function(){
         session.grayScaleCharsDegradation(
-	    document.getElementById('GrayScaleCharacterDegradationValue').value,
-	    controller);
+        document.getElementById('GrayScaleCharacterDegradationValue').value,
+        controller);
     }, true);
 
 
     // When the user quit the application
     window.onunload = function() {
-	session.removeSession(false);
+    session.removeSession(false);
     };
 }
 
@@ -554,12 +554,13 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
    =============================================
 */
 
-function ControllerCreateDocument() {
+function ControllerCreateDocument(canvas) {
+    this.canvas = canvas;
     var controller = this;
 
     // Init
-    //$('#createDocument').hide();
-    //$('#createDocumentPractice').show();
+    $('#createDocumentPractice').show();
+    $('#composePractice').hide();
 
     // Récupère les fonts situés dans le dossier server/data/font/
     session.getElemsDirectory("font", controller);
@@ -570,32 +571,67 @@ function ControllerCreateDocument() {
     var downloads = document.getElementsByName("createDocumentDownload");
     //for (var i = 0; i < downloads.length; i++){
 
-	document.getElementById("createDocumentStart").addEventListener('click', function(event){
+    document.getElementById("createDocumentStart").addEventListener('click', function(event){
 
-	    var fonts = document.getElementById("createDocumentFont");
-	    var font = fonts.options[fonts.selectedIndex].value;
+        var fonts = document.getElementById("createDocumentFont");
+        var font = fonts.options[fonts.selectedIndex].value;
 
-	    var backgrounds = document.getElementById("createDocumentBackground");
-	    var background = backgrounds.options[backgrounds.selectedIndex].value;
+        var backgrounds = document.getElementById("createDocumentBackground");
+        var background = backgrounds.options[backgrounds.selectedIndex].value;
 
-	    var text = document.getElementById("createDocumentText").value;
+        var text = document.getElementById("createDocumentText").value;
 
-	    var type;
-	    /*if (this.id == "createDocumentDownloadXML"){
-		type = "xml";
-	    } else { // this.id == "createDocumentDownloadPNG"
-		type = "png";
+        var type;
+        /*if (this.id == "createDocumentDownloadXML"){
+        type = "xml";
+        } else { // this.id == "createDocumentDownloadPNG"
+        type = "png";
   }*/
 
-	    session.composeImage( font, background, text, controller);
-	}, true);
+        session.composeImage( font, background, text, controller);
+    }, true);
+
+
+
+
+
+  // Detect when we move the image
+  canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
+  canvas.canvas.addEventListener('mousemove', function(e) { canvas.onMouseMove(e);}, true);
+  canvas.canvas.addEventListener('mouseup', function(e) { canvas.onMouseUp(e);}, true);
+
+  // Detect when we click
+  canvas.canvas.addEventListener('click',function(e) { controller.getInfoOnClickedObject(e); }, true);
+
+  // Dectection of zoom
+  document.getElementById('zoom-in').addEventListener('click', function(e){ canvas.zoomIn();}, true);
+  document.getElementById('zoom-out').addEventListener('click', function(e){ canvas.zoomOut();}, true);
+  document.getElementById('zoom-reset').addEventListener('click', function(e){ canvas.zoomReset();}, true);
+
+   // Click on the trash button
+  document.getElementById('resetImage').addEventListener('click', function(e){
+      session.removeSession(true);
+      location.reload();
+  }, true);
+
+  // Click to download image
+  document.getElementById('downloadImage').addEventListener('click', function(){
+  var img = controller.canvas.image.img.src;
+  var img_split = img.split('/');
+  var extension = img.split('.');
+  img = img_split[img_split.length - 1];
+  extension = extension[extension.length - 1];
+
+  document.getElementById('downloadImage').setAttribute('href','data/' + img);
+  document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
+  }, true);
+
+  // sinthetise Image
+  document.getElementById('synthetizeExec').addEventListener('click', function(){
+    //session.synthetizeImage(controller);
+
+  }, true);
   //  }
-}
-
-ControllerCreateDocument.prototype.remplirImage = function remplirImage(imagePath)
-{
-    this.canvas.changeImage(imagePath);
-
 }
 
 // Mets à jour les selects "Font" et "Background" à partir des données renvoyées par le serveur.
@@ -608,7 +644,7 @@ ControllerCreateDocument.prototype.updateElemsDirectory = function(directory, el
     selectHTML.empty();
 
     for (var i = 1; i <= nbElems; i++){
-	selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
+    selectHTML.append("<option value=\"" + tabElems[i] +"\">" + tabElems[i] + "</option>")
     }
 }
 
@@ -621,6 +657,16 @@ ControllerCreateDocument.prototype.changeDownload = function(filename){
     var downloadPNG = document.getElementById("createDocumentDownloadPNG");
     downloadPNG.setAttribute('href','background/' + filename);
     downloadPNG.setAttribute('download', 'doc-online.png');
+}
+
+ControllerCreateDocument.prototype.replaceImage = function replaceImage(imagePath)
+{
+
+this.canvas.changeImage("data/" + imagePath)
+$('#createDocumentPractice').hide();
+$('#composePractice').show();
+;
+
 }
 
 /*
