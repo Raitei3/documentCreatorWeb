@@ -81,7 +81,6 @@ cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgrou
 cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
 {
   cv::Mat binarizedImage;
-  cv::Mat background;
   cv::Mat ret;
   vector<fontLetter> font;
   vector<cv::Rect> blocks;

@@ -53,10 +53,10 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
 
       std::string json_response = "{\"filename\":\"" + activeSessions.at(sessionIndex)->getDisplayedFileName() + "\"";
       if(!fontPath.empty()){
-        json_response += "\"fontPath\":" + fontPath;
+        json_response += ",\"fontPath\":\"" + fontPath +"\"";
       }
       if(!backgroundPath.empty()){
-        json_response += "\"backgroundPath\"" + backgroundPath;
+        json_response += ",\"backgroundPath\":\"" + backgroundPath + "\"";
       }
       json_response += "}";
       return fromString(json_response, response);
