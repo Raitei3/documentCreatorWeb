@@ -20,7 +20,7 @@ class Painter
   void endXML();
   void extractFont(std::vector<fontLetter> fl, cv::Mat background);
   void setText(std::string s);
-  void computeSpaceLine();
+  int computeSpaceLine(std::map<std::string,std::vector<fontLetter> > font);
 
   private:
     cv::Mat _background;

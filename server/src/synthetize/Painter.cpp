@@ -26,7 +26,7 @@ Painter::~Painter()
 /* Pour chaque paragraphe écrit le plus de texte possible, renvoi l'image de résultat */
 cv::Mat Painter::painting()
 {
-  computeSpaceLine();
+  _lineSpacing = computeSpaceLine(_font);
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
 
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
@@ -91,15 +91,14 @@ void Painter::extractFont(string fontPath)
     _font = LoadLetter::fromFile(fontPath);
 }
 
-/* Calcul le saut de ligne « idéal » */
-void Painter::computeSpaceLine()
+int Painter::computeSpaceLine(map<string,vector<fontLetter> > font)
 {
   std::vector<int> aboveBaseline;
   std::vector<int> underBaseline;
   
-  for (auto fontIt=_font.begin(); fontIt!=_font.end(); ++fontIt)
+  for (auto fontIt=font.begin(); fontIt!=font.end(); ++fontIt)
   {
-    for ( auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
+    for (auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
     {
       double h = it->mask.size().height;
       int baseline = it->baseline;
@@ -122,7 +121,7 @@ void Painter::computeSpaceLine()
     aboveMax += aboveBaseline[i];
     underMax += underBaseline[i];
   }
-  _lineSpacing = (aboveMax+underMax)/5;
+  return (aboveMax+underMax)/5;
 }
 
 
