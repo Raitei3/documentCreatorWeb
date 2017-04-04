@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/* Prend en parametre le chemin d'un fichier de police (format .of)
+ * renvoi la structure utilisée dans l'affichage pour représenter une police
+ *  et contenant celle contenue dans le fichier d'entrée
+ */
 map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
 {
   map<string,vector<fontLetter>> fontMap;
