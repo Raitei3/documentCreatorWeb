@@ -6,29 +6,29 @@ This application can be tested online, or installed locally.
 
 
 ## Manual installation
-```
+### Dependencies
 There are three dependencies: Qt5 ,OpenCV and, tesseract
 
-// Qt installation
-#Ubuntu
+#### Qt installation
+
+```
 $ sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev
-
-//tesseract installation
+```
+#### tesseract installation
+```
 $ sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
-
-// Opencv installation
-#Ubuntu Linux distribution
+```
+#### Opencv installation
+```
 $ sudo apt-get install libopencv-dev
-
-#MAC distribution (with Homebrew)
-$ brew install opencv
-
-// Libnavajo installation
-// You may need to first install OpenSSL & PAM
-// On Ubuntu:
-// sudo apt-get install libssl-dev libpam0g-dev
-// On Fedora:
-// dnf install openssl-devel pam-devel
+```
+#### Libnavajo installation
+ You may need to first install OpenSSL & PAM
+```
+$ sudo apt-get install libssl-dev libpam0g-dev
+```
+Then you have to clone and install the libnavajo projet
+```
 $ git clone https://github.com/titi38/libnavajo.git
 $ cd libnavajo
 $ mkdir build
@@ -36,10 +36,11 @@ $ cd build
 $ cmake ..
 $ make
 $ sudo make install
-
-// Font-extractor installation
-$ git clone https://github.com/BorisMansencal/Pdp.git
-$ cd Pdp/server
+```
+### Installation
+```
+$ git clone https://github.com/Raitei3/documentCreatorWeb.git
+$ cd server
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -48,9 +49,9 @@ $ make
 
 
 ## How to use
-To lauch the server, go into the server folder and make:
+To lauch the server, go into the build folder and make:
 ```    
-$ ./main
+$ ./documentCreatorWeb
 ```
 The server will be run by default on port 8080.
 You can change the port in the file libnavajo/src/WebServer.cc of libnavajo
@@ -61,17 +62,8 @@ If you are in local, you can access to the server throught: http://localhost:808
 
 ## Demo
 The application is host online :
-https://intranet.iut.u-bordeaux.fr/navajo/
+    https://intranet.iut.u-bordeaux.fr/navajo/
 
-
-## Building and running unit tests
-Tests are available to test the algorithm part that retrieves components in the image.
-To launch test go to the test folder and build:
-```    
-$ cmake.
-$ make
-$ ./Unit_test
-```
 
 ## Development
 Developed by:
@@ -84,5 +76,7 @@ Developed by:
 * [Nicolas Vidal]
 * [Boris Mansencal]
 * [Nicholas Journet]
-
-[Report link]()
+* [Martin Bazalgette]
+* [Antoine Borde]
+* [Paul BEZIAU]
+* [Zakia Taoufik]
