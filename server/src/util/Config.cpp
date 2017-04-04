@@ -6,7 +6,7 @@
 #include "Config.hpp"
 
 using namespace std;
-/* Cherche le fichier de configuration à trois endroits différents : 
+/* Cherche le fichier de configuration à trois endroits différents :
  * - dans ./config.in
  * - dans ~/.documentCreatorServer.ini (si la variable HOME de l'utilisateur est définie
  * - dans /etc/documentCreatorServer.ini
@@ -31,7 +31,7 @@ void Config::reload()
     }
   }
   loadDefault();
-    
+
 }
 
 void Config::reload(std::istream& stream)
@@ -44,7 +44,7 @@ void Config::reload(std::istream& stream)
   const string& sectionName(variableName); //idem
   const string number("[[:digit:]]+"); //au moins un chiffre
   const string str("[^#;[:space:]]+"); //tout sauf des commentaires ou des espaces
-    
+
   regex regexSection("(\\[" + sectionName + "\\])" + comment);
   regex rpropertieInt("(" + variableName + ")=(" + number + ")" + comment);
   regex rpropertieString("(" + variableName + ")=(" + str + ")" + comment);

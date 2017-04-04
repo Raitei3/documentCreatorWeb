@@ -23,7 +23,7 @@ Painter::~Painter()
 {
 }
 
-/* Pour chaque paragraphe écrit le plus de texte possible, renvoi l'image de résultat */
+/* Pour chaque paragraphe, écrit le plus de texte possible, renvoie l'image de résultat */
 cv::Mat Painter::painting()
 {
   _lineSpacing = computeSpaceLine(_font);
@@ -37,36 +37,36 @@ cv::Mat Painter::painting()
     int line = block->y;
     int ofset = block->x;
     auto it = _text.begin();
-    
+
     while(it!=_text.end() && line <block->height+block->y){
       char c=*it;
       auto fontIt = _font.find(string(&c,1));
-      
+
       if(fontIt!=_font.end()){
         int numLetter = rand() % fontIt->second.size();
         cv::Mat pict = fontIt->second[numLetter].mask;
         int baseline = fontIt->second[numLetter].baseline;
         int hpict = pict.size().height;
         int wpict = pict.size().width;
-        
+
         try{
           if(line > 0 && ofset > 0 && ofset + wpict < _background.cols &&
              line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
              c!=' ')//pour éviter un carré gris
           {
-            /* On récupère la sous image du fond qui est située à l'endroit où l'on va
-             * écrire le nouveau caractère et qui fait la même taille que ce dernier.
-             * Comme opencv n'effectue qu'une copie en surface, si on modifie la sous-
+            /* On récupère la sous image de l'arrière plan qui est située à l'endroit où l'on va
+             * écrire le nouveau caractère, et qui fait la même taille que ce dernier.
+             * Comme OpenCV n'effectue qu'une copie en surface, si on modifie la sous-
              * image, l'image d'origine sera modifiée en conséquence.
              */
             cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
-            /* Pour chaque pixels de coordonnées (i,j) on prend celui étant le plus sombre entre le fond et
+            /* Pour chaque pixel de coordonnées (i,j), on prend celui étant le plus sombre entre l'arrière plan et
              * la police
              */
             part=min(part,pict);
           }
         }catch(cv::Exception){
-          cerr << "erreur : caractère <" << c << ">, ligne =" << line << " et ofset= " << ofset << ".\n"; 
+          cerr << "erreur : caractère <" << c << ">, ligne =" << line << " et ofset= " << ofset << ".\n";
         }
         xml.addLetter(string(&c,1), numLetter, ofset, line-hpict,pict.size().width, pict.size().height);
 	ofset += wpict*fontIt->second[numLetter].rightLine/100;
@@ -75,7 +75,7 @@ cv::Mat Painter::painting()
         ofset = block->x;
         line += _lineSpacing;
         if(line+_lineSpacing > block->height+block->y)
-          break;	
+          break;
       }
       it++;
     }
@@ -95,7 +95,7 @@ int Painter::computeSpaceLine(map<string,vector<fontLetter> > font)
 {
   std::vector<int> aboveBaseline;
   std::vector<int> underBaseline;
-  
+
   for (auto fontIt=font.begin(); fontIt!=font.end(); ++fontIt)
   {
     for (auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
@@ -116,7 +116,7 @@ int Painter::computeSpaceLine(map<string,vector<fontLetter> > font)
   std::sort(underBaseline.begin(),underBaseline.end(), std::greater<int>());
   int aboveMax=0;
   int underMax=0;
-  
+
   for(int i =0;i<5; i++){
     aboveMax += aboveBaseline[i];
     underMax += underBaseline[i];

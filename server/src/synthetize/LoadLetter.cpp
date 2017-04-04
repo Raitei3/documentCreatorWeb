@@ -9,7 +9,7 @@ using namespace std;
 
 /* Prend en parametre le chemin d'un fichier de police (format .of)
  * renvoi la structure utilisée dans l'affichage pour représenter une police
- *  et contenant celle contenue dans le fichier d'entrée
+ *  et contenant la police du fichier d'entrée
  */
 map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
 {
@@ -120,4 +120,3 @@ cv::Mat LoadLetter::getImageFromMask(const cv::Mat &original, const cv::Mat &mas
 
   return letter;
 }
-

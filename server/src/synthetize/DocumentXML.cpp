@@ -5,7 +5,7 @@
 
 using namespace std;
 
-//écrit le document xml dans un QString interne à la classe
+//écrit le document xml dans un objet QString interne à la classe
 documentXML::documentXML():
     stream(&xml)
 {
@@ -81,7 +81,7 @@ void documentXML::addLetter(string display, int id, int x, int y, int width, int
 bool documentXML::write(const string& fileName)
 {
   QFile file(QString::fromStdString(fileName));
-  
+
   if(!file.open(QFile::WriteOnly)){
     return false;
   }
