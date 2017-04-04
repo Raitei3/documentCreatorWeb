@@ -14,19 +14,15 @@ class Painter
     ~Painter();
     cv::Mat painting();
   void extractFont(std::string fontPath);
-  void initXML();
-  void xmlBlocks(int x, int y, int width, int height);
-  void addLetterToXML(QString display,int id,int x, int y, int width,int height);
-  void endXML();
   void extractFont(std::vector<fontLetter> fl, cv::Mat background);
   void setText(std::string s);
-  void computeSpaceLine();
 
   private:
-    cv::Mat _background;
+  int computeSpaceLine(std::map<std::string, std::vector<fontLetter> > font);
     int * extractImage(char *str, int size);
     cv::Mat extractImage(QString str, int width, int height);
 
+    cv::Mat _background;
     documentXML xml;
     std::string fontName = "test";
     int widthDoc;

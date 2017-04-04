@@ -103,6 +103,7 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
   cerr << "extraction police : " << 1000*(t4-t3)/CLOCKS_PER_SEC << "ms" << endl;
   cerr << "exctraction blocks : " << 1000*(t5-t4)/CLOCKS_PER_SEC << "ms" << endl;
   cerr << "painter : " << 1000*(t6-t5)/CLOCKS_PER_SEC << "ms" << endl;
+  ocr.saveFont("font.of");
   return ret;
 }
 
