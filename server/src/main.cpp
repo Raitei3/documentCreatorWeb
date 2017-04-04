@@ -6,42 +6,21 @@
 #include "libnavajo/LogStdOutput.hh"
 
 #include <ctime>
-#include <signal.h>
-#include <cstring>
-#include <unordered_set>
 
 //manipulation des répertoires
 #include <dirent.h>
 #include <sys/stat.h>
-#include <cstdio> //remove
 
 #include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
 
-#include "../headers/Image.hpp"
-#include "../headers/Font.hpp"
-#include "../headers/Session.hpp"
-#include "../headers/json.hpp"
-#include "../headers/GrayscaleCharsDegradationModel.hpp"
-#include "../headers/ShadowBinding.hpp"
-#include "../headers/PhantomCharacter.hpp"
-#include "../headers/HoleDegradation.hpp"
-#include "../headers/BlurFilter.hpp"
-#include "../headers/BleedThrough.hpp"
-#include "../headers/BackgroundReconstruction.hpp"
-#include "../headers/binarization.hpp"
-#include "../headers/convertor.h"
-#include "../headers/StructureDetection.hpp"
-#include "../headers/Painter.hpp"
-#include "../headers/OCR.hpp"
-#include "Config.hpp"
 
 #include "GetSynthetizeImage.hpp"
-#include "degradation.hpp"
-#include "gestionSession.hpp"
 #include "manualFontExtractor.hpp"
-#include "synthetizeTest.hpp"
-#include "util.hpp"
 #include "StartSession2.hpp"
+#include "Config.hpp"
+#include "degradation.hpp"
 
 class MyDynamicRepository : public DynamicRepository
 {
@@ -107,6 +86,7 @@ class MyDynamicRepository : public DynamicRepository
           messageConsole.append("  - " + std::string(file->d_name) + "\n");
         }
       }
+      closedir(directory);
 
       listFiles.insert(0, ";");
       listFiles.insert(0, std::to_string(nbFiles));
@@ -129,12 +109,6 @@ class MyDynamicRepository : public DynamicRepository
     }
 
   } controller;
-
-
-  BinarizationTest _binarizationTest;
-  BackgroundReconstructionTest _backgroundReconstructionTest;
-  StructureDetectionTest _structureDetectionTest;
-  FontExtractionTest _fontExtractionTest;
 
   GetSynthetizeImage _getSynthetizeImage;
 
@@ -166,10 +140,6 @@ class MyDynamicRepository : public DynamicRepository
     add("downloadCreateDocument.txt", &downloadCreateDocument);
     add("getElemsDirectory.txt", &getElemsDirectory);
 
-    add("testBinarization.txt", &_binarizationTest);
-    add("backgroundReconstruction.txt", &_backgroundReconstructionTest);
-    add("structureDetectionTest.txt", &_structureDetectionTest);
-    add("fontExtractionTest.txt", &_fontExtractionTest);
     add("synthetizeImage.txt",&_getSynthetizeImage);
     add("composeImage.txt",&_getSynthetizeImage);
   }
@@ -180,30 +150,45 @@ class MyDynamicRepository : public DynamicRepository
 int main(int /*argc*/, char** /*argv*/ )
 {
   srand(time(NULL));
-
-  signal( SIGTERM, exitFunction );
-  signal( SIGINT, exitFunction );
-
-  NVJ_LOG->addLogOutput(new LogStdOutput);
   Config conf;
-  webServer = new WebServer;
+  bool run=true;
+  
+  while(run){
+    int pid=fork();
+    
+    if(pid==0){
+      std::cerr<<"Server launched with pid "<<getpid()<<std::endl;
+      atexit(exitFunction);
+      NVJ_LOG->addLogOutput(new LogStdOutput);
+      webServer = new WebServer;
+      webServer->setSocketTimeoutInSecond(10);
+      //webServer->setUseSSL(true, "../mycert.pem");
+      LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
+      //myLocalRepo.addDirectory("", "../client/");
+      webServer->addRepository(myLocalRepo);
 
-  //webServer->setUseSSL(true, "../mycert.pem");
-  LocalRepository *myLocalRepo = new LocalRepository("", CLIENT_DIR);
-  //myLocalRepo.addDirectory("", "../client/");
-  webServer->addRepository(myLocalRepo);
+      MyDynamicRepository myRepo;
+      webServer->addRepository(&myRepo);
 
-  MyDynamicRepository myRepo;
-  webServer->addRepository(&myRepo);
+      myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
+      webServer->addRepository(myUploadRepo);
 
-  myUploadRepo = new LocalRepository("data", UPLOAD_DIR);
-  webServer->addRepository(myUploadRepo);
+      webServer->startService();
 
-  webServer->startService();
+      webServer->wait();
 
-  webServer->wait();
+      LogRecorder::freeInstance();
 
-  LogRecorder::freeInstance();
-
-  return 0;
+      return 0;
+    }
+    else{
+      int status;
+      
+      waitpid(pid,&status,0);
+      if((WIFSIGNALED(status) && WTERMSIG(status)==15)||
+         WIFEXITED(status)){//si le serveur as terminé normalement ou par le signal 15, on ne le relance pas
+        run=false;
+      }
+    }
+  }
 }

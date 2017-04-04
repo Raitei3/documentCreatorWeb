@@ -452,7 +452,7 @@ Session.prototype.synthetizeImage = function(callback)
     	    {
 		alert(response.error);
 	    } else {
-        alert(response.filename);
+        
 		callback.replaceImage(response.filename);
 	    }
             $('.overlay').hide();
