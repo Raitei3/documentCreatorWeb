@@ -25,8 +25,8 @@ Painter::~Painter()
 
 cv::Mat Painter::painting()
 {
-  computeSpaceLine();
-  LoadLetter::reComputeBaseline(_font);
+  _lineSpacing = computeSpaceLine(_font);
+  //LoadLetter::reComputeBaseline(_font);
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
 
   for (auto block=_blocks.begin(); block!=_blocks.end(); block++) {
@@ -37,18 +37,18 @@ cv::Mat Painter::painting()
     int line = block->y;
     int ofset = block->x;
     auto it = _text.begin();
-
+    
     while(it!=_text.end() && line <block->height+block->y){
       char c=*it;
       auto fontIt = _font.find(string(&c,1));
-
+      
       if(fontIt!=_font.end()){
         int numLetter = rand() % fontIt->second.size();
         cv::Mat pict = fontIt->second[numLetter].mask;
         int baseline = fontIt->second[numLetter].baseline;
         int hpict = pict.size().height;
         int wpict = pict.size().width;
-
+        
         try{
           if(line > 0 && ofset > 0 && ofset + wpict < _background.cols &&
              line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
@@ -58,7 +58,7 @@ cv::Mat Painter::painting()
             part=min(part,pict);
           }
         }catch(cv::Exception){
-          cerr << "erreur : caractère <" << c << ">, ligne =" << line << " et ofset= " << ofset << ".\n";
+          cerr << "erreur : caractère <" << c << ">, ligne =" << line << " et ofset= " << ofset << ".\n"; 
         }
         xml.addLetter(string(&c,1), numLetter, ofset, line-hpict,pict.size().width, pict.size().height);
 	ofset += wpict*fontIt->second[numLetter].rightLine/100;
@@ -67,7 +67,7 @@ cv::Mat Painter::painting()
         ofset = block->x;
         line += _lineSpacing;
         if(line+_lineSpacing > block->height+block->y)
-          break;
+          break;	
       }
       it++;
     }
@@ -83,17 +83,19 @@ void Painter::extractFont(string fontPath)
     _font = LoadLetter::fromFile(fontPath);
 }
 
-void Painter::computeSpaceLine()
+int Painter::computeSpaceLine(std::map<std::string, vector<fontLetter> > font)
 {
   std::vector<int> aboveBaseline;
   std::vector<int> underBaseline;
-
-  for (auto fontIt=_font.begin(); fontIt!=_font.end(); ++fontIt)
+  
+  for (auto fontIt=font.begin(); fontIt!=font.end(); ++fontIt)
   {
-    for ( auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
+    for (auto it = fontIt->second.begin(); it != fontIt->second.end(); ++it)
     {
       double h = it->mask.size().height;
       int baseline = it->baseline;
+      if(baseline < 0 || baseline > 200)
+        continue;
       int above = (h/100)*baseline;
       int under = h-above;
 
@@ -105,13 +107,13 @@ void Painter::computeSpaceLine()
   std::sort(underBaseline.begin(),underBaseline.end(), std::greater<int>());
   int aboveMax=0;
   int underMax=0;
-
+  
   for(int i =0;i<5; i++){
     aboveMax += aboveBaseline[i];
     underMax += underBaseline[i];
   }
-  _lineSpacing = (aboveMax+underMax)/5;
-  std::cout << "lineSpacing " << _lineSpacing << std::endl;
+  std::cout << "lineSpacing " << (aboveMax+underMax)/5 << std::endl;
+return (aboveMax+underMax)/5;
 }
 
 

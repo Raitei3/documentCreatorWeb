@@ -1,4 +1,7 @@
 #include "SynthetizeImage.hpp"
+
+#include <ctime>
+
 #include "binarization.hpp"
 #include "convertor.h"
 #include "StructureDetection.hpp"
@@ -78,9 +81,11 @@ cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgrou
 cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
 {
   cv::Mat binarizedImage;
+  cv::Mat ret;
   vector<fontLetter> font;
   vector<cv::Rect> blocks;
   clock_t t1,t2,t3,t4,t5,t6;
+
   t1=clock();
   binarizedImage = binarization(img);
   t2=clock();
@@ -90,13 +95,15 @@ cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
   t4=clock();
   blocks = extractBlock(img, binarizedImage);
   t5=clock();
-  cv::Mat ret = createDocument(background, blocks, font, img);
+  ret = createDocument(background, blocks, font, img);
   t6=clock();
-  std::cerr << "binarization : " << 1000*(t2-t1)/CLOCKS_PER_SEC << "ms" << std::endl;
-  std::cerr << "extraction fond : " << 1000*(t3-t2)/CLOCKS_PER_SEC << "ms" << std::endl;
-  std::cerr << "extraction police : " << 1000*(t4-t3)/CLOCKS_PER_SEC << "ms" << std::endl;
-  std::cerr << "exctraction blocks : " << 1000*(t5-t4)/CLOCKS_PER_SEC << "ms" << std::endl;
-  std::cerr << "painter : " << 1000*(t6-t5)/CLOCKS_PER_SEC << "ms" << std::endl;
+
+  cerr << "binarization : " << 1000*(t2-t1)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "extraction fond : " << 1000*(t3-t2)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "extraction police : " << 1000*(t4-t3)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "exctraction blocks : " << 1000*(t5-t4)/CLOCKS_PER_SEC << "ms" << endl;
+  cerr << "painter : " << 1000*(t6-t5)/CLOCKS_PER_SEC << "ms" << endl;
+  ocr.saveFont("font.of");
   return ret;
 }
 
