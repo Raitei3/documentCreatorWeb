@@ -81,6 +81,12 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
     s=l.label;
     l.mask=getImageFromMask(background(l.rect), l.mask, 255);
     font[s].push_back(l);
+    if(font[s].size()==1){
+      font[s].back().baseline=((double)l.baseline/(double)l.rect.height) *100;
+    }
+    else{
+      font[s].back().baseline=font[s].front().baseline;
+    }
   }
   return font;
 }
@@ -112,15 +118,4 @@ cv::Mat LoadLetter::getImageFromMask(const cv::Mat &original, const cv::Mat &mas
   original.copyTo(letter, mask_tmp);
 
   return letter;
-}
-
-void LoadLetter::reComputeBaseline(map<string,vector<fontLetter> > font)
-{
-  for(auto mit = font.begin(); mit != font.end(); mit++){
-    fontLetter l = mit->second.front();
-    int baseline = ((double)l.baseline / (double)l.rect.height) * 100;
-    for(auto vit = mit->second.begin(); vit != mit->second.end(); vit++){
-      vit->baseline=baseline;
-    }
-  }
 }
