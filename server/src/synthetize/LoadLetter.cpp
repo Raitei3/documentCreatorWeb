@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/* Prend en parametre le chemin d'un fichier de police (format .of)
+ * renvoi la structure utilisée dans l'affichage pour représenter une police
+ *  et contenant celle contenue dans le fichier d'entrée
+ */
 map<string,vector<fontLetter> >  LoadLetter::fromFile(const string &path)
 {
   map<string,vector<fontLetter>> fontMap;
@@ -77,7 +81,8 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
     s=l.label;
     l.mask=getImageFromMask(background(l.rect), l.mask, 255);
     font[s].push_back(l);
-    font[s].push_back(l);if(font[s].size()==1){
+    font[s].push_back(l);
+    if(font[s].size()==1){
       font[s].back().baseline=((double)l.baseline/(double)l.rect.height) *100;
     }
     else{
@@ -116,13 +121,3 @@ cv::Mat LoadLetter::getImageFromMask(const cv::Mat &original, const cv::Mat &mas
   return letter;
 }
 
-void LoadLetter::reComputeBaseline(map<string,vector<fontLetter> > font)
-{
-  for(auto mit = font.begin(); mit != font.end(); mit++){
-    fontLetter l = mit->second.front();
-    int baseline = ((double)l.baseline / (double)l.rect.height) * 100;
-    for(auto vit = mit->second.begin(); vit != mit->second.end(); vit++){
-      vit->baseline=baseline;
-    }
-  }
-}

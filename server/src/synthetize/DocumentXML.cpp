@@ -5,12 +5,14 @@
 
 using namespace std;
 
+//écrit le document xml dans un QString interne à la classe
 documentXML::documentXML():
     stream(&xml)
 {
   stream.setAutoFormatting(true);
 }
 
+//ouvre le document
 void documentXML::init(int widthDoc, int heightDoc, string fontName, string backgroundName)
 {
   stream.writeStartElement("document");
@@ -37,6 +39,7 @@ void documentXML::close()
   stream.writeEndElement();
 }
 
+//ouvre un bloc
 void documentXML::openBlock(int x, int y, int width, int height)
 {
   stream.writeStartElement("textBlock");
@@ -74,6 +77,7 @@ void documentXML::addLetter(string display, int id, int x, int y, int width, int
   stream.writeEndElement();
 }
 
+//sauvegarde du xml dans le fichier donné en paramètre
 bool documentXML::write(const string& fileName)
 {
   QFile file(QString::fromStdString(fileName));

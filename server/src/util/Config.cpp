@@ -6,7 +6,11 @@
 #include "Config.hpp"
 
 using namespace std;
-
+/* Cherche le fichier de configuration à trois endroits différents : 
+ * - dans ./config.in
+ * - dans ~/.documentCreatorServer.ini (si la variable HOME de l'utilisateur est définie
+ * - dans /etc/documentCreatorServer.ini
+ * le premier fichier trouvé est utilisé, les autres sont ignorés*/
 Config::Config()
 {
   pathList={"config.ini"};
@@ -34,12 +38,12 @@ void Config::reload(std::istream& stream)
 {
   //regex decomposition
 
-  const string spaces("[[:space:]]*");
-  const string comment(spaces+"([#;].*)?");
-  const string variableName("[[:alpha:]][[:alnum:]]*");
-  const string& sectionName(variableName);
-  const string number("[[:digit:]]+");
-  const string str("[^#;[:space:]]+");
+  const string spaces("[[:space:]]*"); //autant d'espace que voulu
+  const string comment(spaces+"([#;].*)?"); //autant d'espace que voulu + '#' ou ';' suivi de n'importe quoi
+  const string variableName("[[:alpha:]][[:alnum:]]*"); // une lettre suivie de lettre et chiffres
+  const string& sectionName(variableName); //idem
+  const string number("[[:digit:]]+"); //au moins un chiffre
+  const string str("[^#;[:space:]]+"); //tout sauf des commentaires ou des espaces
     
   regex regexSection("(\\[" + sectionName + "\\])" + comment);
   regex rpropertieInt("(" + variableName + ")=(" + number + ")" + comment);
@@ -68,6 +72,7 @@ void Config::reload(std::istream& stream)
   updateEnv();
 }
 
+//charge les variables par défaut
 void Config::loadDefault()
 {
   intValues.clear();

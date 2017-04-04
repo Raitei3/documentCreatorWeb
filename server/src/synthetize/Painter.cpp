@@ -23,6 +23,7 @@ Painter::~Painter()
 {
 }
 
+/* Pour chaque paragraphe écrit le plus de texte possible, renvoi l'image de résultat */
 cv::Mat Painter::painting()
 {
   _lineSpacing = computeSpaceLine(_font);
@@ -53,7 +54,15 @@ cv::Mat Painter::painting()
              line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
              c!=' ')//pour éviter un carré gris
           {
+            /* On récupère la sous image du fond qui est située à l'endroit où l'on va
+             * écrire le nouveau caractère et qui fait la même taille que ce dernier.
+             * Comme opencv n'effectue qu'une copie en surface, si on modifie la sous-
+             * image, l'image d'origine sera modifiée en conséquence.
+             */
             cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
+            /* Pour chaque pixels de coordonnées (i,j) on prend celui étant le plus sombre entre le fond et
+             * la police
+             */
             part=min(part,pict);
           }
         }catch(cv::Exception){
@@ -93,8 +102,9 @@ int Painter::computeSpaceLine(map<string,vector<fontLetter> > font)
     {
       double h = it->mask.size().height;
       int baseline = it->baseline;
-      if(baseline < 0 || baseline > 200)
+      if(baseline < 0 || baseline > 200){
         continue;
+      }
       int above = (h/100)*baseline;
       int under = h-above;
 
