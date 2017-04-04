@@ -80,4 +80,3 @@ Developed by:
 * [Antoine Borde]
 * [Paul BEZIAU]
 * [Zakia Taoufik]
-[Report link]()
