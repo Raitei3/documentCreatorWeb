@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "LoadLetter.hpp"
+#include "util.hpp"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ Painter::~Painter()
 /* Pour chaque paragraphe écrit le plus de texte possible, renvoi l'image de résultat */
 cv::Mat Painter::painting()
 {
+  cv::Mat background = _background.clone();
   _lineSpacing = computeSpaceLine(_font);
   xml.init(widthDoc,heightDoc,fontName,backgroundName);
 
@@ -50,7 +52,7 @@ cv::Mat Painter::painting()
         int wpict = pict.size().width;
         
         try{
-          if(line > 0 && ofset > 0 && ofset + wpict < _background.cols &&
+          if(line > 0 && ofset > 0 && ofset + wpict < background.cols &&
              line-baseline*hpict/100 + _lineSpacing + hpict < _background.rows &&
              c!=' ')//pour éviter un carré gris
           {
@@ -59,7 +61,7 @@ cv::Mat Painter::painting()
              * Comme opencv n'effectue qu'une copie en surface, si on modifie la sous-
              * image, l'image d'origine sera modifiée en conséquence.
              */
-            cv::Mat part=_background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
+            cv::Mat part=background(cv::Rect(ofset, line-baseline*hpict/100 + _lineSpacing,wpict, hpict));
             /* Pour chaque pixels de coordonnées (i,j) on prend celui étant le plus sombre entre le fond et
              * la police
              */
@@ -83,7 +85,7 @@ cv::Mat Painter::painting()
   }
   xml.close();
   xml.write("data/document.xml");
-  return _background;
+  return background;
 }
 
 void Painter::extractFont(string fontPath)
@@ -133,4 +135,10 @@ void Painter::extractFont(vector<fontLetter> fl, cv::Mat background)
 void Painter::setText(string s)
 {
   _text = s;
+}
+
+string Painter::saveXML(int token)
+{
+  xml.write(UPLOAD_DIR + to_string(token) + ".xml");
+  return UPLOAD_DIR + to_string(token) + ".xml";
 }

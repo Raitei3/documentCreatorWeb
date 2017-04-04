@@ -39,7 +39,7 @@ void documentXML::close()
   stream.writeEndElement();
 }
 
-//ouvre un bloc
+//commence un paragraphe
 void documentXML::openBlock(int x, int y, int width, int height)
 {
   stream.writeStartElement("textBlock");

@@ -2,7 +2,6 @@
 #include "binarization.hpp"
 #include "convertor.h"
 #include "StructureDetection.hpp"
-#include "Painter.hpp"
 #include "BackgroundReconstruction.hpp"
 
 using namespace std;
@@ -49,11 +48,14 @@ vector<cv::Rect> SynthetizeImage::extractBlock(cv::Mat originalImage, cv::Mat bi
 }
 
 cv::Mat SynthetizeImage::createDocument(cv::Mat background, vector<cv::Rect> blocks,
-                                        vector<fontLetter> font, cv::Mat originalImage)
+                                        vector<fontLetter> font, cv::Mat originalImage, int token)
 {
+  cv::Mat ret;
   Painter painter(background,blocks);
   painter.extractFont(font,originalImage);
-  return painter.painting();
+  ret = painter.painting();
+  painter.saveXML(token);
+  return ret;
 }
 
 vector<cv::Rect> SynthetizeImage::createStandardBlock(cv::Mat background)
@@ -61,8 +63,9 @@ vector<cv::Rect> SynthetizeImage::createStandardBlock(cv::Mat background)
   return vector<cv::Rect>({cv::Rect(30,30,background.size().width-30,background.size().height-30)});
 }
 
-cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgroundPath, std::string text)
+cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgroundPath, std::string text, int token)
 {
+  cv::Mat ret;
   cv::Mat background = cv::imread(backgroundPath);
   vector<cv::Rect> blocks = createStandardBlock(background);
   Painter painter(background,blocks);
@@ -72,20 +75,24 @@ cv::Mat SynthetizeImage::composeImage(std::string fontPath, std::string backgrou
   }
 
   painter.extractFont(fontPath);
-  return painter.painting();
+  
+  ret = painter.painting();
+  painter.saveXML(token);
+  return ret;
 }
 
-cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img)
+cv::Mat SynthetizeImage::SynthetizeAuto(cv::Mat img, int token)
 {
-  cv::Mat binarizedImage;
+  cv::Mat binarizedImage, background;
   vector<fontLetter> font;
   vector<cv::Rect> blocks;
   
   binarizedImage = binarization(img);
   background = extractBackground(img, binarizedImage);
+  _background = background;
   font = extractFont(img, binarizedImage);
   blocks = extractBlock(img, binarizedImage);
-  return createDocument(background, blocks, font, img);
+  return createDocument(background, blocks, font, img, token);
 }
 
 string SynthetizeImage::saveFont(int token)
@@ -96,6 +103,7 @@ string SynthetizeImage::saveFont(int token)
 
 string SynthetizeImage::saveBackground(int token)
 {
-  cv::imwrite(UPLOAD_DIR + to_string(token) + "_background.png",background);
+  cv::imwrite(UPLOAD_DIR + to_string(token) + "_background.png",_background);
   return to_string(token) + "_background.png";
 }
+

@@ -27,7 +27,7 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
       backgroundPath = "data/background/" + backgroundPath;
 
       SynthetizeImage synthetizeImage;
-      cv::Mat result = synthetizeImage.composeImage(fontPath, backgroundPath, text);
+      cv::Mat result = synthetizeImage.composeImage(fontPath, backgroundPath, text, token);
 
       activeSessions.at(sessionIndex)->getImage()->setMat(result);
       activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);
@@ -41,7 +41,7 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
       cv::Mat image = activeSessions.at(sessionIndex)->getImage()->getMat();
 
       SynthetizeImage synthetizeImage;
-      cv::Mat result = synthetizeImage.SynthetizeAuto(image);
+      cv::Mat result = synthetizeImage.SynthetizeAuto(image, token);
 
       activeSessions.at(sessionIndex)->getImage()->setMat(result);
       activeSessions.at(sessionIndex)->saveDisplayedImage(UPLOAD_DIR);

@@ -21,6 +21,7 @@ class Painter
   void extractFont(std::vector<fontLetter> fl, cv::Mat background);
   void setText(std::string s);
   int computeSpaceLine(std::map<std::string,std::vector<fontLetter> > font);
+  std::string saveXML(int token);
 
   private:
     cv::Mat _background;
