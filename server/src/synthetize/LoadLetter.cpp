@@ -77,6 +77,12 @@ map<string,vector<fontLetter> > LoadLetter::fromVector(const vector<fontLetter> 
     s=l.label;
     l.mask=getImageFromMask(background(l.rect), l.mask, 255);
     font[s].push_back(l);
+    font[s].push_back(l);if(font[s].size()==1){
+      font[s].back().baseline=((double)l.baseline/(double)l.rect.height) *100;
+    }
+    else{
+      font[s].back().baseline=font[s].front().baseline;
+    }
   }
   return font;
 }
