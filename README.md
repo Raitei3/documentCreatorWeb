@@ -7,18 +7,18 @@ This application can be tested online, or installed locally.
 
 ## Manual installation
 ### Dependencies
-There are three dependencies: Qt5 ,OpenCV and, tesseract
+There are three dependencies: Qt5 ,OpenCV and Tesseract
 
 #### Qt installation
 
 ```
 $ sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev
 ```
-#### tesseract installation
+#### Tesseract installation
 ```
 $ sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
 ```
-#### Opencv installation
+#### OpenCV installation
 ```
 $ sudo apt-get install libopencv-dev
 ```
@@ -49,7 +49,7 @@ $ make
 
 
 ## How to use
-To lauch the server, go into the build folder and make:
+To lauch the server, go to the build folder and make:
 ```    
 $ ./documentCreatorWeb
 ```
@@ -78,5 +78,5 @@ Developed by:
 * [Nicholas Journet]
 * [Martin Bazalgette]
 * [Antoine Borde]
-* [Paul BEZIAU]
+* [Paul Beziau]
 * [Zakia Taoufik]
