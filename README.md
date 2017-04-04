@@ -39,8 +39,8 @@ $ sudo make install
 ```
 ### Installation
 ```
-$ git clone https://github.com/BorisMansencal/Pdp.git
-$ cd Pdp/server
+$ git clone https://github.com/Raitei3/documentCreatorWeb.git
+$ cd server
 $ mkdir build
 $ cd build
 $ cmake ..
