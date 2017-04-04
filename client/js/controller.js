@@ -558,6 +558,7 @@ function ControllerCreateDocument(canvas) {
     this.canvas = canvas;
     var controller = this;
     var font;
+    var background;
 
     // Init
     $('#createDocumentPractice').show();
@@ -578,7 +579,7 @@ function ControllerCreateDocument(canvas) {
 	        font = fonts.options[fonts.selectedIndex].value;
 
 	    var backgrounds = document.getElementById("createDocumentBackground");
-	    var background = backgrounds.options[backgrounds.selectedIndex].value;
+	        background = backgrounds.options[backgrounds.selectedIndex].value;
 
 	    var text = document.getElementById("createDocumentText").value;
 
@@ -628,12 +629,12 @@ function ControllerCreateDocument(canvas) {
     session.extractFont(font);
   },true);
 
-  // sinthetise Image
-  document.getElementById('synthetizeExec').addEventListener('click', function(){
-    //session.synthetizeImage(controller);
+  //click to downnload background
+  document.getElementById('downloadBackground').addEventListener('click',function(){
+     session.extractBackground(background);
 
-  }, true);
-  //  }
+  },true);
+
 }
 
 // Mets à jour les selects "Font" et "Background" à partir des données renvoyées par le serveur.

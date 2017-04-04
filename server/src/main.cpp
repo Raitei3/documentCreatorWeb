@@ -55,6 +55,7 @@ class MyDynamicRepository : public DynamicRepository
   merge _merge;
   extractFont _extractFont;
   updateBaseline _updateBaseline;
+  extractBackground _extractBackground;
 
   grayScaleCharsDegradation _grayScaleCharsDegradation;
   ShadowBindingDegradation _shadowBindingDegradation;
@@ -172,6 +173,7 @@ class MyDynamicRepository : public DynamicRepository
     add("fontExtractionTest.txt", &_fontExtractionTest);
     add("synthetizeImage.txt",&_getSynthetizeImage);
     add("composeImage.txt",&_getSynthetizeImage);
+    add("extractBackground",&_extractBackground);
   }
 };
 

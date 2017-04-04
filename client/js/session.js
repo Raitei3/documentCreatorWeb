@@ -223,6 +223,32 @@ Session.prototype.extractFont = function(fontname)
     });
 }
 
+Session.prototype.extractBackground = function(background)
+{
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+    url: 'extractFont.txt',
+    type: 'POST',
+    data: "token=" + this.token +"&background=" + background,
+    success: function(data, textStatus, jqXHR)
+    {
+            var file = new Blob([data], {type: "text/plain;charset=utf-8"});
+            saveAs(file, background + ".png");
+
+            $('.loader').hide();
+            $('.overlay').hide();
+            $('#saveModal').modal('hide');
+
+    },
+    error: function(error)
+    {
+        console.log('ERRORS: ' + error);
+    }
+    });
+}
+
 /*!
  * update a baseline value on the server
  * \memberof Session
@@ -499,6 +525,8 @@ Session.prototype.composeImage = function(font, background, text, callback)
         }
     });
 }
+
+
 
 // Envois les informations nécessaires pour créer un document, et récupère le path du document créer.
 Session.prototype.downloadCreateDocument = function(typeDownload, font, background, text, callback)
