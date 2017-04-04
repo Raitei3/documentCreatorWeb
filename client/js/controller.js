@@ -557,6 +557,7 @@ ControllerDegradation.prototype.replaceImage = function replaceImage(imagePath)
 function ControllerCreateDocument(canvas) {
     this.canvas = canvas;
     var controller = this;
+    var font;
 
     // Init
     $('#createDocumentPractice').show();
@@ -574,7 +575,7 @@ function ControllerCreateDocument(canvas) {
 	document.getElementById("createDocumentStart").addEventListener('click', function(event){
 
 	    var fonts = document.getElementById("createDocumentFont");
-	    var font = fonts.options[fonts.selectedIndex].value;
+	        font = fonts.options[fonts.selectedIndex].value;
 
 	    var backgrounds = document.getElementById("createDocumentBackground");
 	    var background = backgrounds.options[backgrounds.selectedIndex].value;
@@ -590,10 +591,6 @@ function ControllerCreateDocument(canvas) {
 
 	    session.composeImage( font, background, text, controller);
 	}, true);
-
-
-
-
 
   // Detect when we move the image
   canvas.canvas.addEventListener('mousedown', function(e) { canvas.onMouseDown(e); }, true);
@@ -625,6 +622,11 @@ function ControllerCreateDocument(canvas) {
   document.getElementById('downloadImage').setAttribute('href','data/' + img);
   document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
   }, true);
+
+  // click to download font
+  document.getElementById('downloadFont').addEventListener('click',function(){
+    session.extractFont(font);
+  },true);
 
   // sinthetise Image
   document.getElementById('synthetizeExec').addEventListener('click', function(){
