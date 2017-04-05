@@ -626,6 +626,11 @@ function ControllerCreateDocument(canvas) {
   document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
   }, true);
 
+    document.getElementById('downloadXML').addEventListener('click', function(e){
+        document.getElementById('downloadXML').setAttribute('href','data/' + session.token + '.xml');
+        document.getElementById('downloadXML').setAttribute('download', 'doc-online.xml');
+    }, true);
+
   // sinthetise Image
   document.getElementById('synthetizeExec').addEventListener('click', function(){
     //session.synthetizeImage(controller);
@@ -710,11 +715,10 @@ function ControllerSynthetize(canvas) {
     document.getElementById('downloadImage').setAttribute('href','data/' + img);
     document.getElementById('downloadImage').setAttribute('download', 'doc-online.' + extension);
     }, true);
-
+    
     // sinthetise Image
     document.getElementById('synthetizeExec').addEventListener('click', function(){
       session.synthetizeImage(controller);
-
     }, true);
 
     /*document.getElementById('createDocumentStart').addEventListener('click', function(){

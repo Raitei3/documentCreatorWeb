@@ -58,6 +58,7 @@ bool GetSynthetizeImage::getPage(HttpRequest* request, HttpResponse *response)
       if(!backgroundPath.empty()){
         json_response += ",\"backgroundPath\":\"" + backgroundPath + "\"";
       }
+      json_response += ",\"XMLPath\":\"" + std::to_string(token) + ".xml\"";
       json_response += "}";
       return fromString(json_response, response);
     }

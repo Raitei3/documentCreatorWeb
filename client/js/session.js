@@ -455,6 +455,18 @@ Session.prototype.synthetizeImage = function(callback)
         
 		callback.replaceImage(response.filename);
 	    }
+            if(response.backgroundPath != null){
+                document.getElementById('downloadBackground').setAttribute('href','data/' + response.backgroundPath);
+                document.getElementById('downloadBackground').setAttribute('download', 'doc-online-background.png');
+            }
+            if(response.fontPath != null){
+                document.getElementById('downloadFont').setAttribute('href','data/' + response.fontPath);
+                document.getElementById('downloadFont').setAttribute('download', 'doc-online.of');
+            }
+            if(response.XMLPath != null){
+                document.getElementById('downloadXML').setAttribute('href','data/' + response.XMLPath);
+                document.getElementById('downloadXML').setAttribute('download', 'doc-online.xml');
+            }
             $('.overlay').hide();
             $('.loader').hide();
         },
