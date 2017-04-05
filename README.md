@@ -60,6 +60,12 @@ You can change the port in the file libnavajo/src/WebServer.cc of libnavajo
 
 If you are in local, you can access to the server throught: http://localhost:8080
 
+*note*
+The user data are not deleted by the server, so you should do it by hand :
+```
+$ rm client/data/*
+```
+
 ## Demo
 The application is host online :
     https://intranet.iut.u-bordeaux.fr/navajo/
