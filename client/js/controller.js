@@ -632,10 +632,10 @@ function ControllerCreateDocument(canvas) {
     }, true);
 
   // sinthetise Image
-  document.getElementById('synthetizeExec').addEventListener('click', function(){
+ // document.getElementById('synthetizeExec').addEventListener('click', function(){
     //session.synthetizeImage(controller);
 
-  }, true);
+  //}, true);
   //  }
 }
 
