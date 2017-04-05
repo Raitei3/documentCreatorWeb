@@ -49,65 +49,56 @@ FIND_PACKAGE(Tesseract REQUIRED)
 
 #FIND_PACKAGE(OpenSSL REQUIRED)
 
-INCLUDE_DIRECTORIES(${libnavajo_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Core_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Gui_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/headers)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/headers/degradations
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/manualFontExtractor
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/synthetize
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/util
+  ${CMAKE_CURRENT_SOURCE_DIR}/headers/webPages)
 
 SET(SRVR_SRCS
-  src/binarization.cpp
-  src/BleedThrough.cpp
-  src/BlurFilter.cpp
-  src/Character.cpp
-  src/convertor.cpp
-  src/ConnectedComponent.cpp
-  src/connectedcomponentextraction.cpp
-  src/Font.cpp
-  src/GrayscaleCharsDegradationModel.cpp
-  src/HoleDegradation.cpp
-  src/Image.cpp
-  src/Line.cpp
-  src/PhantomCharacter.cpp
-  src/ShadowBinding.cpp
-  src/Session.cpp
   src/main.cpp
-  src/LineDetection.cpp
-  src/BackgroundReconstruction.cpp
-  src/textinpainting.cpp
-  src/baseline.cpp
-  src/StructureDetection.cpp
-  src/OCR.cpp
-  src/Painter.cpp
+
+  src/degradations/BleedThrough.cpp
+  src/degradations/BlurFilter.cpp
+  src/degradations/GrayscaleCharsDegradationModel.cpp
+  src/degradations/PhantomCharacter.cpp
+  src/degradations/ShadowBinding.cpp
+  src/degradations/degradations.cpp
+  src/degradations/HoleDegradation.cpp
+  
+  src/manualFontExtractor/Character.cpp
+  src/manualFontExtractor/ConnectedComponent.cpp
+  src/manualFontExtractor/connectedcomponentextraction.cpp
+  src/manualFontExtractor/Font.cpp
+  src/manualFontExtractor/Line.cpp
+  src/manualFontExtractor/Image.cpp
+  
+  src/util/binarization.cpp
+  src/util/convertor.cpp
+  src/util/Session.cpp
+  src/util/baseline.cpp
+  src/util/Config.cpp
+  src/util/util.cpp
+  
+  src/synthetize/LineDetection.cpp
+  src/synthetize/BackgroundReconstruction.cpp
+  src/synthetize/textinpainting.cpp
+  src/synthetize/StructureDetection.cpp
+  src/synthetize/OCR.cpp 
+  src/synthetize/Painter.cpp
+  src/synthetize/SynthetizeImage.cpp
+  src/synthetize/DocumentXML.cpp
+  src/synthetize/LoadLetter.cpp
+  
+  src/webPages/gestionSession.cpp
+  src/webPages/manualFontExtractor.cpp
+  src/webPages/StartSession2.cpp
+  src/webPages/GetSynthetizeImage.cpp
   )
 
-SET(SRVR_HDRS
-  headers/binarization.hpp
-  headers/BleedThrough.hpp
-  headers/BlurFilter.hpp
-  headers/Character.hpp
-  headers/convertor.h
-  headers/ConnectedComponent.hpp
-  headers/connectedcomponentextraction.h
-  headers/Font.hpp
-  headers/GrayscaleCharsDegradationModel.hpp
-  headers/HoleDegradation.hpp
-  headers/Image.hpp
-  headers/json.hpp
-  headers/Line.hpp
-  headers/PhantomCharacter.hpp
-  headers/ShadowBinding.hpp
-  headers/Session.hpp
-  headers/LineDetection.hpp
-  headers/BackgroundReconstruction.hpp
-  headers/textinpainting.hpp
-  headers/baseline.hpp
-  headers/StructureDetection.hpp
-  headers/OCR.hpp
-  headers/Painter.hpp
-)
 
-ADD_EXECUTABLE(main ${SRVR_SRCS} ${SRVR_HDRS})
-TARGET_LINK_LIBRARIES(main  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
+CONFIGURE_FILE(config.ini config.ini)
+
+ADD_EXECUTABLE(documentCreatorWeb ${SRVR_SRCS})
+TARGET_LINK_LIBRARIES(documentCreatorWeb  ${Tesseract_LIBRARIES} ${libnavajo_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)

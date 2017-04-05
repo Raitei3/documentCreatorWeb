@@ -18,22 +18,42 @@
     <script type="text/javascript">
       $(function() {
         $('.loader').hide();
-        $('#createDocumentPractice').hide();
-        document.getElementById('createDocumentStart').addEventListener('click', function(){
-          init(null, null, null, "createDocument");
+        $('#createDocumentPractice').show();
+        $('#composePractice').hide();
+        init(null, null, null, "createDocument");
+        $.ajax({
+  	  url: 'startSession.txt',
+	  type: 'GET',
+          cache: false,
+	  processData: false,
+ 	  contentType: false,
+	  context : this,
+	  success: function(responseJson, textStatus, jqXHR)
+	  {
+    	      var response = JSON.parse(responseJson);
+    	      if(response.error == null)
+    	      {
+      session.token = response.token;
+              }
+
+	  },
+	  error: function(jqXHR, textStatus, errorThrown)
+	  {
+              console.log('ERRORS: ' + textStatus);
+	  }
         });
       });
     </script>
     <link rel="shortcut icon" href="img/favicon.png">
   </head>
-  
-  
+
+
   <body data-spy="scroll" data-target="#navigation" data-offset="120" class="fill-height">
     <div class="overlay">
       <div class="loader">
       </div>
     </div>
-    
+
     <!-- Navigation bar --><!-- Navigation bar --><!-- Navigation bar -->
     <header class="header">
       <div class="sticky-wrapper">
@@ -57,11 +77,9 @@
 		<li>
 		  <a href="degradations.html">Degradations</a>
 		</li>
+
 		<li>
-		  <a href="create-your-document.html">Create your document</a>
-		</li>
-		<li>
-		  <a href="synthetise.html">Syntetise</a>
+		  <a href="synthetise.html">Syntetise image</a>
 		</li>
 	      </ul>
             </div>
@@ -70,9 +88,9 @@
       </div>
     </header>
 
-    
+
     <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
-    <section id="createDocument">
+    <!-- <section id="createDocument">
       <div class="container">
 	<div class="row">
 	  <div class="col-md-12">
@@ -90,12 +108,12 @@
 	  </div>
 	  <div class="col-md-12 text-center">
 	    <p class="text-center">
-	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>  
+	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>
 	    </p>
 	  </div>
 	</div>
       </div>
-    </section>   
+    </section>   -->
 
     <section id="createDocumentPractice">
       <div class="container">
@@ -105,22 +123,74 @@
 	    <br>
 	    Background: <select id="createDocumentBackground"></select>
 	    <br>
-	    <a name="createDocumentDownload" id="createDocumentDownloadXML" href="#">
-	      <span class="glyphicon glyphicon-download"></span>
-	    </a>Download XML
-	    <br>
-	    <a name="createDocumentDownload" id="createDocumentDownloadPNG" href="#">
-	      <span class="glyphicon glyphicon-download"></span>
-	    </a>Download PNG
 	  </div>
 	  <div class="col-md-8">
-	    <textarea id="createDocumentText" rows="6" cols="75">lorem ipsum et dolor</textarea>
+	    <textarea id="createDocumentText" rows="6" cols="75"></textarea>
+	  </div>
+    <div class="col-md-12 text-center">
+	    <p class="text-center">
+	      <a href="#" id="createDocumentStart" class="btn btn-primary" >GO !</a>
+	    </p>
 	  </div>
 	</div>
       </div>
     </section>
 
-    
+
+    <section id="composePractice">
+      <div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12 section_portion" style="padding:10px;"><!--OPTIONS-->
+    <div class="row text-center">
+      <b>OPTIONS</b>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <a href="#">
+          <span class="glyphicon glyphicon-zoom-in" id="zoom-in"></span>
+        </a>Zoom in<br>
+        <a href="#">
+          <span class="glyphicon glyphicon-zoom-out" id="zoom-out"></span>
+        </a>Zoom out<br>
+        <a href="#">
+          <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
+        </a>Reset zoom<br>
+        <!--
+        <a href="#">
+          <span class="glyphicon glyphicon-refresh"></span>
+        </a>Reset image
+        -->
+      </div>
+      <div class="col-md-7">
+        <a href="#" title="Start with a new Image">
+          <span class="glyphicon glyphicon-remove" id="resetImage"></span>
+        </a>Start from scratch<br>
+        <a id="downloadImage" href="#">
+          <span class="glyphicon glyphicon-download"></span>
+        </a>Download Image<br>
+        <a id="downloadXML" href="#">
+        <span class="glyphicon glyphicon-download"></span>
+        </a>Download XML
+      </div>
+    </div>
+        </div>
+       </div>
+       </div>
+     <div class="col-md-8 text-center" width="150" height="600" style="margin: 5px 0px;">
+
+          <canvas id="canvas" width="980" height="700" data-girar="0" style="display:inline-block;"></canvas>
+
+    <!--<div class="modal-footer">-->
+      <button type="button" data-dismiss="modal" class="btn btn-default" onclick="history.go(-1)"> Close</button>
+    <!-- </div> -->
+    </div>
+  </div>
+</div>
+</section>
+
+
     <!-- MOD// CREDITS  -->
     <div class="modal fade" id="creditModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm">
@@ -141,8 +211,9 @@
 	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T. Autret</a>,
 	      <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A. Boschet</a>,
 	      <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T. Labrousse</a>,
-	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a> and
-	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>.
+	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a>,
+	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>,
+              A. Borde, P. Beziau, M. Bazalgette and Z. Taoufik.
 	      Design by <a href="http://www.whitebeears.com">F. Bruneau </a>
 	    </p>
 	    <p>
@@ -157,20 +228,20 @@
     </div>
 
     <!-- FOOTER  -->
-    <footer>  
+    <footer>
       <div class="row copyright">
 	<p class="text-center">
 	  <a data-toggle="modal" href="#" data-target="#creditModal">
 	    <span class="glyphicon glyphicon-info-sign"></span>
 	  </a>Credits<br>
-	  
+
 	  <a href="https://github.com/titi38/libnavajo">
 	    <span class="glyphicon glyphicon-education" id="git"></span>
 	  </a>
 	  Made with <a href="https://github.com/titi38/libnavajo"> libnavajo </a>
 	</p>
       </div>
-    </footer>  
+    </footer>
 
 
     <script type="text/javascript" src="js/Blob.js"></script>

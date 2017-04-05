@@ -42,7 +42,7 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
-	      </button>
+  </button >
             </div>
             <div id="navigation" class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-default">
@@ -56,9 +56,6 @@
 		  <a href="degradations.html">Degradations</a>
 		</li>
 		<li>
-		  <a href="create-your-document.html">Create your document</a>
-		</li>
-		<li>
 		<a href="synthetise.html">Synthetise image </a>
 		</li>
 	      </ul>
@@ -67,36 +64,49 @@
 	</div>
       </div>
     </header>
+<!-- //////******** GROUPE PDP 2017 ********/////
 
 
    <!-- INTRO --><!-- INTRO --><!-- INTRO --><!-- INTRO -->
     <section id= "synthetize">
       <div class="container">
+
 	<div class="row">
-	  <div class="col-md-12">
-            <h2 class="heading">SYNTHETIZE IMAGE</h2>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="col-md-12 text-center">
-            <p>
+	  <div class="col-md-6 text-center">
+	  	 <h4 class="heading">AUTOMATIC</h4>
+          <p>
 	      <b>
-		Welcome to Synthetize image<br>
-		First, upload an image (supported formats are JPEG, JPG, PNG, TIF and TIFF)<br>
+		Synthetize by uploading image<br>
+		First, upload an image (supported formats are JPEG, JPG and PNG)<br>
 		Then, synthetize it !
 	      </b>
 	      <br><br>
 	      (Works only on Firefox and Chrome.)
 	    </p>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="text-center">
-            <div class="fileUpload btn btn-primary">
+	    <div class="fileUpload btn btn-primary">
 	      <span>Upload</span>
               <input id="startSynthetize" type="file" class="upload" name="image" accept="image/*"/>
             </div>
-          </div>
+	  </div>
+
+	  <div class="col-md-6 text-center">
+	  	<h4 class="heading">MANUAL</h4>
+        <p>
+           <b>
+		Choose a font,a bachground and write a text<br>
+		Then, generate a synthetise image !
+	      </b>
+	      <br><br>
+	      (Works only on Firefox and Chrome.)
+	    </p>
+            <a href="create-your-document.html">
+              <div class="btn btn-primary">
+                <span>Start</span>
+              </div>
+            </a>
+
+	  </div>
+
 	</div>
       </div>
     </section>
@@ -121,6 +131,9 @@
 		    <a href="#">
 		      <span class="glyphicon glyphicon-remove-circle" id="zoom-reset"></span>
 		    </a>Reset zoom<br>
+		    <a id="downloadXML" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download XML
 		    <!--
 		    <a href="#">
 		      <span class="glyphicon glyphicon-refresh"></span>
@@ -134,9 +147,12 @@
 		    <a id="downloadImage" href="#">
 		      <span class="glyphicon glyphicon-download"></span>
 		    </a>Download Image<br>
-		    <a data-toggle="modal" href="#" data-target="#helpModal">
-		      <span class="glyphicon glyphicon-question-sign"></span>
-		    </a>Help
+		    <a id="downloadFont" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download Font<br>
+		    <a id="downloadBackground" href="#">
+		      <span class="glyphicon glyphicon-download"></span>
+		    </a>Download Background
 		  </div>
 		</div>
 	      </div>
@@ -154,10 +170,6 @@
 	</div>
 </div>
 </section>
-
-
-
-
 
 
     <!-- MOD// CREDITS  -->
@@ -180,8 +192,9 @@
 	      <a href="mailto:tristan.autret@etu.u-bordeaux.fr">T. Autret</a>,
 	      <a href="mailto:anthony.boschet@etu.u-bordeaux.fr">A. Boschet</a>,
 	      <a href="mailto:thomas.labrousse@etu.u-bordeaux.fr">T. Labrousse</a>,
-	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a> and
-	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>.
+	      <a href="mailto:romain.tisne@etu.u-bordeaux.fr"> R. Tisné </a>,
+	      <a href="mailto:jimmy.gouraud@hotmail.fr"> J. Gouraud</a>,
+              A. Borde, P. Beziau, M. Bazalgette and Z. Taoufik.
 	      Design by <a href="http://www.whitebeears.com">F. Bruneau </a>
 	    </p>
 	    <p>

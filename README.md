@@ -6,30 +6,29 @@ This application can be tested online, or installed locally.
 
 
 ## Manual installation
+### Dependencies
+There are three dependencies: Qt5 ,OpenCV and Tesseract
+
+#### Qt installation
+
 ```
-There are two dependencies: Qt5 and OpenCV
-
-// Qt installation
-#Ubuntu
-$ sudo apt-get install libopencv-dev qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev cmake
-
-//tesseract
-sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
-
-
-// Opencv installation
-#Ubuntu Linux distribution
+$ sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5xmlpatterns5-dev
+```
+#### Tesseract installation
+```
+$ sudo apt-get install tesseract-ocr tesseract-ocr-fra libtesseract-dev libleptonica-dev
+```
+#### OpenCV installation
+```
 $ sudo apt-get install libopencv-dev
-
-#MAC distribution (with Homebrew)
-$ brew install opencv
-
-// Libnavajo installation
-// You may need to first install OpenSSL & PAM
-// On Ubuntu:
-// sudo apt-get install libssl-dev libpam0g-dev qtbase5-dev
-// On Fedora:
-// dnf install openssl-devel pam-devel
+```
+#### Libnavajo installation
+ You may need to first install OpenSSL & PAM
+```
+$ sudo apt-get install libssl-dev libpam0g-dev
+```
+Then you have to clone and install the libnavajo projet
+```
 $ git clone https://github.com/titi38/libnavajo.git
 $ cd libnavajo
 $ mkdir build
@@ -37,22 +36,22 @@ $ cd build
 $ cmake ..
 $ make
 $ sudo make install
-
-// Font-extractor installation
-$ git clone https://github.com/BorisMansencal/Pdp.git
-$ cd Pdp/server
+```
+### Installation
+```
+$ git clone https://github.com/Raitei3/documentCreatorWeb.git
+$ cd server
 $ mkdir build
 $ cd build
-$ cmake .. -DCMAKE_MODULE_PATH=<libnavajo sources path>
- where <libnavajo sources path> must be replaced with root directory of libanvajo sources (where there is the file FindLibnavajo.cmake
- $ make
+$ cmake ..
+$ make
 ```
 
 
 ## How to use
-To lauch the server, go into the server folder and make:
+To lauch the server, go to the build folder and make:
 ```    
-$ ./main
+$ ./documentCreatorWeb
 ```
 The server will be run by default on port 8080.
 You can change the port in the file libnavajo/src/WebServer.cc of libnavajo
@@ -60,6 +59,12 @@ You can change the port in the file libnavajo/src/WebServer.cc of libnavajo
 ```#define DEFAULT_HTTP_PORT 8080```
 
 If you are in local, you can access to the server throught: http://localhost:8080
+
+*note*
+The user data are not deleted by the server, so you should do it by hand :
+```
+$ rm client/data/*
+```
 
 ## Demo
 The application is host online :
@@ -86,5 +91,7 @@ Developed by:
 * [Nicolas Vidal]
 * [Boris Mansencal]
 * [Nicholas Journet]
-
-[Report link]()
+* [Martin Bazalgette]
+* [Antoine Borde]
+* [Paul Beziau]
+* [Zakia Taoufik]

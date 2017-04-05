@@ -77,7 +77,7 @@ function Baseline(lines) {
  * \param ctx the context to draw on
  * \param image the image to ajust the coordonate
  */
-Baseline.prototype.draw = function(ctx, image){  
+Baseline.prototype.draw = function(ctx, image){
     if(this.visible)
         for (index = 0; index < this.lines.length; index++)
             this.lines[index].draw(ctx, image);
@@ -89,7 +89,7 @@ Baseline.prototype.draw = function(ctx, image){
  * \param mx x coordonate
  * \param my y coordonate
  * \param image the image to ajust the coordonate
- * \return the id of the baseline where the point is on, false otherwise 
+ * \return the id of the baseline where the point is on, false otherwise
  */
 Baseline.prototype.contains = function(mx, my, image){
     if(this.visible == false)
@@ -182,13 +182,13 @@ BoundingBox.prototype.draw = function(ctx, image){
  * \param mx x coordonate
  * \param my y coordonate
  * \param image the image to ajust the coordonate
- * \return the id of the boundingbox where the point is on, false otherwise 
+ * \return the id of the boundingbox where the point is on, false otherwise
  */
 BoundingBox.prototype.contains = function(mx, my, image){
     for (index = 0; index < this.rects.length; index++) {
-        if((this.rects[index].rect.x + image.x <= mx) 
+        if((this.rects[index].rect.x + image.x <= mx)
             && (this.rects[index].rect.x + image.x + this.rects[index].rect.w >=mx)
-            && (this.rects[index].rect.y + image.y <= my) 
+            && (this.rects[index].rect.y + image.y <= my)
             && (this.rects[index].rect.y + image.y + this.rects[index].rect.h >= my))
             return index;
     }
@@ -231,7 +231,7 @@ BoundingBox.prototype.removeToSelection = function (id){
 }
 
 /*!
- * principal canvas 
+ * principal canvas
  * \class Canvas
  * \param canvas canvas element
  * \param image image draw on the canvas
@@ -247,7 +247,7 @@ function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
     this.ctx = canvas.getContext('2d');
 
     this.image = image;
-    
+
     // Permet de savoir si c'est une dégradation ou un font-creator
     this.typeOfCanvas = typeOfCanvas;
 
@@ -255,9 +255,9 @@ function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
 	this.baseline = baseline;
 	this.boundingBox = boundingBox;
     }
-    
+
     this.typeOfCanvas = typeOfCanvas;
-    
+
     this.dragging = false;
 
     this.scale = 1.0;
@@ -270,6 +270,7 @@ function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
     this.dragoffx = 0;
     this.dragoffy = 0;
 
+    if(image){
     this.image.img.onload = function(){
         myCanvas.image.w = this.width;
         myCanvas.image.h = this.height;
@@ -287,8 +288,36 @@ function Canvas(canvas, image, baseline, boundingBox, typeOfCanvas) {
         else
             myCanvas.scale = myCanvas.height /this.height;
         myCanvas.draw();
+      }
     }
 }
+
+
+Canvas.prototype.formatCanvas = function(image) {
+  var myCanvas = this;
+  //this.image=image;
+
+
+  this.image.img.onload = function(){
+      myCanvas.image.w = this.width;
+      myCanvas.image.h = this.height;
+
+      myCanvas.image.initialx = myCanvas.width/2 - this.width/2;
+      myCanvas.image.initialy = myCanvas.height/2 - this.height/2;
+
+      myCanvas.image.x = myCanvas.image.initialx;
+      myCanvas.image.y = myCanvas.image.initialy;
+
+
+      if(this.width > this.height)
+          myCanvas.scale = myCanvas.width /this.width;
+      else
+          myCanvas.scale = myCanvas.height /this.height;
+      //myCanvas.draw();
+    }
+}
+
+
 
 
 /*!
@@ -305,7 +334,7 @@ Canvas.prototype.onMouseDown= function(e){
 
     if (image.contains(mx, my)) {
         this.dragoffx = mx - image.x;
-        this.dragoffy = my - image.y;             
+        this.dragoffy = my - image.y;
         this.dragging = true;
         this.draw();
     }
@@ -320,7 +349,7 @@ Canvas.prototype.onMouseMove = function(e){
     if (this.dragging){
         var mouse = this.getMouse(e);
         this.image.x = (mouse.x) - this.dragoffx;
-        this.image.y = (mouse.y) - this.dragoffy; 
+        this.image.y = (mouse.y) - this.dragoffy;
         this.draw();
     }
 }
@@ -397,15 +426,15 @@ Canvas.prototype.draw = function() {
 	// Apply modifications (zoom, translation) all elements drawing after this will have the modifications
 	ctx.translate(this.panX, this.panY);
 	ctx.scale(this.scale, this.scale);
-	
+
 	// Draw all elements
 	this.image.draw(ctx);
-	
+
 	if (this.typeOfCanvas == "font-creator"){
 	    this.baseline.draw(ctx, this.image);
 	    this.boundingBox.draw(ctx, this.image);
 	}
-	
+
 	// Restore the context
 	ctx.restore();
 
@@ -433,16 +462,22 @@ Canvas.prototype.getMouse = function(e) {
 
 
 Canvas.prototype.changeImage = function(imagePath) {
+
     var canvas = this;
+
+    /*if (this.typeOfCanvas == 'create-your-document') {
+      var image = ProcessingImage(imagePath);
+      canvas.formatCanvas(image)
+    }*/
     this.image.img.src = imagePath;
-    this.image.img.onload = function(){
+          this.image.img.onload = function(){
         canvas.draw();
     }
 }
 
 
 /*!
- * preview canvas 
+ * preview canvas
  * \class PreviewCanvas
  * \param canvas canvas element
  * \param image image draw on the canvas
@@ -468,7 +503,7 @@ function PreviewCanvas(canvas, image)
     this.position_right_line = 0;
     this.position_baseline = 0;
     this.idElementSelected = 0;
-    var myPreviewCanvas = this; 
+    var myPreviewCanvas = this;
 
     this.image.img.onload = function(){
         myPreviewCanvas.draw();
@@ -492,7 +527,7 @@ PreviewCanvas.prototype.draw = function() {
     {
         var ctx = this.ctx;
         this.clear();
-        
+
         // Save the current context
         ctx.save();
 
@@ -508,7 +543,7 @@ PreviewCanvas.prototype.draw = function() {
 
         // Draw all elements
         this.image.draw(ctx);
-        
+
         if(this.isBaseline)
         {
             var rect = this.canvas.getBoundingClientRect();
@@ -585,12 +620,12 @@ PreviewCanvas.prototype.zoomTo = function(obj, id){
         var rect = obj;
         this.image.x = (this.width/2) - rect.rect.x - rect.rect.w/2;
         this.image.y = (this.height/2) - rect.rect.y - rect.rect.h/2;
-        
+
         this.scaleX = (this.height /rect.rect.h) - (this.height /rect.rect.h)/2;
         this.scaleY = this.scaleX;
-        
+
         var actualRect = rect.rect;
-        this.isBaseline = false; 
+        this.isBaseline = false;
     }
     else if (obj instanceof Line)
     {
@@ -606,7 +641,7 @@ PreviewCanvas.prototype.zoomTo = function(obj, id){
         this.idElementSelected = id;
     }
     this.draw();
-    
+
 }
 
 PreviewCanvas.prototype.changeImage = function(imagePath) {
@@ -676,19 +711,19 @@ function init(src, boundingBox, baseline, typeOfController) {
     if (typeOfController == "font-creator"){
 	var image = new ProcessingImage(src);
 	var imagePreview = new ProcessingImage(src);
-	
+
 	var listRect = new Array();
 	for (var rect in boundingBox) {
             listRect.push(new Rectangle({x:boundingBox[rect].x, y:boundingBox[rect].y, w:boundingBox[rect].width, h: boundingBox[rect].height},boundingBox[rect].idCC, boundingBox[rect].idLine));
-	} 
+	}
 	var boundingBox = new BoundingBox(listRect);
-	
+
 	var listBaseline = new Array();
 	for (var line in baseline) {
             listBaseline.push(new Line(baseline[line].idLine, baseline[line].x_begin,baseline[line].y_baseline,baseline[line].x_end));
 	}
 	var baseline = new Baseline(listBaseline);
-	
+
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, baseline, boundingBox, "font-creator");
 	var previewCanvas = new PreviewCanvas(document.getElementById('small_canvas'), imagePreview);
 	var listCharacter = new ListCharacter();
@@ -702,7 +737,8 @@ function init(src, boundingBox, baseline, typeOfController) {
 	var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "synthetize");
 	var controller = new ControllerSynthetize(normalCanvas);
     } else { // typeOfController == "createDocument"
-	var controller = new ControllerCreateDocument();
+    var image = new ProcessingImage('init.png');
+    var normalCanvas = new Canvas(document.getElementById('canvas'), image, null, null, "create-your-document");
+	var controller = new ControllerCreateDocument(normalCanvas);
     }
 }
-

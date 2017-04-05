@@ -452,10 +452,58 @@ Session.prototype.synthetizeImage = function(callback)
     	    {
 		alert(response.error);
 	    } else {
+        
 		callback.replaceImage(response.filename);
 	    }
+            if(response.backgroundPath != null){
+                document.getElementById('downloadBackground').setAttribute('href','data/' + response.backgroundPath);
+                document.getElementById('downloadBackground').setAttribute('download', 'doc-online-background.png');
+            }
+            if(response.fontPath != null){
+                document.getElementById('downloadFont').setAttribute('href','data/' + response.fontPath);
+                document.getElementById('downloadFont').setAttribute('download', 'doc-online.of');
+            }
+            if(response.XMLPath != null){
+                document.getElementById('downloadXML').setAttribute('href','data/' + response.XMLPath);
+                document.getElementById('downloadXML').setAttribute('download', 'doc-online.xml');
+            }
             $('.overlay').hide();
             $('.loader').hide();
+        },
+        error: function(error)
+        {
+            console.log('ERRORS: ' + error);
+        }
+    });
+}
+
+Session.prototype.composeImage = function(font, background, text, callback)
+{
+
+    $('.overlay').show();
+    $('.loader').show();
+
+    $.ajax({
+        url: 'composeImage.txt',
+        type: 'POST',
+        data: 'token=' + this.token + '&font=' +font + '&background=' + background + '&text=' + text,
+        context: callback,
+        success : function(data, textStatus, jqXHR)
+        {
+            var response = JSON.parse(data);
+    	    if(response.filename == null)
+    	    {
+		alert(response.error);
+	    } else {
+        //alert(response.filename);
+            $('.overlay').hide();
+            $('.loader').hide();
+
+
+		callback.replaceImage(response.filename);
+                //document.location.href='data/'+response.filename;
+	    }
+
         },
         error: function(error)
         {
@@ -482,6 +530,7 @@ Session.prototype.downloadCreateDocument = function(typeDownload, font, backgrou
 
             $('.overlay').hide();
             $('.loader').hide();
+
         },
         error: function(error)
         {
